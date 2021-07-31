@@ -1,0 +1,154 @@
+@charset "UTF-8";
+
+html {
+	width: 100%;
+	height: -webkit-fill-available;
+}
+body {
+	min-height: 100vh;
+	min-height: -webkit-fill-available;
+	font-size: 1em;
+	background-image: url(../img/background.jpg);
+	color: #422;
+	font-family: Serif;
+	overflow: hidden;
+	height: 100%;
+    width: 100%;
+	margin: 0;
+}
+
+.titolo {
+	font-size: 1.5em;
+	text-align: center;
+	font-family: Serif;
+	font-weight: bold;
+	height: 7%;
+	line-height: 7%;
+	width: 96%;
+	margin-left: auto;
+	margin-right: auto;
+	vertical-align: middle;
+}
+.titolo span {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+  margin-top: 3%;
+}
+
+input, select {
+	font-family: Serif;
+}
+input[type="button"] {
+    border-radius: 4px;
+    color: #422;
+	border: 1px solid #422;
+    font-weight: bold;
+	margin-left: 2vw;
+	margin-right: 2vw;
+}
+
+.info {
+	display: table;	
+	width: 96%;
+	margin-left: auto;
+	margin-right: auto;
+	height: 5%;
+	text-align: center;
+	font-size:8pt;
+}
+
+.infoinfo {
+	display: table-cell;
+	text-align: left;
+}
+
+.cartepescate {	
+    display: table-cell;
+    text-align: right;
+}
+
+.risultato {
+	margin-left: auto;
+    margin-right: auto;
+	height: 67%;
+	width: 96%;
+	font-size: 12pt;
+	border-radius: 4px;
+	display: block;
+    min-width: 250px;
+	text-align: center;
+}
+
+.mazzo {
+	margin-left: auto;
+    margin-right: auto;
+	height: 67vh;
+	width: 48vh;
+	border-radius: 1vh;
+}
+.dorso {
+	box-shadow: 1vw 1vw #999;
+}
+
+.front {
+	position: fixed;
+	margin-left: -48vh;
+}
+
+.cartaround {	
+	margin-left: auto;
+    margin-right: auto;
+	height: 60vh;
+	width: 43vh;
+	border-radius: 1vh;	
+}
+
+.legenda {
+	margin-left: auto;
+    margin-right: auto;
+	left: 2%;
+	font-size: 12pt;
+	position: absolute;
+	width: 96%;
+	text-align: center;
+	bottom: 0px;	
+	margin-bottom: 5%;
+    z-index: 100;
+}
+.legenda div {
+	font-size: 10pt;
+}
+#legendaC {
+	display:block;
+}
+#legendaO {
+	display:none;
+	background-color: rgba(255, 255, 255, 0.3);
+	border: 1px solid #422;
+	border-radius: 4px;padding-top: 3vw;
+    padding-bottom: 3vw;
+}
+
+#legendaO input[type="button"] {
+	margin-bottom: 3vw;
+}
+
+@media all and (max-width: 380px) {
+	
+	body {
+		margin: 2%;
+		width: 96%;
+	}
+	.legenda {	
+		width: 96%;
+		margin-bottom: 2%;
+	}
+}
+
+@media all and (max-height: 400px) {	
+
+	#legendaC{
+		display:none;
+	}
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Barrage Automa</title>
+	<link rel="stylesheet" href="css/barrage.css" />
+	<link rel="stylesheet" href="css/animate.css" />
+	<script type="text/javascript" src="js/mappa.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="js/barrage.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="js/init.js" charset="UTF-8"></script>
+</head>
+
+<body onload="initPage();">
+	<div class="titolo">
+		<span>Barrage Automa</span>
+		<input type="button" value="testBE_Condotta1" onclick="testBE_Condotta1();" />
+		<input type="button" value="testBE_Condotta2" onclick="testBE_Condotta2();" />
+		<input type="button" value="testBE_CentraleMia1" onclick="testBE_CentraleMia1();" />
+		<input type="button" value="testBE_CentraleMia2" onclick="testBE_CentraleMia2();" />
+	</div>
+	<div class="info">
+		<span class="infoinfo">Tocca le carte per pescare. Tocca il pulsante in basso per il round</span>
+		<div class="cartepescate"><span id="numPescate"></span> / <span id="numTot"></span></div>
+	</div>
+	<div id="risultato" class="risultato">
+		<img src="img/deck/a_0.jpg" class="mazzo dorso" onclick="pescaEMostra();" />
+	</div>
+	<div class="legenda" id="legendaC">
+		<input type="button" value="Round 1-2" onclick="apriRound('12');" />
+		<input type="button" value="Round 3-4" onclick="apriRound('34');" />
+		<input type="button" value="Round 5-6" onclick="apriRound('56');" />
+	</div>
+	<div class="legenda" id="legendaO">
+		<input type="button" value="Chiudi" onclick="chiudiRound();" />
+		<div id="legendaVera" />
+	</div>
+</body>
+
+</html>
