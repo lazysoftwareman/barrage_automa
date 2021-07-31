@@ -1,12 +1,33 @@
+// @ts-check
+import { initMazzo } from './init.js';
+import { centraliCondotte, condotteDighe, condotteVal, dighePay } from './mappa.js';
+
+
 /////////////// INPUT
-var centraliCostruite = []; // {centrale: string, chi: string}
-var condotteCostruite = []; // {condotta: string, chi: string}
-var dighePresenti = []; // {diga: string, chi: string}
-var digheLivello = []; // {diga: string, livello: number}
+export let centraliCostruite = []; // {centrale: string, chi: string}
+export let condotteCostruite = []; // {condotta: string, chi: string}
+export let dighePresenti = []; // {diga: string, chi: string}
+export let digheLivello = []; // {diga: string, livello: number}
+
+export let deckSize = 18;
+export let mazzo = [];
+export let indice = 0;
+
+export let round = [];
+
+export function resetInputs() {
+	centraliCostruite = [];
+	condotteCostruite = [];
+	dighePresenti = [];
+	digheLivello = [];
+
+	mazzo = [];
+	indice = 0;
+}
 
 /////////////// BL UTILS
 function getZonaCondotta(condotta) {
-	var prefix = condotta.substring(0, 4);
+	let prefix = condotta.substring(0, 4);
 	if (prefix == 'C_10') {
 		return 'P';
 	} else {
@@ -25,7 +46,7 @@ function getProprietarioDiga(diga) {
 	if (dighePresenti.length == 0) {
 		return undefined;
 	}
-	for (var i = 0; i < dighePresenti.length; i++) {
+	for (let i = 0; i < dighePresenti.length; i++) {
 		if (dighePresenti[i].diga == diga) {
 			return dighePresenti[i].chi;
 		}
@@ -34,9 +55,9 @@ function getProprietarioDiga(diga) {
 }
 
 function getDigheDiProprieta(chi) {
-	var dighe = [];
+	let dighe = [];
 	if (dighePresenti.length > 0) {
-		for (var i = 0; i < dighePresenti.length; i++) {
+		for (let i = 0; i < dighePresenti.length; i++) {
 			if (dighePresenti[i].chi == chi) {
 				dighe.push(dighePresenti[i].diga);
 			}
@@ -49,7 +70,7 @@ function getLivelloDiga(diga) {
 	if (digheLivello.length == 0) {
 		return undefined;
 	}
-	for (var i = 0; i < digheLivello.length; i++) {
+	for (let i = 0; i < digheLivello.length; i++) {
 		if (digheLivello[i].diga == diga) {
 			return digheLivello[i].livello;
 		}
@@ -58,9 +79,9 @@ function getLivelloDiga(diga) {
 }
 
 function getCentraliDiProprieta(chi) {
-	var centrali = [];
+	let centrali = [];
 	if (centraliCostruite.length > 0) {
-		for (var i = 0; i < centraliCostruite.length; i++) {
+		for (let i = 0; i < centraliCostruite.length; i++) {
 			if (centraliCostruite[i].chi == chi) {
 				centrali.push(centraliCostruite[i].centrale);
 			}
@@ -69,9 +90,21 @@ function getCentraliDiProprieta(chi) {
 	return centrali;
 }
 
-function printArray(array) {
-	var text = '[';
-	for (var i = 0; i < array.length; i++) {
+/**
+ * @param {string} centrale
+ */
+function getNumeroCentrale(centrale) {
+	let num = centrale.substring(3, centrale.length);
+	if (num.endsWith('A') || num.endsWith('B') || num.endsWith('C')) {
+		return num.substring(0, num.length - 1);
+	} else {
+		return num;
+	}
+}
+
+export function printArray(array) {
+	let text = '[';
+	for (let i = 0; i < array.length; i++) {
 		text += array[i] + ', ';
 	}
 	text += ']';
@@ -86,7 +119,7 @@ function printArray(array) {
  * prevFilter: filtro precedente (se presente)
  * automa: l'automa da usare
 **/
-function getBE_Condotta(tipo, prevFilter, automa) {
+export function getBE_Condotta(tipo, prevFilter, automa) {
 	if (condotteCostruite.length == 0) {
 		return prevFilter ? prevFilter : [];
 	}
@@ -94,8 +127,8 @@ function getBE_Condotta(tipo, prevFilter, automa) {
 		if (condotteVal[a.condotta] != condotteVal[b.condotta]) {
 			return condotteVal[b.condotta] - condotteVal[a.condotta];
 		} else {
-			var chiA = a.chi;
-			var chiB = b.chi;
+			let chiA = a.chi;
+			let chiB = b.chi;
 			if (chiA == automa) {
 				return -1;
 			} else {
@@ -107,20 +140,20 @@ function getBE_Condotta(tipo, prevFilter, automa) {
 			}
 		}
 	});
-	var maxValue = []
+	let maxValue = []
 	maxValue['M'] = -1;
 	maxValue['C'] = -1;
 	maxValue['P'] = -1;
-	var actualChi = [];
+	let actualChi = [];
 	actualChi['M'] = '';
 	actualChi['C'] = '';
 	actualChi['P'] = '';
-	var condotteFiltered = [];
-	for (var i = 0; i < condotteCostruite.length; i++) {
-		var condCos = condotteCostruite[i];
-		var actualValue = condotteVal[condCos.condotta];
-		var zona = getZonaCondotta(condCos.condotta);
-		var first = false;
+	let condotteFiltered = [];
+	for (let i = 0; i < condotteCostruite.length; i++) {
+		let condCos = condotteCostruite[i];
+		let actualValue = condotteVal[condCos.condotta];
+		let zona = getZonaCondotta(condCos.condotta);
+		let first = false;
 		if (maxValue[zona] < 0) {
 			maxValue[zona] = actualValue;
 			first = true;
@@ -152,24 +185,24 @@ function getBE_Condotta(tipo, prevFilter, automa) {
 		}
 	}
 	// Ora condotteFiltered contiene le condotte valide filtrate. In base al tipo (se B o E) troviamo le zone valide
-	var digheValide = [];
-	for (var i = 0; i < condotteFiltered.length; i++) {
-		var collegate = condotteDighe[condotteFiltered[i]];
+	let digheValide = [];
+	for (let i = 0; i < condotteFiltered.length; i++) {
+		let collegate = condotteDighe[condotteFiltered[i]];
 		if (tipo == 'B') {
-			var d1 = collegate[0];
+			let d1 = collegate[0];
 			if (!getProprietarioDiga(d1)) {
 				digheValide.push(d1);
 			}
-			var d2 = collegate[1];
+			let d2 = collegate[1];
 			if (!getProprietarioDiga(d2)) {
 				digheValide.push(d2);
 			}
 		} else {
-			var d1 = collegate[0];
+			let d1 = collegate[0];
 			if (getProprietarioDiga(d1) && getProprietarioDiga(d1) == automa && getLivelloDiga(d1) < 3) {
 				digheValide.push(d1);
 			}
-			var d2 = collegate[1];
+			let d2 = collegate[1];
 			if (getProprietarioDiga(d2) && getProprietarioDiga(d2) == automa && getLivelloDiga(d2) < 3) {
 				digheValide.push(d2);
 			}
@@ -181,7 +214,7 @@ function getBE_Condotta(tipo, prevFilter, automa) {
 		return digheValide;
 	} else {
 		// intersezione
-		var filtered = digheValide.filter(function (n) {
+		let filtered = digheValide.filter(function (n) {
 			return prevFilter.indexOf(n) != -1;
 		});
 		return filtered;
@@ -194,31 +227,31 @@ function getBE_Condotta(tipo, prevFilter, automa) {
  * prevFilter: filtro precedente (se presente)
  * automa: l'automa da usare
 **/
-function getBE_CentralePropria(tipo, prevFilter, automa) {
+export function getBE_CentralePropria(tipo, prevFilter, automa) {
 	if (centraliCostruite.length == 0) {
 		return prevFilter ? prevFilter : [];
 	}
-	var centraliProprie = getCentraliDiProprieta(automa);
+	let centraliProprie = getCentraliDiProprieta(automa);
 	if (centraliProprie.length == 0) {
 		return prevFilter ? prevFilter : [];
 	}
-	var condotte = [];
-	for (var i = 0; i < centraliProprie.length; i++) {
-		var currCondotte = centraliCondotte[centraliProprie[i]];
-		for (var j = 0; j < currCondotte.length; j++) {
+	let condotte = [];
+	for (let i = 0; i < centraliProprie.length; i++) {
+		let currCondotte = centraliCondotte[centraliProprie[i]];
+		for (let j = 0; j < currCondotte.length; j++) {
 			condotte.push(currCondotte[j]);
 		}
 	}
-	var dighe = [];
-	for (var i = 0; i < condotte.length; i++) {
-		var currDighe = condotteDighe[condotte[i]];
-		for (var j = 0; j < currDighe.length; j++) {
+	let dighe = [];
+	for (let i = 0; i < condotte.length; i++) {
+		let currDighe = condotteDighe[condotte[i]];
+		for (let j = 0; j < currDighe.length; j++) {
 			dighe.push(currDighe[j]);
 		}
 	}
-	var digheValide = [];
-	for (var i = 0; i < dighe.length; i++) {
-		var diga = dighe[i];
+	let digheValide = [];
+	for (let i = 0; i < dighe.length; i++) {
+		let diga = dighe[i];
 		if (tipo == 'B') {
 			if (!getProprietarioDiga(diga)) {
 				digheValide.push(diga);
@@ -235,7 +268,158 @@ function getBE_CentralePropria(tipo, prevFilter, automa) {
 		return digheValide;
 	} else {
 		// intersezione
-		var filtered = digheValide.filter(function (n) {
+		let filtered = digheValide.filter(function (n) {
+			return prevFilter.indexOf(n) != -1;
+		});
+		return filtered;
+	}
+}
+
+/**
+ * BASE O ELEVAZIONE, costo addizionale
+ * tipo: 'B' o 'E' per Base o Elevazione
+ * prevFilter: filtro precedente (se presente)
+ * automa: l'automa da usare
+**/
+export function getBE_CostoAddizionale(tipo, prevFilter, automa) {
+	let dighe = dighePay;
+	let digheValide = [];
+	for (let i = 0; i < dighe.length; i++) {
+		let diga = dighe[i];
+		if (tipo == 'B') {
+			if (!getProprietarioDiga(diga)) {
+				digheValide.push(diga);
+			}
+		} else {
+			if (getProprietarioDiga(diga) && getProprietarioDiga(diga) == automa && getLivelloDiga(diga) < 3) {
+				digheValide.push(diga);
+			}
+		}
+	}
+	if (digheValide.length == 0) {
+		return prevFilter ? prevFilter : [];
+	} if (!prevFilter || prevFilter.length == 0) {
+		return digheValide;
+	} else {
+		// intersezione
+		let filtered = digheValide.filter(function (n) {
+			return prevFilter.indexOf(n) != -1;
+		});
+		return filtered;
+	}
+}
+
+/**
+ * BASE O ELEVAZIONE, diga collegabile naturalmente a centrale
+ * tipo: 'B' o 'E' per Base o Elevazione
+ * prevFilter: filtro precedente (se presente)
+ * automa: l'automa da usare
+**/
+export function getBE_CentraleNaturale(tipo, prevFilter, automa) {
+	if (centraliCostruite.length == 0) {
+		return prevFilter ? prevFilter : [];
+	}
+	let digheValide = [];
+	// le dighe sotto alle centrali esistenti
+	for (let i = 0; i < centraliCostruite.length; i++) {
+		let centrale = centraliCostruite[i].centrale;
+		if (centrale.endsWith('11A') || centrale.endsWith('11B') ||
+			centrale.endsWith('12') || centrale.endsWith('12A') ||
+			centrale.endsWith('12B') || centrale.endsWith('12C')) {
+			continue;
+		}
+		let secondoNumero = [];
+		secondoNumero['5'] = '9';
+		secondoNumero['6'] = '10';
+		secondoNumero['7'] = '10';
+		let numero = getNumeroCentrale(centrale);
+		let digaF = 'DF_' + numero;
+		let digaP = 'DP_' + numero;
+		if (tipo == 'B') {
+			if (!getProprietarioDiga(digaP)) {
+				if (!digheValide.includes(digaP)) {
+					digheValide.push(digaP);
+				}
+			} else {
+				continue;
+			}
+			if (!getProprietarioDiga(digaF)) {
+				if (!digheValide.includes(digaF)) {
+					digheValide.push(digaF);
+				}
+			} else {
+				continue;
+			}
+			if (secondoNumero[numero]) {
+				numero = secondoNumero[numero];
+				digaF = 'DF_' + numero;
+				digaP = 'DP_' + numero;
+				if (!getProprietarioDiga(digaP)) {
+					if (!digheValide.includes(digaP)) {
+						digheValide.push(digaP);
+					}
+				} else {
+					continue;
+				}
+				if (!getProprietarioDiga(digaF)) {
+					if (!digheValide.includes(digaF)) {
+						digheValide.push(digaF);
+					}
+				} else {
+					continue;
+				}
+			}
+		} else {
+			if (getProprietarioDiga(digaP)) {
+				if (getProprietarioDiga(digaP) == automa && getLivelloDiga(digaP) < 3) {
+					if (!digheValide.includes(digaP)) {
+						digheValide.push(digaP);
+					}
+				} else {
+					continue;
+				}
+			}
+			if (getProprietarioDiga(digaF)) {
+				if (getProprietarioDiga(digaF) == automa && getLivelloDiga(digaF) < 3) {
+					if (!digheValide.includes(digaF)) {
+						digheValide.push(digaF);
+					}
+				} else {
+					continue;
+				}
+			}
+			if (secondoNumero[numero]) {
+				numero = secondoNumero[numero];
+				digaF = 'DF_' + numero;
+				digaP = 'DP_' + numero;
+				if (getProprietarioDiga(digaP)) {
+					if (getProprietarioDiga(digaP) == automa && getLivelloDiga(digaP) < 3) {
+						if (!digheValide.includes(digaP)) {
+							digheValide.push(digaP);
+						}
+					} else {
+						continue;
+					}
+				}
+				if (getProprietarioDiga(digaF)) {
+					if (getProprietarioDiga(digaF) == automa && getLivelloDiga(digaF) < 3) {
+						if (!digheValide.includes(digaF)) {
+							digheValide.push(digaF);
+						}
+					} else {
+						continue;
+					}
+				}
+			}
+		}
+	}
+	if (digheValide.length == 0) {
+		return prevFilter ? prevFilter : [];
+	} if (!prevFilter || prevFilter.length == 0) {
+		return digheValide;
+	} else {
+		// intersezione
+		let filtered = digheValide.filter(function (n) {
 			return prevFilter.indexOf(n) != -1;
 		});
 		return filtered;
@@ -243,21 +427,54 @@ function getBE_CentralePropria(tipo, prevFilter, automa) {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /////////////// BUSINESS LOGIC
 
-function getNumCarteRimanenti() {
+export function getNumCarteRimanenti() {
 	return deckSize - (indice + 1);
 }
 
-function pesca() {
+export function pesca() {
 	if (indice >= deckSize) {
 		initMazzo();
 	}
 	return mazzo[indice++];
 }
 
-function mescola(mazzo) {
-	var currentIndex = mazzo.length, randomIndex;
+export function mescola(mazzo) {
+	let currentIndex = mazzo.length, randomIndex;
 	// While there remain elements to shuffle...
 	while (0 !== currentIndex) {
 		// Pick a remaining element...
@@ -270,8 +487,8 @@ function mescola(mazzo) {
 	return mazzo;
 }
 
-function getImmagine(folderName, fileName) {
-	var immagine = document.createElement("img");
+export function getImmagine(folderName, fileName) {
+	let immagine = document.createElement("img");
 	immagine.src = "img/" + folderName + "/" + fileName;
 	if (folderName == 'deck') {
 		immagine.id = "c_pescata";
@@ -283,8 +500,8 @@ function getImmagine(folderName, fileName) {
 	return immagine;
 }
 
-function getDado3() {
-	var rand = Math.random();
+export function getDado3() {
+	let rand = Math.random();
 	return Math.ceil(rand * 3);
 }
 
@@ -292,28 +509,28 @@ function getDado3() {
 
 //////////////////// VIEW
 
-function pescaEMostra() {
-	var carta = 'a_' + pesca() + '.jpg';
+export function pescaEMostra() {
+	let carta = 'a_' + pesca() + '.jpg';
 	mostra(carta);
-	document.getElementById('numPescate').innerHTML = (indice);
+	document.getElementById('numPescate').innerHTML = ('' + indice);
 }
 
-function mostra(carta) {
-	var cartaPescata = document.getElementById('c_pescata');
+export function mostra(carta) {
+	let cartaPescata = document.getElementById('c_pescata');
 	if (cartaPescata) {
 		document.getElementById('risultato').removeChild(cartaPescata);
 	}
 	document.getElementById('risultato').appendChild(getImmagine('deck', carta));
 }
 
-function apriRound(num) {
+export function apriRound(num) {
 	document.getElementById("legendaC").style.display = "none";
 	document.getElementById('legendaVera').innerHTML = "";
 	document.getElementById('legendaVera').appendChild(getImmagine('round', 'r' + num + '_' + round[num] + '.jpg'));
 	document.getElementById("legendaO").style.display = "block";
 }
 
-function chiudiRound() {
+export function chiudiRound() {
 	document.getElementById("legendaO").style.display = "none";
 	document.getElementById("legendaC").style.display = "block";
 }

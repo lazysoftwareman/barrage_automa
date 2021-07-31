@@ -1,40 +1,42 @@
-var deckSize = 18;
-var mazzo = [];
-var indice = 0;
+// @ts-check
+import { deckSize, getDado3, indice, mazzo, mescola, resetInputs, round } from './barrage.js';
+import {
+    testBE_CentraleMia1,
+    testBE_CentraleMia2,
+    testBE_CentraleNaturale1,
+    testBE_CentraleNaturale2,
+    testBE_Condotta1,
+    testBE_Condotta2,
+} from './tests.js';
 
-var round = [];
 
-function initPage() {
-	centraliCostruite = [];
-	condotteCostruite = [];
-	dighePresenti = [];
-	digheLivello = [];
+
+
+export function initPage() {
+	resetInputs();
 
 	round['12'] = getDado3();
 	round['34'] = getDado3();
 	round['56'] = getDado3();
-	deckSize = deckSize;
 	initMazzo();
-	document.getElementById('numPescate').innerHTML = (indice);
-	document.getElementById('numTot').innerHTML = deckSize;
+	document.getElementById('numPescate').innerHTML = ('' + indice);
+	document.getElementById('numTot').innerHTML = '' + deckSize;
 	// initDorsoMazzo();
 }
 
-function initMazzo() {
-	mazzo = [];
+export function initMazzo() {
+	resetInputs();
 	for (var i = 0; i < deckSize; i++) {
 		mazzo.push(i + 1);
 	}
 	mescola(mazzo);
-	indice = 0;
 }
 
-// function initDorsoMazzo() {
-	// var dorso = document.createElement("img");
-	// dorso.src = "img/deck/a_0.jpg";
-	// dorso.className = "mazzo dorso";
-	// dorso.onclick = pescaEMostra;
-
-	// document.getElementById('risultato').innerHTML = '';
-	// document.getElementById('risultato').appendChild(dorso);
-// }
+// @ts-ignore
+window.initPage = initPage;
+document.getElementById('testBE_Condotta1').addEventListener('click', testBE_Condotta1);
+document.getElementById('testBE_Condotta2').addEventListener('click', testBE_Condotta2);
+document.getElementById('testBE_CentraleMia1').addEventListener('click', testBE_CentraleMia1);
+document.getElementById('testBE_CentraleMia2').addEventListener('click', testBE_CentraleMia2);
+document.getElementById('testBE_CentraleNaturale1').addEventListener('click', testBE_CentraleNaturale1);
+document.getElementById('testBE_CentraleNaturale2').addEventListener('click', testBE_CentraleNaturale2);

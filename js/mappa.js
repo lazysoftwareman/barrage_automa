@@ -1,11 +1,13 @@
-var sorgenti = ['S_A', 'S_B', 'S_C', 'S_D'];
-var digheFree = ['DF_1', 'DF_2', 'DF_3', 'DF_4', 'DF_5', 'DF_6', 'DF_7', 'DF_8', 'DF_9', 'DF_10'];
-var dighePay = ['DP_1', 'DP_2', 'DP_3', 'DP_4', 'DP_5', 'DP_6', 'DP_7', 'DP_8', 'DP_9', 'DP_10'];
-var condotte = ['C_1A', 'C_1B', 'C_2A', 'C_2B', 'C_3A', 'C_3B', 'C_4A', 'C_4B', 'C_5A', 'C_5B', 'C_6A', 'C_6B', 'C_7A', 'C_7B', 'C_8A', 'C_8B', 'C_9A', 'C_9B', 'C_10A', 'C_10B'];
-var centraliFree = ['CF_5', 'CF_6', 'CF_7', 'CF_8A', 'CF_8B', 'CF_9A', 'CF_9B', 'CF_10', 'CF_11A', 'CF_11B', 'CF_12'];
-var centraliPay = ['CP_5', 'CP_6', 'CP_7', 'CP_8', 'CP_9', 'CP_10A', 'CP_10B', 'CP_11A', 'CP_11B', 'CP_12A', 'CP_12B', 'CP_12C'];
+// @ts-check
 
-var condotteVal = [];
+export let sorgenti = ['S_A', 'S_B', 'S_C', 'S_D'];
+export let digheFree = ['DF_1', 'DF_2', 'DF_3', 'DF_4', 'DF_5', 'DF_6', 'DF_7', 'DF_8', 'DF_9', 'DF_10'];
+export let dighePay = ['DP_1', 'DP_2', 'DP_3', 'DP_4', 'DP_5', 'DP_6', 'DP_7', 'DP_8', 'DP_9', 'DP_10'];
+export let condotte = ['C_1A', 'C_1B', 'C_2A', 'C_2B', 'C_3A', 'C_3B', 'C_4A', 'C_4B', 'C_5A', 'C_5B', 'C_6A', 'C_6B', 'C_7A', 'C_7B', 'C_8A', 'C_8B', 'C_9A', 'C_9B', 'C_10A', 'C_10B'];
+export let centraliFree = ['CF_5', 'CF_6', 'CF_7', 'CF_8A', 'CF_8B', 'CF_9A', 'CF_9B', 'CF_10', 'CF_11A', 'CF_11B', 'CF_12'];
+export let centraliPay = ['CP_5', 'CP_6', 'CP_7', 'CP_8', 'CP_9', 'CP_10A', 'CP_10B', 'CP_11A', 'CP_11B', 'CP_12A', 'CP_12B', 'CP_12C'];
+
+export let condotteVal = [];
 condotteVal['C_1A'] = 5;
 condotteVal['C_1B'] = 4;
 condotteVal['C_2A'] = 3;
@@ -27,7 +29,7 @@ condotteVal['C_9B'] = 3;
 condotteVal['C_10A'] = 2;
 condotteVal['C_10B'] = 1;
 
-var digheCondotte = [];
+export let digheCondotte = [];
 digheCondotte['DF_1'] = ['C_1A', 'C_1B'];
 digheCondotte['DP_1'] = ['C_1A', 'C_1B'];
 digheCondotte['DF_2'] = ['C_2A', 'C_2B'];
@@ -49,7 +51,7 @@ digheCondotte['DP_9'] = ['C_9A', 'C_9B'];
 digheCondotte['DF_10'] = ['C_10A', 'C_10B'];
 digheCondotte['DP_10'] = ['C_10A', 'C_10B'];
 
-var condotteDighe = [];
+export let condotteDighe = [];
 condotteDighe['C_1A'] = ['DF_1', 'DP_1'];
 condotteDighe['C_1B'] = ['DF_1', 'DP_1'];
 condotteDighe['C_2A'] = ['DF_2', 'DP_2'];
@@ -71,7 +73,7 @@ condotteDighe['C_9B'] = ['DF_9', 'DP_9'];
 condotteDighe['C_10A'] = ['DF_10', 'DP_10'];
 condotteDighe['C_10B'] = ['DF_10', 'DP_10'];
 
-var centraliCondotte = [];
+export let centraliCondotte = [];
 centraliCondotte['CF_5'] = ['C_1B', 'C_3A'];
 centraliCondotte['CP_5'] = ['C_1B', 'C_3A'];
 centraliCondotte['CF_6'] = ['C_2A', 'C_3B'];
@@ -96,7 +98,7 @@ centraliCondotte['CP_12A'] = ['C_4B', 'C_7B', 'C_9B', 'C_10B'];
 centraliCondotte['CP_12B'] = ['C_4B', 'C_7B', 'C_9B', 'C_10B'];
 centraliCondotte['CP_12C'] = ['C_4B', 'C_7B', 'C_9B', 'C_10B'];
 
-var condotteCentrali = [];
+export let condotteCentrali = [];
 condotteCentrali['C_1A'] = ['CF_8A', 'CF_8B', 'CP_8'];
 condotteCentrali['C_1B'] = ['CF_5', 'CP_5'];
 condotteCentrali['C_2A'] = ['CF_6', 'CP_6'];
@@ -118,13 +120,13 @@ condotteCentrali['C_9B'] = ['CF_12', 'CP_12A', 'CP_12B', 'CP_12C'];
 condotteCentrali['C_10A'] = ['CF_11A', 'CF_11B', 'CP_11A', 'CP_11B'];
 condotteCentrali['C_10B'] = ['CF_12', 'CP_12A', 'CP_12B', 'CP_12C'];
 
-var percorsi = [];
+export let percorsi = [];
 percorsi['A'] = ['A', '1', '8', '11'];
 percorsi['B'] = ['B', '2', '5', '9', '11'];
 percorsi['C'] = ['C', '3', '6', '10', '12'];
 percorsi['D'] = ['C', '4', '7', '10', '12'];
 
-var percorsiDi = [];
+export let percorsiDi = [];
 percorsiDi['1'] = ['A'];
 percorsiDi['2'] = ['B'];
 percorsiDi['3'] = ['C'];
