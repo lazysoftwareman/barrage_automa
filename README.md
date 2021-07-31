@@ -1,4 +1,4 @@
-# barrage_automa
+# Automa per Barrage
 Automa helper for barrage
 
 Feature:
