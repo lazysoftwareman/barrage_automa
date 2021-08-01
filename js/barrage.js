@@ -1,12 +1,18 @@
 // @ts-check
-import { centraliCondotte, condotteDighe, condotteVal, dighePay } from './mappa.js';
+import { centraliCondotte, condotteDighe, condotteVal, dighePay, percorsi, percorsiDi } from './mappa.js';
 import { resetOlds } from './old.js';
 import {
+    getCapienzaDiga,
     getCentraliDiProprieta,
+    getCondotteCheScaricanoInArea,
+    getGocceInSorgente,
     getLivelloDiga,
     getNumeroCentrale,
+    getNumeroDiga,
+    getProprietarioCondotta,
     getProprietarioDiga,
     getZonaCondotta,
+    intersecArray,
 } from './provider.js';
 
 
@@ -27,6 +33,14 @@ export let dighePresenti = [];
  * @type {{ diga: string, livello: number}[]}
  */
 export let digheLivello = [];
+/**
+ * @type {{ diga: string, gocce: number}[]}
+ */
+export let digheGocce = [];
+/**
+ * @type {{ sorgente: string, gocce: number}[]}
+ */
+export let sorgentiGocce = [];
 
 export function resetInputs() {
 	centraliCostruite = [];
@@ -40,6 +54,46 @@ export function resetInputs() {
 
 /////////////// BL CRITERI
 
+/*
+ESEMPIO CARTA CRITERI: E_A_C_1_H_J_I_10B_L_P_K_12_DAB
+*/
+
+
+/**
+ * BASE O ELEVAZIONE, completamento sistema, solo per BASE.
+ * Da applicare come primo criterio, quindi non c'è un prevFilter
+ * @param {string} tipo se 'E' ritorna array vuoto
+ * @param {string} automa
+**/
+export function getBE_0_SistemaCompleto(tipo, automa) {
+	if (tipo != 'B') {
+		return [];
+	}
+	let centraliProprie = getCentraliDiProprieta(automa);
+	if (centraliProprie.length == 0) {
+		return [];
+	}
+	let condotte = [];
+	for (let i = 0; i < centraliProprie.length; i++) {
+		let currCondotte = centraliCondotte[centraliProprie[i]];
+		for (let j = 0; j < currCondotte.length; j++) {
+			if (getProprietarioCondotta(currCondotte[j])) {
+				condotte.push(currCondotte[j]);
+			}
+		}
+	}
+	let digheValide = [];
+	for (let i = 0; i < condotte.length; i++) {
+		let currDighe = condotteDighe[condotte[i]];
+		for (let j = 0; j < currDighe.length; j++) {
+			if (!getProprietarioDiga(currDighe[j])) {
+				digheValide.push(currDighe[j]);
+			}
+		}
+	}
+	return digheValide;
+}
+
 /**
  * BASE O ELEVAZIONE, diga collegabile a condotta più potente
  * tipo: 'B' o 'E' per Base o Elevazione
@@ -49,7 +103,7 @@ export function resetInputs() {
  * @param {string[]} prevFilter
  * @param {string} automa
  */
-export function getBE_Condotta(tipo, prevFilter, automa) {
+export function getBE_A_Condotta(tipo, prevFilter, automa) {
 	if (condotteCostruite.length == 0) {
 		return prevFilter ? prevFilter : [];
 	}
@@ -144,10 +198,7 @@ export function getBE_Condotta(tipo, prevFilter, automa) {
 		return digheValide;
 	} else {
 		// intersezione
-		let filtered = digheValide.filter(function (n) {
-			return prevFilter.indexOf(n) != -1;
-		});
-		return filtered;
+		return intersecArray(prevFilter, digheValide);
 	}
 }
 
@@ -160,7 +211,7 @@ export function getBE_Condotta(tipo, prevFilter, automa) {
  * @param {string[]} prevFilter
  * @param {string} automa
 **/
-export function getBE_CentralePropria(tipo, prevFilter, automa) {
+export function getBE_B_CentralePropria(tipo, prevFilter, automa) {
 	if (centraliCostruite.length == 0) {
 		return prevFilter ? prevFilter : [];
 	}
@@ -201,10 +252,7 @@ export function getBE_CentralePropria(tipo, prevFilter, automa) {
 		return digheValide;
 	} else {
 		// intersezione
-		let filtered = digheValide.filter(function (n) {
-			return prevFilter.indexOf(n) != -1;
-		});
-		return filtered;
+		return intersecArray(prevFilter, digheValide);
 	}
 }
 
@@ -217,7 +265,7 @@ export function getBE_CentralePropria(tipo, prevFilter, automa) {
  * @param {string[]} prevFilter
  * @param {string} automa
 **/
-export function getBE_CostoAddizionale(tipo, prevFilter, automa) {
+export function getBE_D_CostoAddizionale(tipo, prevFilter, automa) {
 	let dighe = dighePay;
 	let digheValide = [];
 	for (let i = 0; i < dighe.length; i++) {
@@ -238,10 +286,7 @@ export function getBE_CostoAddizionale(tipo, prevFilter, automa) {
 		return digheValide;
 	} else {
 		// intersezione
-		let filtered = digheValide.filter(function (n) {
-			return prevFilter.indexOf(n) != -1;
-		});
-		return filtered;
+		return intersecArray(prevFilter, digheValide);
 	}
 }
 
@@ -254,7 +299,7 @@ export function getBE_CostoAddizionale(tipo, prevFilter, automa) {
  * @param {string[]} prevFilter
  * @param {string} automa
 **/
-export function getBE_CentraleNaturale(tipo, prevFilter, automa) {
+export function getBE_E_CentraleNaturale(tipo, prevFilter, automa) {
 	if (centraliCostruite.length == 0) {
 		return prevFilter ? prevFilter : [];
 	}
@@ -358,10 +403,213 @@ export function getBE_CentraleNaturale(tipo, prevFilter, automa) {
 		return digheValide;
 	} else {
 		// intersezione
-		let filtered = digheValide.filter(function (n) {
-			return prevFilter.indexOf(n) != -1;
-		});
-		return filtered;
+		return intersecArray(prevFilter, digheValide);
 	}
+}
+
+/**
+ * BASE O ELEVAZIONE, diga collegabile tramite condotta a propria diga o non collegabile a diga avversaria
+ * tipo: 'B' o 'E' per Base o Elevazione
+ * prevFilter: filtro precedente (se presente)
+ * automa: l'automa da usare
+ * @param {string} tipo
+ * @param {string[]} prevFilter
+ * @param {string} automa
+**/
+export function getBE_F_DigaCondotta(tipo, prevFilter, automa) {
+	// i numeri destinazione sono dal 5 al 12
+	// cerco le condotte che portano lì e vedo quali di queste zone hanno dighe dell'automa o naturali o non ci sono dighe
+	// (guardando prima la P, se vuota, guardo la F)
+	// se soddisfano tutto, queste condotte sono valide. Guardo allora le dighe collegate in base al tipo, come al solito
+	let condotteValide = [];
+	for (let i = 5; i < 13; i++) {
+		let areaNum = '' + i;
+		let digaP = 'DP_' + areaNum;
+		let digaF = 'DF_' + areaNum;
+		if (!getProprietarioDiga(digaP)) {
+			if (!getProprietarioDiga(digaF) || getProprietarioDiga(digaF) == automa || getProprietarioDiga(digaF) == 'N') {
+				// condotte valide
+				let condotte = getCondotteCheScaricanoInArea(areaNum);
+				for (let cond of condotte) {
+					condotteValide.push(cond);
+				}
+			}
+		} else if (getProprietarioDiga(digaP) == automa || getProprietarioDiga(digaP) == 'N') {
+			// condotte valide
+			let condotte = getCondotteCheScaricanoInArea(areaNum);
+			for (let cond of condotte) {
+				condotteValide.push(cond);
+			}
+		}
+	}
+
+	// ora ho le condotte valide
+	let dighe = [];
+	for (let i = 0; i < condotteValide.length; i++) {
+		let currDighe = condotteDighe[condotteValide[i]];
+		for (let j = 0; j < currDighe.length; j++) {
+			dighe.push(currDighe[j]);
+		}
+	}
+	let digheValide = [];
+	for (let i = 0; i < dighe.length; i++) {
+		let diga = dighe[i];
+		if (tipo == 'B') {
+			if (!getProprietarioDiga(diga)) {
+				digheValide.push(diga);
+			}
+		} else {
+			if (getProprietarioDiga(diga) && getProprietarioDiga(diga) == automa && getLivelloDiga(diga) < 3) {
+				digheValide.push(diga);
+			}
+		}
+	}
+	if (digheValide.length == 0) {
+		return prevFilter ? prevFilter : [];
+	} if (!prevFilter || prevFilter.length == 0) {
+		return digheValide;
+	} else {
+		// intersezione
+		return intersecArray(prevFilter, digheValide);
+	}
+}
+
+/**
+ * BASE O ELEVAZIONE, diga collegabile naturalmente a centrale
+ * tipo: 'B' o 'E' per Base o Elevazione
+ * prevFilter: filtro precedente (se presente)
+ * automa: l'automa da usare
+ * @param {string} tipo
+ * @param {string[]} prevFilter
+ * @param {string} automa
+ * @param {string} ordine del tipo ACD o BAC
+ */
+export function getBE_C_Gocce(tipo, prevFilter, automa, ordine) {
+	let sorgentiPiene = [];
+	for (let i = 0; i < sorgentiGocce.length; i++) {
+		let sorg = sorgentiGocce[i];
+		if (sorg.gocce > 0) {
+			sorgentiPiene.push(sorg.sorgente);
+		}
+	}
+	let dighe = [];
+	if (sorgentiPiene.length == 0) {
+		// tutto vuoto, devo andare per ordine
+		let sorgenteValida = ordine.substr(0, 1);
+		let percorso = percorsi[sorgenteValida];
+		for (let i = 1; i < percorso.length - 1; i++) {
+			let areaNumero = percorso[i];
+			dighe.push('DP_' + areaNumero);
+			dighe.push('DF_' + areaNumero);
+		}
+	} else {
+		let digheGoccePot = [];
+		for (let i = 0; i < sorgentiPiene.length; i++) {
+			let sorgente = sorgentiPiene[i];
+			let gocce = getGocceInSorgente(sorgente);
+			let percorso = percorsi[sorgente];
+			for (let j = 1; j < percorso.length - 1; j++) {
+				let areaNumero = percorso[j];
+				let digaP = 'DP_' + areaNumero;
+				let digaF = 'DF_' + areaNumero;
+				digheGoccePot.push({ diga: digaP, gocce: gocce });
+				if (gocce == 0) {
+					digheGoccePot.push({ diga: digaF, gocce: gocce });
+				} else {
+					let capienzaP = getCapienzaDiga(digaP);
+					gocce = (gocce - capienzaP) > 0 ? (gocce - capienzaP) : 0;
+					digheGoccePot.push({ diga: digaF, gocce: gocce });
+					if (gocce > 0) {
+						let capienzaF = getCapienzaDiga(digaF);
+						gocce = gocce - capienzaF > 0 ? gocce - capienzaF : 0;
+					}
+				}
+
+			}
+		}
+		let digheMaxGocce = [];
+		digheGoccePot.sort(function (a, b) {
+			return b.gocce - a.gocce;
+		});
+		let maxGocce = -1;
+		for (let i = 0; i < digheGoccePot.length; i++) {
+			let digaGoc = digheGoccePot[i];
+			if (digaGoc.gocce < maxGocce) {
+				break;
+			} else {
+				digheMaxGocce.push(digaGoc.diga);
+				maxGocce = digaGoc.gocce;
+			}
+		}
+		if (digheMaxGocce.length > 0) {
+			if (digheMaxGocce.length == 1) {
+				dighe.push(digheMaxGocce[0]);
+			} else {
+				for (let j = 0; j < ordine.length; j++) {
+					let sorgente = ordine.substr(j, 1);
+					for (let i = 0; i < digheMaxGocce.length; i++) {
+						let diga = digheMaxGocce[i];
+						let numero = getNumeroDiga(diga);
+						let percorso = percorsiDi[numero][0];
+						if (percorso == sorgente) {
+							dighe.push(diga);
+						}
+					}
+					if (dighe.length > 0) {
+						break;
+					}
+				}
+			}
+		}
+	}
+	let digheValide = [];
+	for (let i = 0; i < dighe.length; i++) {
+		let diga = dighe[i];
+		if (tipo == 'B') {
+			if (!getProprietarioDiga(diga)) {
+				digheValide.push(diga);
+			}
+		} else {
+			if (getProprietarioDiga(diga) && getProprietarioDiga(diga) == automa && getLivelloDiga(diga) < 3) {
+				digheValide.push(diga);
+			}
+		}
+	}
+	if (digheValide.length == 0) {
+		return prevFilter ? prevFilter : [];
+	} if (!prevFilter || prevFilter.length == 0) {
+		return digheValide;
+	} else {
+		// intersezione
+		return intersecArray(prevFilter, digheValide);
+	}
+}
+
+/**
+ * BASE O ELEVAZIONE, numero
+ * tipo: 'B' o 'E' per Base o Elevazione
+ * prevFilter: filtro precedente (se presente)
+ * automa: l'automa da usare
+ * @param {string[]} prevFilter
+ * @param {string} numero primo numero da cui partire
+ */
+export function getBE_Numero(prevFilter, numero) {
+	let counter = 0;
+	let actual = +numero;
+	while (counter < 10) {
+		actual = actual + counter;
+		if (actual > 10) {
+			actual = 1;
+		}
+		let digaF = 'DF_' + numero;
+		if (prevFilter.includes(digaF)) {
+			return [digaF];
+		}
+		let digaP = 'DP_' + numero;
+		if (prevFilter.includes(digaP)) {
+			return [digaP];
+		}
+	}
+	return [];
 }
 

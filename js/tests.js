@@ -4,9 +4,9 @@ import {
     condotteCostruite,
     digheLivello,
     dighePresenti,
-    getBE_CentraleNaturale,
-    getBE_CentralePropria,
-    getBE_Condotta,
+    getBE_A_Condotta,
+    getBE_B_CentralePropria,
+    getBE_E_CentraleNaturale,
 } from './barrage.js';
 import { initPage } from './init.js';
 import { printArray } from './provider.js';
@@ -37,7 +37,7 @@ export function testBE_Condotta1() {
     digheLivello.push({ diga: 'DP_8', livello: 3 });
     dighePresenti.push({ diga: 'DF_9', chi: 'N' });
     digheLivello.push({ diga: 'DF_9', livello: 3 });
-    let valid = getBE_Condotta('B', [], 'A');
+    let valid = getBE_A_Condotta('B', [], 'A');
     let passed = valid.length == 4;
     passed = passed && valid[0] == 'DF_4' && valid[1] == 'DP_4' && valid[2] == 'DP_6' && valid[3] == 'DP_9';
     let esito = passed ? 'PASSATO' : 'FALLITO';
@@ -66,7 +66,7 @@ export function testBE_Condotta2() {
     digheLivello.push({ diga: 'DP_8', livello: 3 });
     dighePresenti.push({ diga: 'DF_9', chi: 'N' });
     digheLivello.push({ diga: 'DF_9', livello: 3 });
-    let valid = getBE_Condotta('E', [], 'A');
+    let valid = getBE_A_Condotta('E', [], 'A');
     let passed = valid.length == 0;
     let esito = passed ? 'PASSATO' : 'FALLITO';
     alert('Dighe elevazioni valide: \n' + printArray(valid) + '\n' + esito);
@@ -84,7 +84,7 @@ export function testBE_CentraleMia1() {
     digheLivello.push({ diga: 'DF_10', livello: 2 });
     dighePresenti.push({ diga: 'DP_10', chi: 'A' });
     digheLivello.push({ diga: 'DP_10', livello: 2 });
-    let valid = getBE_CentralePropria('B', [], 'A');
+    let valid = getBE_B_CentralePropria('B', [], 'A');
     let passed = valid.length == 5;
     passed = passed && valid[0] == 'DF_4' && valid[1] == 'DP_4' && valid[2] == 'DF_7' && valid[3] == 'DP_7' && valid[4] == 'DP_9';
     let esito = passed ? 'PASSATO' : 'FALLITO';
@@ -103,7 +103,7 @@ export function testBE_CentraleMia2() {
     digheLivello.push({ diga: 'DF_10', livello: 2 });
     dighePresenti.push({ diga: 'DP_10', chi: 'A' });
     digheLivello.push({ diga: 'DP_10', livello: 2 });
-    let valid = getBE_CentralePropria('E', [], 'A');
+    let valid = getBE_B_CentralePropria('E', [], 'A');
     let passed = valid.length == 1;
     passed = passed && valid[0] == 'DP_10';
     let esito = passed ? 'PASSATO' : 'FALLITO';
@@ -120,7 +120,7 @@ export function testBE_CentraleNaturale1() {
     digheLivello.push({ diga: 'DF_10', livello: 2 });
     dighePresenti.push({ diga: 'DP_10', chi: 'A' });
     digheLivello.push({ diga: 'DP_10', livello: 2 });
-    let valid = getBE_CentraleNaturale('B', [], 'A');
+    let valid = getBE_E_CentraleNaturale('B', [], 'A');
     let passed = valid.length == 3;
     passed = passed && valid[0] == 'DP_5' && valid[1] == 'DF_5' && valid[2] == 'DP_9';
     let esito = passed ? 'PASSATO' : 'FALLITO';
@@ -137,7 +137,7 @@ export function testBE_CentraleNaturale2() {
     digheLivello.push({ diga: 'DF_10', livello: 2 });
     dighePresenti.push({ diga: 'DP_10', chi: 'N' });
     digheLivello.push({ diga: 'DP_10', livello: 2 });
-    let valid = getBE_CentraleNaturale('E', [], 'A');
+    let valid = getBE_E_CentraleNaturale('E', [], 'A');
     let passed = valid.length == 1;
     passed = passed && valid[0] == 'DF_9';
     let esito = passed ? 'PASSATO' : 'FALLITO';

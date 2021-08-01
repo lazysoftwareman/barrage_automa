@@ -1,6 +1,7 @@
 // @ts-check
 /////////////// BL UTILS
-import { centraliCostruite, digheLivello, dighePresenti } from './barrage.js';
+import { centraliCostruite, condotteCostruite, digheGocce, digheLivello, dighePresenti, sorgentiGocce } from './barrage.js';
+import { condotteCentrali } from './mappa.js';
 
 
 /**
@@ -21,6 +22,22 @@ export function getZonaCondotta(condotta) {
             return 'M';
         }
     }
+}
+
+/**
+ * Ritorna di chi è la condotta
+ * @param {string} condotta
+ */
+export function getProprietarioCondotta(condotta) {
+    if (condotteCostruite.length == 0) {
+        return undefined;
+    }
+    for (let i = 0; i < condotteCostruite.length; i++) {
+        if (condotteCostruite[i].condotta == condotta) {
+            return condotteCostruite[i].chi;
+        }
+    }
+    return undefined;
 }
 
 /**
@@ -98,6 +115,89 @@ export function getNumeroCentrale(centrale) {
     } else {
         return num;
     }
+}
+
+/**
+ * Ritorna il numero della diga
+ * @param {string} diga
+ */
+export function getNumeroDiga(diga) {
+    let num = diga.substring(3, diga.length);
+    return num;
+}
+
+/**
+ * @param {string} areaNum
+ */
+export function getCondotteCheScaricanoInArea(areaNum) {
+    let condotte = [];
+    for (let cond in condotteCentrali) {
+        let centr = condotteCentrali[cond][0];
+        if (areaNum == getNumeroCentrale(centr)) {
+            condotte.push(cond);
+        }
+    }
+    return condotte;
+}
+
+/**
+ * Ritorna il numero di gocce in una sorgente
+ * @param {string} sorgente
+ */
+export function getGocceInSorgente(sorgente) {
+    if (sorgentiGocce.length == 0) {
+        return 0;
+    }
+    for (let i = 0; i < sorgentiGocce.length; i++) {
+        if (sorgentiGocce[i].sorgente == sorgente) {
+            return sorgentiGocce[i].gocce;
+        }
+    }
+    return 0;
+}
+
+/**
+ * Ritorna il numero di gocce in una diga
+ * @param {string} diga
+ */
+export function getGocceInDiga(diga) {
+    if (digheGocce.length == 0) {
+        return 0;
+    }
+    for (let i = 0; i < digheGocce.length; i++) {
+        if (digheGocce[i].diga == diga) {
+            return digheGocce[i].gocce;
+        }
+    }
+    return 0;
+}
+
+/**
+ * Ritorna la capienza in una diga
+ * @param {string} diga
+ */
+export function getCapienzaDiga(diga) {
+    let liv = getLivelloDiga(diga);
+    if (!liv) {
+        liv = 0;
+    }
+    let goc = getGocceInDiga(diga);
+    if (!goc) {
+        goc = 0;
+    }
+    return liv - goc;
+}
+
+/**
+ * @param {string[]} array1
+ * @param {string[]} array2
+ */
+export function intersecArray(array1, array2) {
+    // intersezione
+    let filtered = array2.filter(function (n) {
+        return array1.indexOf(n) != -1;
+    });
+    return filtered;
 }
 
 export function printArray(array) {
