@@ -1,5 +1,6 @@
 // @ts-check
-import { deckSize, getDado3, indice, mazzo, mescola, resetInputs, round } from './barrage.js';
+import { resetInputs } from './barrage.js';
+import { deckSize, getDado3, indice, mazzo, mescola, round } from './old.js';
 import {
     testBE_CentraleMia1,
     testBE_CentraleMia2,

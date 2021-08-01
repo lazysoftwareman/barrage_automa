@@ -7,29 +7,12 @@ import {
     getBE_CentraleNaturale,
     getBE_CentralePropria,
     getBE_Condotta,
-    getDado3,
-    printArray,
 } from './barrage.js';
 import { initPage } from './init.js';
+import { printArray } from './provider.js';
 
 
 /////////////////// TEST
-
-function testDado() {
-    let result = [];
-    for (let i = 0; i < 12; i++) {
-        result[i + 1] = 0;
-    }
-    for (let i = 0; i < 1000000; i++) {
-        let dado = getDado3();
-        result[dado]++;
-    }
-    let testo = '';
-    for (let i = 0; i < 12; i++) {
-        testo = testo + (i + 1) + ': ' + result[i + 1] + '\n';
-    }
-    alert(testo);
-}
 
 export function testBE_Condotta1() {
     // diga naturale 1, con condotta B dell'automa
