@@ -7,10 +7,6 @@
 	<title>Barrage Automa</title>
 	<link rel="stylesheet" href="css/barrage.css" />
 	<link rel="stylesheet" href="css/animate.css" />
-	<!-- <script type="text/javascript" src="js/init.js" charset="UTF-8"></script>
-	<script type="text/javascript" src="js/mappa.js" charset="UTF-8"></script>
-	<script type="text/javascript" src="js/barrage.js" charset="UTF-8"></script>
-	<script type="text/javascript" src="js/tests.js" charset="UTF-8"></script> -->
 	<script type="module" src="js/app.js"></script>
 </head>
 
@@ -24,12 +20,30 @@
 		<input type="button" value="testBE_CentraleNaturale1" id="testBE_CentraleNaturale1" />
 		<input type="button" value="testBE_CentraleNaturale2" id="testBE_CentraleNaturale2" />
 	</div>
-	<div class="info">
-		<span class="infoinfo">Tocca le carte per pescare. Tocca il pulsante in basso per il round</span>
-		<div class="cartepescate"><span id="numPescate"></span> / <span id="numTot"></span></div>
-	</div>
-	<div id="risultato" class="risultato">
-		<img src="img/deck/a_0.jpg" class="mazzo dorso" onclick="pescaEMostra();" />
+	<div id="mainContainer">
+		<div id="mappaContainer" class="mappa">
+			<img src="img/mappa_small.jpg" id="mappa" />
+			<div id="areaSA" class="area areaSorgente">
+				<div id="areaSAContent" style="display: none;">
+					<img src="img/goccia.png" /> &nbsp;<span id="areaSAText"></span>
+				</div>
+			</div>
+			<div id="areaSB" class="area areaSorgente">
+				<div id="areaSBContent" style="display: none;">
+					<img src="img/goccia.png" /> &nbsp;<span id="areaSBText"></span>
+				</div>
+			</div>
+			<div id="areaSC" class="area areaSorgente">
+				<div id="areaSCContent" style="display: none;">
+					<img src="img/goccia.png" /> &nbsp;<span id="areaSCText"></span>
+				</div>
+			</div>
+			<div id="areaSD" class="area areaSorgente">
+				<div id="areaSDContent" style="display: none;">
+					<img src="img/goccia.png" /> &nbsp;<span id="areaSDText"></span>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="legenda" id="legendaC">
 		<input type="button" value="Round 1-2" onclick="apriRound('12');" />

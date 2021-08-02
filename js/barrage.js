@@ -51,7 +51,6 @@ export function resetInputs() {
 	resetOlds();
 }
 
-
 /////////////// BL CRITERI
 
 /*
@@ -613,3 +612,35 @@ export function getBE_Numero(prevFilter, numero) {
 	return [];
 }
 
+/////////////// METODI CHIAMATI DA PULSANTI
+/**
+ * Aggiunge goccia a sorgente
+ * @param {string} sorgente
+ */
+export function addGocciaSorgente(sorgente) {
+	let gocceSorg = undefined;
+	for (let i = 0; i < sorgentiGocce.length; i++) {
+		if (sorgentiGocce[i].sorgente == sorgente) {
+			gocceSorg = sorgentiGocce[i];
+			break;
+		}
+	}
+	if (gocceSorg) {
+		let quante = gocceSorg.gocce;
+		if (quante < 10) {
+			quante++;
+		} else {
+			quante = 0;
+		}
+		gocceSorg.gocce = quante;
+	} else {
+		gocceSorg = { sorgente: sorgente, gocce: 1 };
+		sorgentiGocce.push(gocceSorg);
+	}
+	document.getElementById('areaS' + sorgente + 'Text').innerHTML = '' + gocceSorg.gocce;
+	if (!gocceSorg.gocce) {
+		document.getElementById('areaS' + sorgente + 'Content').style.display = 'none';
+	} else {
+		document.getElementById('areaS' + sorgente + 'Content').style.display = 'block';
+	}
+}

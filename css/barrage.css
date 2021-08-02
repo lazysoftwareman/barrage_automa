@@ -17,6 +17,66 @@ body {
 	margin: 0;
 }
 
+#mainContainer {	
+	height: 90%;
+	width: 100%;
+}
+
+.mappa {
+	margin-left: auto;
+    margin-right: auto;
+	height: 90vh;
+	width: 61.8vh;
+	font-size: 12pt;
+	border-radius: 4px;
+	display: block;
+    min-width: 250px;
+	text-align: center;
+}
+
+#mappa {
+	height: 100%;
+}
+
+.area {
+	display: block;
+	position: relative;
+	float: left;
+}
+
+.areaSorgente {
+	width: 7.6vh;
+	height: 5.2vh;
+	border: solid 3px whitesmoke;
+	border-radius: 5px;
+	top: -97.88%;
+}
+.areaSorgente div {
+	height: 50%;
+	position: relative;
+	top: 25%;
+}
+.areaSorgente div img {
+	height: 100%;
+}
+.areaSorgente div span {
+	font-size: x-large;
+	font-weight: bold;
+	color: whitesmoke;
+}
+#areaSA {
+	left: 6vh;
+}
+#areaSB {
+	left: 13vh;
+}
+#areaSC {
+	left: 18.2vh;
+}
+#areaSD {
+	left: 24.5vh;
+}
+
 .titolo {
 	font-size: 1.5em;
 	text-align: center;
@@ -71,7 +131,7 @@ input[type="button"] {
 .risultato {
 	margin-left: auto;
     margin-right: auto;
-	height: 67%;
+	height: 90%;
 	width: 96%;
 	font-size: 12pt;
 	border-radius: 4px;
@@ -83,8 +143,8 @@ input[type="button"] {
 .mazzo {
 	margin-left: auto;
     margin-right: auto;
-	height: 67vh;
-	width: 48vh;
+	height: 80vh;
+	width: 60vh;
 	border-radius: 1vh;
 }
 .dorso {
