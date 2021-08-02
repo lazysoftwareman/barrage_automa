@@ -13,6 +13,7 @@ import {
     getProprietarioDiga,
     getZonaCondotta,
     intersecArray,
+    printArray,
 } from './provider.js';
 
 
@@ -55,16 +56,67 @@ export function resetInputs() {
 
 /*
 ESEMPIO CARTA CRITERI: E_A_C_1_H_J_I_10B_L_P_K_12_DAB
+ESEMPIO INPUT 
 */
 
+/**
+ * @param {string} tipo B(ase), E(levazione), CO(ndotta), CE(ntrale)
+ * @param {string} zona
+ * @param {string} criterio
+ * @param {string} automa
+ */
+export function costruisci(tipo, zona, criterio, automa) {
+	let prevFilter = undefined;
+	if (tipo == 'B' && zona) {
+		prevFilter = getB_Zona(zona);
+		if (prevFilter.length == 0) {
+			// ci fermiamo qua alert o qualcosa del genere
+			alert('Non si può costruire una base in quella zona');
+			return [];
+		} else if (prevFilter.length == 1) {
+			show(prevFilter);
+			return prevFilter;
+		}
+	}
+	// Ora calcolo quale metodo usare in base al tipo
+	// sistema Completo
+	// tutti i criteri del criterio. Ogni output vediamo cosa fare
+}
+
+export function show(output) {
+	alert(printArray(output));
+}
+
+/**
+ * BASE, zona.
+ * Da applicare prima del primo criterio, quindi non c'è un prevFilter.
+ * Se l'output è vuoto, ci si ferma qui. Se invece l'output è solo uno, si costruisce lì, altrimenti è un prevFilter
+ * @param {string} zona la zona M, C, P
+**/
+export function getB_Zona(zona) {
+	let dighe = [];
+	if (zona == 'M') {
+		dighe = ['DP_1', 'DF_1', 'DP_2', 'DF_2', 'DP_3', 'DF_3', 'DP_4', 'DF_4'];
+	} else if (zona == 'C') {
+		dighe = ['DP_5', 'DF_5', 'DP_6', 'DF_6', 'DP_7', 'DF_7'];
+	}
+	let digheValide = [];
+	for (let i = 0; i < dighe.length; i++) {
+		if (!getProprietarioDiga(dighe[i])) {
+			digheValide.push(dighe[i]);
+		}
+	}
+	return digheValide;
+}
 
 /**
  * BASE O ELEVAZIONE, completamento sistema, solo per BASE.
- * Da applicare come primo criterio, quindi non c'è un prevFilter
+ * Da applicare come primo criterio, a parte quello della zona se c'è
  * @param {string} tipo se 'E' ritorna array vuoto
+ * @param {string[]} prevFilter
  * @param {string} automa
 **/
-export function getBE_0_SistemaCompleto(tipo, automa) {
+export function getBE_0_SistemaCompleto(tipo, prevFilter, automa) {
 	if (tipo != 'B') {
 		return [];
 	}
@@ -90,7 +142,14 @@ export function getBE_0_SistemaCompleto(tipo, automa) {
 			}
 		}
 	}
-	return digheValide;
+	if (digheValide.length == 0) {
+		return prevFilter ? prevFilter : [];
+	} if (!prevFilter || prevFilter.length == 0) {
+		return digheValide;
+	} else {
+		// intersezione
+		return intersecArray(prevFilter, digheValide);
+	}
 }
 
 /**
