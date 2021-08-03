@@ -82,6 +82,12 @@ body {
 	border-radius: 1.4vh;
 	position: relative;
 }
+.areaCentrale {
+	width: 4.9vh;
+	height: 2.7vh;
+	border: solid 3px whitesmoke;
+	border-radius: 5px;
+}
 #rigaS {
 	top: 3%;
 }
@@ -111,6 +117,12 @@ body {
 }
 #rigaDF_14 {
 	top: 6.2%;
+}
+#rigaCP_57 {
+	top: 11%;
+}
+#rigaCF_57 {
+	top: 10.5%;
 }
 #areaSA {
 	left: 6vh;
@@ -195,6 +207,53 @@ body {
 }
 #areaDF_4 {
 	left: 36vh;
+}
+#areaCP_5 {
+	left: 17.5vh;
+}
+#areaCP_6 {
+	left: 26.3vh;
+}
+#areaCP_7 {
+	left: 35.8vh;
+}
+#areaCF_5 {
+	left: 17.5vh;
+}
+#areaCF_6 {
+	left: 26.3vh;
+}
+#areaCF_7 {
+	left: 35.8vh;
+}
+
+
+/* Selection color: #e3af54 */
+.selector {	
+	width: 2.5vh;
+	height: 2.5vh;
+    vertical-align: middle;
+    text-align: center;
+	line-height: 2.5vh;
+	font-weight: bold;
+	color: whitesmoke;
+	border: solid 3px whitesmoke;
+	border-radius: 5px;
+	position: absolute;
+}
+#P1_Selector {
+	bottom: 5.5vh;
+	left: 2vh;
+	background-color: #1a7077;
+}
+#P2_Selector {
+	bottom: 2vh;
+	left: 2vh;
+	background-color: #af2a4b;
+}
+#P0_Selector {
+	bottom: 2vh;
+	left: 5.5vh;
 }
 
 
