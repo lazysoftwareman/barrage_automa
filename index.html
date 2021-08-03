@@ -19,28 +19,143 @@
 		<input type="button" value="testBE_CentraleMia2" id="testBE_CentraleMia2" />
 		<input type="button" value="testBE_CentraleNaturale1" id="testBE_CentraleNaturale1" />
 		<input type="button" value="testBE_CentraleNaturale2" id="testBE_CentraleNaturale2" />
+		<input type="button" value="testCostruisciInizio" id="testCostruisciInizio" />
 	</div>
 	<div id="mainContainer">
 		<div id="mappaContainer" class="mappa">
-			<img src="img/mappa_small.jpg" id="mappa" />
-			<div id="areaSA" class="area areaSorgente">
-				<div id="areaSAContent" style="display: none;">
-					<img src="img/goccia.png" /> &nbsp;<span id="areaSAText"></span>
+			<!-- <img src="img/mappa_small.jpg" id="mappa" /> -->
+			<div id="rigaS" class=rigaArea>
+				<div id="areaSA" class="area areaBacino">
+					<div id="areaSAContent" style="display: none;">
+						<img src="img/goccia.png" /> &nbsp;<span id="areaSAText"></span>
+					</div>
+				</div>
+				<div id="areaSB" class="area areaBacino">
+					<div id="areaSBContent" style="display: none;">
+						<img src="img/goccia.png" /> &nbsp;<span id="areaSBText"></span>
+					</div>
+				</div>
+				<div id="areaSC" class="area areaBacino">
+					<div id="areaSCContent" style="display: none;">
+						<img src="img/goccia.png" /> &nbsp;<span id="areaSCText"></span>
+					</div>
+				</div>
+				<div id="areaSD" class="area areaBacino">
+					<div id="areaSDContent" style="display: none;">
+						<img src="img/goccia.png" /> &nbsp;<span id="areaSDText"></span>
+					</div>
 				</div>
 			</div>
-			<div id="areaSB" class="area areaSorgente">
-				<div id="areaSBContent" style="display: none;">
-					<img src="img/goccia.png" /> &nbsp;<span id="areaSBText"></span>
+			<div id="rigaDP_14G" class=rigaArea>
+				<div id="areaDP_1G" class="area areaBacino">
+					<div id="areaDP_1GContent" style="display: none;">
+						<img src="img/goccia.png" /> &nbsp;<span id="areaDP_1GText"></span>
+					</div>
+				</div>
+				<div id="areaDP_2G" class="area areaBacino">
+					<div id="areaDP_2GContent" style="display: none;">
+						<img src="img/goccia.png" /> &nbsp;<span id="areaDP_2GText"></span>
+					</div>
+				</div>
+				<div id="areaDP_3G" class="area areaBacino">
+					<div id="areaDP_3GContent" style="display: none;">
+						<img src="img/goccia.png" /> &nbsp;<span id="areaDP_3GText"></span>
+					</div>
+				</div>
+				<div id="areaDP_4G" class="area areaBacino">
+					<div id="areaDP_4GContent" style="display: none;">
+						<img src="img/goccia.png" /> &nbsp;<span id="areaDP_4GText"></span>
+					</div>
 				</div>
 			</div>
-			<div id="areaSC" class="area areaSorgente">
-				<div id="areaSCContent" style="display: none;">
-					<img src="img/goccia.png" /> &nbsp;<span id="areaSCText"></span>
+			<div id="rigaDP_14" class=rigaArea>
+				<div id="areaDP_1" class="area areaDiga">
+					<div id="areaDP_1Content" style="display: none;">
+					</div>
+				</div>
+				<div id="areaDP_2" class="area areaDiga">
+					<div id="areaDP_2Content" style="display: none;">
+					</div>
+				</div>
+				<div id="areaDP_3" class="area areaDiga">
+					<div id="areaDP_3Content" style="display: none;">
+					</div>
+				</div>
+				<div id="areaDP_4" class="area areaDiga">
+					<div id="areaDP_4Content" style="display: none;">
+					</div>
 				</div>
 			</div>
-			<div id="areaSD" class="area areaSorgente">
-				<div id="areaSDContent" style="display: none;">
-					<img src="img/goccia.png" /> &nbsp;<span id="areaSDText"></span>
+			<div id="rigaC_14" class=rigaArea>
+				<div id="areaC_1A" class="area areaCondotta">
+					<div id="areaDC_1AContent" style="display: none;">
+					</div>
+				</div>
+				<div id="areaDF_1G" class="area areaBacino">
+					<div id="areaDF_1GContent" style="display: none;">
+						<img src="img/goccia.png" /> &nbsp;<span id="areaDF_1GText"></span>
+					</div>
+				</div>
+				<div id="areaC_1B" class="area areaCondotta">
+					<div id="areaDC_2BContent" style="display: none;">
+					</div>
+				</div>
+				<div id="areaC_2A" class="area areaCondotta">
+					<div id="areaDC_2AContent" style="display: none;">
+					</div>
+				</div>
+				<div id="areaDF_2G" class="area areaBacino">
+					<div id="areaDF_2GContent" style="display: none;">
+						<img src="img/goccia.png" /> &nbsp;<span id="areaDF_2GText"></span>
+					</div>
+				</div>
+				<div id="areaC_2B" class="area areaCondotta">
+					<div id="areaDC_2BContent" style="display: none;">
+					</div>
+				</div>
+				<div id="areaC_3A" class="area areaCondotta">
+					<div id="areaDC_3AContent" style="display: none;">
+					</div>
+				</div>
+				<div id="areaDF_3G" class="area areaBacino">
+					<div id="areaDF_3GContent" style="display: none;">
+						<img src="img/goccia.png" /> &nbsp;<span id="areaDF_3GText"></span>
+					</div>
+				</div>
+				<div id="areaC_3B" class="area areaCondotta">
+					<div id="areaDC_3BContent" style="display: none;">
+					</div>
+				</div>
+				<div id="areaC_4A" class="area areaCondotta">
+					<div id="areaDC_4AContent" style="display: none;">
+					</div>
+				</div>
+				<div id="areaDF_4G" class="area areaBacino">
+					<div id="areaDF_4GContent" style="display: none;">
+						<img src="img/goccia.png" /> &nbsp;<span id="areaDF_4GText"></span>
+					</div>
+				</div>
+				<div id="areaC_4B" class="area areaCondotta">
+					<div id="areaDC_4BContent" style="display: none;">
+					</div>
+				</div>
+			</div>
+			<div id="rigaDF_14" class=rigaArea>
+				<div id="areaDF_1" class="area areaDiga">
+					<div id="areaFP_1Content" style="display: none;">
+					</div>
+				</div>
+				<div id="areaDF_2" class="area areaDiga">
+					<div id="areaDF_2Content" style="display: none;">
+					</div>
+				</div>
+				<div id="areaDF_3" class="area areaDiga">
+					<div id="areaDF_3Content" style="display: none;">
+					</div>
+				</div>
+				<div id="areaDF_4" class="area areaDiga">
+					<div id="areaDF_4Content" style="display: none;">
+					</div>
 				</div>
 			</div>
 		</div>

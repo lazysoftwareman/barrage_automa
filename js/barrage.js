@@ -43,6 +43,8 @@ export let digheGocce = [];
  */
 export let sorgentiGocce = [];
 
+export let criterioPasso = 0;
+
 export function resetInputs() {
 	centraliCostruite = [];
 	condotteCostruite = [];
@@ -66,6 +68,7 @@ ESEMPIO INPUT
  * @param {string} automa
  */
 export function costruisci(tipo, zona, criterio, automa) {
+	criterioPasso = 0;
 	let prevFilter = undefined;
 	if (tipo == 'B' && zona) {
 		prevFilter = getB_Zona(zona);
@@ -78,9 +81,51 @@ export function costruisci(tipo, zona, criterio, automa) {
 			return prevFilter;
 		}
 	}
-	// Ora calcolo quale metodo usare in base al tipo
-	// sistema Completo
-	// tutti i criteri del criterio. Ogni output vediamo cosa fare
+	// Sistema completo
+	if (tipo == 'B') {
+		prevFilter = getBE_0_SistemaCompleto(tipo, prevFilter, automa);
+	} else if (tipo == 'CO') {
+		prevFilter = getCO_0_SistemaCompleto(prevFilter, automa);
+	} else if (tipo == 'CE') {
+		prevFilter = getCE_0_SistemaCompleto(prevFilter, automa);
+	}
+	if (!prevFilter || prevFilter.length == 0) {
+		// Nessun sistema completo, continuiamo
+	} else if (prevFilter.length > 0) {
+		// Ci sono dei risultati, mostriamoli
+		show(prevFilter);
+		return prevFilter;
+	}
+	return eseguiCriterioPasso(tipo, prevFilter, criterio, automa);
+}
+
+export function eseguiCriterioPasso(tipo, prevFilter, criterio, automa) {
+	while (criterioPasso <= 4) {
+		criterioPasso++;
+		let position = criterioPasso - 1;
+		if (tipo == 'CO') {
+			position += 4;
+		} else if (tipo == 'CE') {
+			position += 8;
+		}
+		let criteri = criterio.split("_");
+		let lettera = criteri[position];
+		let prefix = tipo == 'B' || tipo == 'E' ? 'BE' : tipo;
+		let ordine = criteri[criteri.length - 1];
+		let output = undefined;
+		if (criterioPasso == 4) {
+			output = window['get' + prefix + '_Numero'](prevFilter, lettera);
+		} else {
+			output = window['get' + prefix + '_' + lettera](tipo, prevFilter, automa, ordine);
+		}
+		if (!output || output.length == 0) {
+			// Nessun sistema completo, continuiamo
+		} else if (output.length > 0) {
+			// Ci sono dei risultati, mostriamoli
+			show(output);
+			return output;
+		}
+	}
 }
 
 export function show(output) {
@@ -161,7 +206,7 @@ export function getBE_0_SistemaCompleto(tipo, prevFilter, automa) {
  * @param {string[]} prevFilter
  * @param {string} automa
  */
-export function getBE_A_Condotta(tipo, prevFilter, automa) {
+export function getBE_A(tipo, prevFilter, automa, ordine) {
 	if (condotteCostruite.length == 0) {
 		return prevFilter ? prevFilter : [];
 	}
@@ -269,7 +314,7 @@ export function getBE_A_Condotta(tipo, prevFilter, automa) {
  * @param {string[]} prevFilter
  * @param {string} automa
 **/
-export function getBE_B_CentralePropria(tipo, prevFilter, automa) {
+export function getBE_B(tipo, prevFilter, automa, ordine) {
 	if (centraliCostruite.length == 0) {
 		return prevFilter ? prevFilter : [];
 	}
@@ -323,7 +368,7 @@ export function getBE_B_CentralePropria(tipo, prevFilter, automa) {
  * @param {string[]} prevFilter
  * @param {string} automa
 **/
-export function getBE_D_CostoAddizionale(tipo, prevFilter, automa) {
+export function getBE_D(tipo, prevFilter, automa, ordine) {
 	let dighe = dighePay;
 	let digheValide = [];
 	for (let i = 0; i < dighe.length; i++) {
@@ -357,7 +402,7 @@ export function getBE_D_CostoAddizionale(tipo, prevFilter, automa) {
  * @param {string[]} prevFilter
  * @param {string} automa
 **/
-export function getBE_E_CentraleNaturale(tipo, prevFilter, automa) {
+export function getBE_E(tipo, prevFilter, automa, ordine) {
 	if (centraliCostruite.length == 0) {
 		return prevFilter ? prevFilter : [];
 	}
@@ -474,7 +519,7 @@ export function getBE_E_CentraleNaturale(tipo, prevFilter, automa) {
  * @param {string[]} prevFilter
  * @param {string} automa
 **/
-export function getBE_F_DigaCondotta(tipo, prevFilter, automa) {
+export function getBE_F(tipo, prevFilter, automa, ordine) {
 	// i numeri destinazione sono dal 5 al 12
 	// cerco le condotte che portano lì e vedo quali di queste zone hanno dighe dell'automa o naturali o non ci sono dighe
 	// (guardando prima la P, se vuota, guardo la F)
@@ -542,7 +587,7 @@ export function getBE_F_DigaCondotta(tipo, prevFilter, automa) {
  * @param {string} automa
  * @param {string} ordine del tipo ACD o BAC
  */
-export function getBE_C_Gocce(tipo, prevFilter, automa, ordine) {
+export function getBE_C(tipo, prevFilter, automa, ordine) {
 	let sorgentiPiene = [];
 	for (let i = 0; i < sorgentiGocce.length; i++) {
 		let sorg = sorgentiGocce[i];
@@ -702,4 +747,46 @@ export function addGocciaSorgente(sorgente) {
 	} else {
 		document.getElementById('areaS' + sorgente + 'Content').style.display = 'block';
 	}
+}
+
+/**
+ * Aggiunge goccia a una diga
+ * @param {string} diga
+ */
+export function addGocciaDiga(diga) {
+	let gocceDig = undefined;
+	for (let i = 0; i < digheGocce.length; i++) {
+		if (digheGocce[i].diga == diga) {
+			gocceDig = digheGocce[i];
+			break;
+		}
+	}
+	if (gocceDig) {
+		let quante = gocceDig.gocce;
+		if (quante < 3) {
+			quante++;
+		} else {
+			quante = 0;
+		}
+		gocceDig.gocce = quante;
+	} else {
+		gocceDig = { diga: diga, gocce: 1 };
+		digheGocce.push(gocceDig);
+	}
+	document.getElementById('area' + diga + 'GText').innerHTML = '' + gocceDig.gocce;
+	if (!gocceDig.gocce) {
+		document.getElementById('area' + diga + 'GContent').style.display = 'none';
+	} else {
+		document.getElementById('area' + diga + 'GContent').style.display = 'block';
+	}
+}
+
+export function getCO_0_SistemaCompleto(prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCO_0_SistemaCompleto');
+}
+
+export function getCE_0_SistemaCompleto(prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCE_0_SistemaCompleto');
 }

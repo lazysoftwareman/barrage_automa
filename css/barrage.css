@@ -32,37 +32,85 @@ body {
 	display: block;
     min-width: 250px;
 	text-align: center;
+	background-image: url('../img/mappa_small.jpg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
 }
 
-#mappa {
+/* #mappa {
 	height: 100%;
+} */
+.rigaArea {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	position: relative;
 }
-
 .area {
 	display: block;
 	position: relative;
-	float: left;
+	/* float: left; */
 }
-
-.areaSorgente {
-	width: 7.6vh;
-	height: 5.2vh;
+.areaBacino {
 	border: solid 3px whitesmoke;
 	border-radius: 5px;
-	top: -97.88%;
 }
-.areaSorgente div {
+.areaBacino div {
 	height: 50%;
 	position: relative;
 	top: 25%;
 }
-.areaSorgente div img {
+.areaBacino div img {
 	height: 100%;
 }
-.areaSorgente div span {
+.areaBacino div span {
 	font-size: x-large;
 	font-weight: bold;
 	color: whitesmoke;
+}
+.areaDiga {
+	width: 4.2vh;
+	height: 3.3vh;
+	border: solid 3px whitesmoke;
+	border-radius: 5px;
+}
+.areaCondotta {
+	width: 2.5vh;
+	height: 2.5vh;
+	border: solid 3px whitesmoke;
+	border-radius: 1.4vh;
+	position: relative;
+}
+#rigaS {
+	top: 3%;
+}
+#rigaS .areaBacino {
+	width: 7.6vh;
+	height: 5.2vh;
+}
+#rigaDP_14G {
+	top: 6.5%;
+}
+#rigaDP_14G .areaBacino {
+	width: 7.6vh;
+	height: 4.5vh;
+}
+#rigaDP_14 {
+	top: 6.2%;
+}
+#rigaC_14 {
+	top: 6.2%;
+}
+#rigaC_14 .areaBacino {
+	width: 5.3vh;
+	height: 3.5vh;
+}
+#rigaC_14 .areaCondotta {
+	top: 0.6vh;
+}
+#rigaDF_14 {
+	top: 6.2%;
 }
 #areaSA {
 	left: 6vh;
@@ -76,6 +124,79 @@ body {
 #areaSD {
 	left: 24.5vh;
 }
+#areaDP_1G {
+	left: 6vh;
+}
+#areaDP_2G {
+	left: 13vh;
+}
+#areaDP_3G {
+	left: 18.2vh;
+}
+#areaDP_4G {
+	left: 24.5vh;
+}
+#areaDP_1 {
+	left: 8.1vh;
+}
+#areaDP_2 {
+	left: 17.5vh;
+}
+#areaDP_3 {
+	left: 27vh;
+}
+#areaDP_4 {
+	left: 36vh;
+}
+#areaC_1A {
+	left: 4.5vh;
+}
+#areaDF_1G {
+	left: 4.5vh;
+}
+#areaC_1B {
+	left: 4.5vh;
+}
+#areaC_2A {
+	left: 6.7vh;
+}
+#areaDF_2G {
+	left: 6.7vh;
+}
+#areaC_2B {
+	left: 6.5vh;
+}
+#areaC_3A {
+	left: 9vh;
+}
+#areaDF_3G {
+	left: 9vh;
+}
+#areaC_3B {
+	left: 9vh;
+}
+#areaC_4A {
+	left: 10.5vh;
+}
+#areaDF_4G {
+	left: 10.5vh;
+}
+#areaC_4B {
+	left: 10.5vh;
+}
+#areaDF_1 {
+	left: 8.1vh;
+}
+#areaDF_2 {
+	left: 17.5vh;
+}
+#areaDF_3 {
+	left: 27vh;
+}
+#areaDF_4 {
+	left: 36vh;
+}
+
 
 .titolo {
 	font-size: 1.5em;
