@@ -1,14 +1,5 @@
 // @ts-check
-import {
-    centraliCostruite,
-    condotteCostruite,
-    costruisci,
-    digheLivello,
-    dighePresenti,
-    getBE_A,
-    getBE_B,
-    getBE_E,
-} from './barrage.js';
+import { centraliCostruite, condotteCostruite, costruisci, dighePresenti, getBE_A, getBE_B, getBE_E } from './barrage.js';
 import { initPage } from './init.js';
 import { printArray } from './provider.js';
 
@@ -28,16 +19,11 @@ export function testBE_Condotta1() {
     condotteCostruite.push({ condotta: 'C_8B', chi: 'U' });
     condotteCostruite.push({ condotta: 'C_9A', chi: 'A' });
     condotteCostruite.push({ condotta: 'C_9B', chi: 'U' });
-    dighePresenti.push({ diga: 'DF_1', chi: 'N' });
-    digheLivello.push({ diga: 'DF_1', livello: 1 });
-    dighePresenti.push({ diga: 'DF_6', chi: 'U' });
-    digheLivello.push({ diga: 'DF_6', livello: 2 });
-    dighePresenti.push({ diga: 'DF_8', chi: 'N' });
-    digheLivello.push({ diga: 'DF_8', livello: 2 });
-    dighePresenti.push({ diga: 'DP_8', chi: 'A' });
-    digheLivello.push({ diga: 'DP_8', livello: 3 });
-    dighePresenti.push({ diga: 'DF_9', chi: 'N' });
-    digheLivello.push({ diga: 'DF_9', livello: 3 });
+    dighePresenti.push({ diga: 'DF_1', chi: 'N', livello: 1 });
+    dighePresenti.push({ diga: 'DF_6', chi: 'U', livello: 2 });
+    dighePresenti.push({ diga: 'DF_8', chi: 'N', livello: 2 });
+    dighePresenti.push({ diga: 'DP_8', chi: 'A', livello: 3 });
+    dighePresenti.push({ diga: 'DF_9', chi: 'N', livello: 3 });
     let valid = getBE_A('B', [], 'A');
     let passed = valid.length == 4;
     passed = passed && valid[0] == 'DF_4' && valid[1] == 'DP_4' && valid[2] == 'DP_6' && valid[3] == 'DP_9';
@@ -57,16 +43,11 @@ export function testBE_Condotta2() {
     condotteCostruite.push({ condotta: 'C_8B', chi: 'U' });
     condotteCostruite.push({ condotta: 'C_9A', chi: 'A' });
     condotteCostruite.push({ condotta: 'C_9B', chi: 'U' });
-    dighePresenti.push({ diga: 'DF_1', chi: 'N' });
-    digheLivello.push({ diga: 'DF_1', livello: 1 });
-    dighePresenti.push({ diga: 'DF_6', chi: 'U' });
-    digheLivello.push({ diga: 'DF_6', livello: 2 });
-    dighePresenti.push({ diga: 'DF_8', chi: 'N' });
-    digheLivello.push({ diga: 'DF_8', livello: 2 });
-    dighePresenti.push({ diga: 'DP_8', chi: 'A' });
-    digheLivello.push({ diga: 'DP_8', livello: 3 });
-    dighePresenti.push({ diga: 'DF_9', chi: 'N' });
-    digheLivello.push({ diga: 'DF_9', livello: 3 });
+    dighePresenti.push({ diga: 'DF_1', chi: 'N', livello: 1 });
+    dighePresenti.push({ diga: 'DF_6', chi: 'U', livello: 2 });
+    dighePresenti.push({ diga: 'DF_8', chi: 'N', livello: 2 });
+    dighePresenti.push({ diga: 'DP_8', chi: 'A', livello: 3 });
+    dighePresenti.push({ diga: 'DF_9', chi: 'N', livello: 3 });
     let valid = getBE_A('E', [], 'A');
     let passed = valid.length == 0;
     let esito = passed ? 'PASSATO' : 'FALLITO';
@@ -79,12 +60,9 @@ export function testBE_CentraleMia1() {
     // centrale in 11, diga in 9,10 Utente
     centraliCostruite.push({ centrale: 'CF_12', chi: 'A' });
     centraliCostruite.push({ centrale: 'CF_11A', chi: 'U' });
-    dighePresenti.push({ diga: 'DF_9', chi: 'N' });
-    digheLivello.push({ diga: 'DF_9', livello: 3 });
-    dighePresenti.push({ diga: 'DF_10', chi: 'U' });
-    digheLivello.push({ diga: 'DF_10', livello: 2 });
-    dighePresenti.push({ diga: 'DP_10', chi: 'A' });
-    digheLivello.push({ diga: 'DP_10', livello: 2 });
+    dighePresenti.push({ diga: 'DF_9', chi: 'N', livello: 3 });
+    dighePresenti.push({ diga: 'DF_10', chi: 'U', livello: 2 });
+    dighePresenti.push({ diga: 'DP_10', chi: 'A', livello: 2 });
     let valid = getBE_B('B', [], 'A');
     let passed = valid.length == 5;
     passed = passed && valid[0] == 'DF_4' && valid[1] == 'DP_4' && valid[2] == 'DF_7' && valid[3] == 'DP_7' && valid[4] == 'DP_9';
@@ -98,12 +76,9 @@ export function testBE_CentraleMia2() {
     // centrale in 11, diga in 9,10 Utente
     centraliCostruite.push({ centrale: 'CF_12', chi: 'A' });
     centraliCostruite.push({ centrale: 'CF_11A', chi: 'U' });
-    dighePresenti.push({ diga: 'DF_9', chi: 'N' });
-    digheLivello.push({ diga: 'DF_9', livello: 3 });
-    dighePresenti.push({ diga: 'DF_10', chi: 'U' });
-    digheLivello.push({ diga: 'DF_10', livello: 2 });
-    dighePresenti.push({ diga: 'DP_10', chi: 'A' });
-    digheLivello.push({ diga: 'DP_10', livello: 2 });
+    dighePresenti.push({ diga: 'DF_9', chi: 'N', livello: 3 });
+    dighePresenti.push({ diga: 'DF_10', chi: 'U', livello: 2 });
+    dighePresenti.push({ diga: 'DP_10', chi: 'A', livello: 2 });
     let valid = getBE_B('E', [], 'A');
     let passed = valid.length == 1;
     passed = passed && valid[0] == 'DP_10';
@@ -115,12 +90,9 @@ export function testBE_CentraleMia2() {
 export function testBE_CentraleNaturale1() {
     centraliCostruite.push({ centrale: 'CF_5', chi: 'A' });
     centraliCostruite.push({ centrale: 'CP_9', chi: 'U' });
-    dighePresenti.push({ diga: 'DF_9', chi: 'N' });
-    digheLivello.push({ diga: 'DF_9', livello: 3 });
-    dighePresenti.push({ diga: 'DF_10', chi: 'U' });
-    digheLivello.push({ diga: 'DF_10', livello: 2 });
-    dighePresenti.push({ diga: 'DP_10', chi: 'A' });
-    digheLivello.push({ diga: 'DP_10', livello: 2 });
+    dighePresenti.push({ diga: 'DF_9', chi: 'N', livello: 3 });
+    dighePresenti.push({ diga: 'DF_10', chi: 'U', livello: 2 });
+    dighePresenti.push({ diga: 'DP_10', chi: 'A', livello: 2 });
     let valid = getBE_E('B', [], 'A');
     let passed = valid.length == 3;
     passed = passed && valid[0] == 'DP_5' && valid[1] == 'DF_5' && valid[2] == 'DP_9';
@@ -132,12 +104,9 @@ export function testBE_CentraleNaturale1() {
 export function testBE_CentraleNaturale2() {
     centraliCostruite.push({ centrale: 'CF_5', chi: 'A' });
     centraliCostruite.push({ centrale: 'CP_9', chi: 'U' });
-    dighePresenti.push({ diga: 'DF_9', chi: 'A' });
-    digheLivello.push({ diga: 'DF_9', livello: 2 });
-    dighePresenti.push({ diga: 'DF_10', chi: 'U' });
-    digheLivello.push({ diga: 'DF_10', livello: 2 });
-    dighePresenti.push({ diga: 'DP_10', chi: 'N' });
-    digheLivello.push({ diga: 'DP_10', livello: 2 });
+    dighePresenti.push({ diga: 'DF_9', chi: 'A', livello: 2 });
+    dighePresenti.push({ diga: 'DF_10', chi: 'U', livello: 2 });
+    dighePresenti.push({ diga: 'DP_10', chi: 'N', livello: 2 });
     let valid = getBE_E('E', [], 'A');
     let passed = valid.length == 1;
     passed = passed && valid[0] == 'DF_9';
@@ -147,12 +116,9 @@ export function testBE_CentraleNaturale2() {
 }
 
 export function testCostruisciInizio() {
-    dighePresenti.push({ diga: 'DF_3', chi: 'N' });
-    digheLivello.push({ diga: 'DF_3', livello: 1 });
-    dighePresenti.push({ diga: 'DF_7', chi: 'N' });
-    digheLivello.push({ diga: 'DF_7', livello: 2 });
-    dighePresenti.push({ diga: 'DF_8', chi: 'N' });
-    digheLivello.push({ diga: 'DF_8', livello: 3 });
+    dighePresenti.push({ diga: 'DF_3', chi: 'N', livello: 1 });
+    dighePresenti.push({ diga: 'DF_7', chi: 'N', livello: 2 });
+    dighePresenti.push({ diga: 'DF_8', chi: 'N', livello: 3 });
     let criteri = 'E_A_C_1_H_J_I_10B_L_P_K_12_DAB';
     let output = costruisci('B', undefined, criteri, 'A');
 }

@@ -1,6 +1,6 @@
 // @ts-check
 /////////////// BL UTILS
-import { centraliCostruite, condotteCostruite, digheGocce, digheLivello, dighePresenti, sorgentiGocce } from './barrage.js';
+import { centraliCostruite, condotteCostruite, digheGocce, dighePresenti, sorgentiGocce } from './barrage.js';
 import { condotteCentrali } from './mappa.js';
 
 
@@ -77,12 +77,12 @@ export function getDigheDiProprieta(chi) {
  * @param {string} diga
  */
 export function getLivelloDiga(diga) {
-    if (digheLivello.length == 0) {
+    if (dighePresenti.length == 0) {
         return undefined;
     }
-    for (let i = 0; i < digheLivello.length; i++) {
-        if (digheLivello[i].diga == diga) {
-            return digheLivello[i].livello;
+    for (let i = 0; i < dighePresenti.length; i++) {
+        if (dighePresenti[i].diga == diga) {
+            return dighePresenti[i].livello;
         }
     }
     return undefined;

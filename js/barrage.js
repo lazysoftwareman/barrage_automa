@@ -27,13 +27,9 @@ export let centraliCostruite = [];
  */
 export let condotteCostruite = [];
 /**
- * @type {{ diga: string, chi: string}[]}
+ * @type {{ diga: string, chi: string, livello: number}[]}
  */
 export let dighePresenti = [];
-/**
- * @type {{ diga: string, livello: number}[]}
- */
-export let digheLivello = [];
 /**
  * @type {{ diga: string, gocce: number}[]}
  */
@@ -43,13 +39,24 @@ export let digheGocce = [];
  */
 export let sorgentiGocce = [];
 
+export let playerMap = [];
+playerMap['U'] = 'P1';
+playerMap['A'] = 'P2';
+playerMap['N'] = 'P0';
+export let playerColor = [];
+playerColor['U'] = 'G';
+playerColor['A'] = 'R';
+playerColor['N'] = 'N';
+
 export let criterioPasso = 0;
+export let playerSelected = undefined;
 
 export function resetInputs() {
 	centraliCostruite = [];
 	condotteCostruite = [];
 	dighePresenti = [];
-	digheLivello = [];
+	digheGocce = [];
+	sorgentiGocce = [];
 
 	resetOlds();
 }
@@ -716,6 +723,16 @@ export function getBE_Numero(prevFilter, numero) {
 	return [];
 }
 
+export function getCO_0_SistemaCompleto(prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCO_0_SistemaCompleto');
+}
+
+export function getCE_0_SistemaCompleto(prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCE_0_SistemaCompleto');
+}
+
 /////////////// METODI CHIAMATI DA PULSANTI
 /**
  * Aggiunge goccia a sorgente
@@ -781,12 +798,126 @@ export function addGocciaDiga(diga) {
 	}
 }
 
-export function getCO_0_SistemaCompleto(prevFilter, automa) {
-	// TODO
-	alert('Non ancora implementato getCO_0_SistemaCompleto');
+/**
+ * Aggiunge una diga o la aumenta
+ * @param {string} diga
+ */
+export function addDiga(diga) {
+	let chi = playerSelected;
+	if (chi == undefined) {
+		return;
+	}
+	let digaCostruita = undefined;
+	let index = undefined;
+	for (let i = 0; i < dighePresenti.length; i++) {
+		if (dighePresenti[i].diga == diga) {
+			digaCostruita = dighePresenti[i];
+			index = i;
+			break;
+		}
+	}
+	if (digaCostruita) {
+		if (chi != digaCostruita.chi) {
+			return;
+		}
+		if (digaCostruita.livello < 3) {
+			digaCostruita.livello += 1;
+		} else {
+			digaCostruita.livello = 0;
+		}
+		if (!digaCostruita.livello) {
+			dighePresenti.splice(index, 1);
+			document.getElementById('area' + diga + 'Content').style.display = 'none';
+		} else {
+			document.getElementById('area' + diga + 'Content').style.display = 'block';
+			document.getElementById('area' + diga + 'Text').innerHTML = '' + digaCostruita.livello;
+		}
+	} else {
+		digaCostruita = { diga: diga, chi: chi, livello: 1 };
+		dighePresenti.push(digaCostruita);
+		document.getElementById('area' + diga + 'Text').innerHTML = '' + digaCostruita.livello;
+		// @ts-ignore
+		document.getElementById('area' + diga + 'Img').src = 'img/B_' + playerColor[chi] + '.png';
+		document.getElementById('area' + diga + 'Content').style.display = 'block';
+	}
 }
 
-export function getCE_0_SistemaCompleto(prevFilter, automa) {
-	// TODO
-	alert('Non ancora implementato getCE_0_SistemaCompleto');
+/**
+ * Aggiunge una condotta
+ * @param {string} condotta
+ */
+export function addCondotta(condotta) {
+	let chi = playerSelected;
+	if (chi == undefined || chi == 'N') {
+		return;
+	}
+	let condottaCostruita = undefined;
+	let index = undefined;
+	for (let i = 0; i < condotteCostruite.length; i++) {
+		if (condotteCostruite[i].condotta == condotta) {
+			condottaCostruita = condotteCostruite[i];
+			index = i;
+			break;
+		}
+	}
+	if (condottaCostruita) {
+		if (chi != condottaCostruita.chi) {
+			return;
+		} else {
+			condotteCostruite.splice(index, 1);
+			document.getElementById('area' + condotta + 'Content').style.display = 'none';
+		}
+	} else {
+		condottaCostruita = { condotta: condotta, chi: chi };
+		condotteCostruite.push(condottaCostruita);
+		// @ts-ignore
+		document.getElementById('area' + condotta + 'Img').src = 'img/CO_' + playerColor[chi] + '.png';
+		document.getElementById('area' + condotta + 'Content').style.display = 'block';
+	}
+}
+
+/**
+ * Aggiunge una centrale
+ * @param {string} centrale
+ */
+export function addCentrale(centrale) {
+	let chi = playerSelected;
+	if (chi == undefined || chi == 'N') {
+		return;
+	}
+	let centraleCostruita = undefined;
+	let index = undefined;
+	for (let i = 0; i < centraliCostruite.length; i++) {
+		if (centraliCostruite[i].centrale == centrale) {
+			centraleCostruita = centraliCostruite[i];
+			index = i;
+			break;
+		}
+	}
+	if (centraleCostruita) {
+		if (chi != centraleCostruita.chi) {
+			return;
+		} else {
+			centraliCostruite.splice(index, 1);
+			document.getElementById('area' + centrale + 'Content').style.display = 'none';
+		}
+	} else {
+		centraleCostruita = { centrale: centrale, chi: chi };
+		centraliCostruite.push(centraleCostruita);
+		// @ts-ignore
+		document.getElementById('area' + centrale + 'Img').src = 'img/CE_' + playerColor[chi] + '.png';
+		document.getElementById('area' + centrale + 'Content').style.display = 'block';
+	}
+}
+
+export function changePlayerSelected(player) {
+	playerSelected = playerSelected == player ? undefined : player;
+	for (let player in playerMap) {
+		let p = playerMap[player];
+		document.getElementById(p + '_Selector').style.borderColor = 'var(--borderColor)';
+	}
+	if (playerSelected) {
+		let p = playerMap[playerSelected];
+		document.getElementById(p + '_Selector').style.borderColor = 'var(--selectionColor)';
+	}
 }

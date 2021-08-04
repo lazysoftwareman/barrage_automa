@@ -1,7 +1,11 @@
 // @ts-check
 import {
+    addCentrale,
+    addCondotta,
+    addDiga,
     addGocciaDiga,
     addGocciaSorgente,
+    changePlayerSelected,
     getBE_0_SistemaCompleto,
     getBE_A,
     getBE_B,
@@ -12,6 +16,7 @@ import {
     getBE_Numero,
     resetInputs,
 } from './barrage.js';
+import { centraliFree, centraliPay, condotte, digheFree, dighePay, sorgenti } from './mappa.js';
 import { deckSize, mazzo, mescola } from './old.js';
 import {
     testBE_CentraleMia1,
@@ -61,20 +66,48 @@ window.getBE_F = getBE_F;
 window.getBE_Numero = getBE_Numero;
 
 export function addHandlers() {
-	document.getElementById('areaSA').addEventListener('click', function () { addGocciaSorgente('A'); }, false);
-	document.getElementById('areaSB').addEventListener('click', function () { addGocciaSorgente('B'); }, false);
-	document.getElementById('areaSC').addEventListener('click', function () { addGocciaSorgente('C'); }, false);
-	document.getElementById('areaSD').addEventListener('click', function () { addGocciaSorgente('D'); }, false);
-	document.getElementById('areaDP_1G').addEventListener('click', function () { addGocciaDiga('DP_1'); }, false);
-	document.getElementById('areaDP_2G').addEventListener('click', function () { addGocciaDiga('DP_2'); }, false);
-	document.getElementById('areaDP_3G').addEventListener('click', function () { addGocciaDiga('DP_3'); }, false);
-	document.getElementById('areaDP_4G').addEventListener('click', function () { addGocciaDiga('DP_4'); }, false);
-	document.getElementById('areaDF_1G').addEventListener('click', function () { addGocciaDiga('DF_1'); }, false);
-	document.getElementById('areaDF_2G').addEventListener('click', function () { addGocciaDiga('DF_2'); }, false);
-	document.getElementById('areaDF_3G').addEventListener('click', function () { addGocciaDiga('DF_3'); }, false);
-	document.getElementById('areaDF_4G').addEventListener('click', function () { addGocciaDiga('DF_4'); }, false);
+	//sorgenti:
+	for (let sorgente of sorgenti) {
+		let area = document.getElementById('area' + sorgente);
+		if (area) {
+			area.addEventListener('click', function () { addGocciaSorgente(sorgente.substr(1, 1)); }, false);
+		}
+	}
+	//bacini e dighe:
+	for (let diga of dighePay.concat(digheFree)) {
+		let area = document.getElementById('area' + diga);
+		if (area) {
+			area.addEventListener('click', function () { addDiga(diga); }, false);
+		}
+		area = document.getElementById('area' + diga + 'G');
+		if (area) {
+			area.addEventListener('click', function () { addGocciaDiga(diga); }, false);
+		}
+	}
+	//condotte
+	for (let condotta of condotte) {
+		let area = document.getElementById('area' + condotta);
+		if (area) {
+			area.addEventListener('click', function () { addCondotta(condotta); }, false);
+		}
+	}
+	//centrali
+	for (let centrale of centraliPay.concat(centraliFree)) {
+		let area = document.getElementById('area' + centrale);
+		if (area) {
+			area.addEventListener('click', function () { addCentrale(centrale); }, false);
+		}
+	}
 
-
+	document.getElementById('P1_Selector').addEventListener('click', function () {
+		let player = document.getElementById('P1_Selector').innerHTML;
+		changePlayerSelected(player);
+	}, false);
+	document.getElementById('P2_Selector').addEventListener('click', function () {
+		let player = document.getElementById('P2_Selector').innerHTML;
+		changePlayerSelected(player);
+	}, false);
+	document.getElementById('P0_Selector').addEventListener('click', function () { changePlayerSelected('N'); }, false);
 	// TESTS
 
 	document.getElementById('testBE_Condotta1').addEventListener('click', testBE_Condotta1);

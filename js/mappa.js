@@ -1,6 +1,6 @@
 // @ts-check
 
-export let sorgenti = ['S_A', 'S_B', 'S_C', 'S_D'];
+export let sorgenti = ['SA', 'SB', 'SC', 'SD'];
 export let digheFree = ['DF_1', 'DF_2', 'DF_3', 'DF_4', 'DF_5', 'DF_6', 'DF_7', 'DF_8', 'DF_9', 'DF_10'];
 export let dighePay = ['DP_1', 'DP_2', 'DP_3', 'DP_4', 'DP_5', 'DP_6', 'DP_7', 'DP_8', 'DP_9', 'DP_10'];
 export let condotte = ['C_1A', 'C_1B', 'C_2A', 'C_2B', 'C_3A', 'C_3B', 'C_4A', 'C_4B', 'C_5A', 'C_5B', 'C_6A', 'C_6B', 'C_7A', 'C_7B', 'C_8A', 'C_8B', 'C_9A', 'C_9B', 'C_10A', 'C_10B'];
