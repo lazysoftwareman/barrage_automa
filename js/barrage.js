@@ -726,9 +726,84 @@ export function getCO_0_SistemaCompleto(prevFilter, automa) {
 	alert('Non ancora implementato getCO_0_SistemaCompleto');
 }
 
+export function getCO_Numero(prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCO_Numero');
+}
+
+export function getCO_Numero(prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCO_Numero');
+}
+
+export function getCO_G(min, max, prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCO_G');
+}
+
+export function getCO_H(min, max, prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCO_H');
+}
+
+export function getCO_I(min, max, prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCO_I');
+}
+
+export function getCO_J(min, max, prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCO_J');
+}
+
+export function getCO_K(min, max, prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCO_K');
+}
+
+export function getCO_L(min, max, prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCO_L');
+}
+
 export function getCE_0_SistemaCompleto(prevFilter, automa) {
 	// TODO
 	alert('Non ancora implementato getCE_0_SistemaCompleto');
+}
+
+export function getCE_Numero(prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCE_Numero');
+}
+
+export function getCE_M(prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCE_M');
+}
+
+export function getCE_N(prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCE_N');
+}
+
+export function getCE_OP(prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCE_OP');
+}
+
+export function getCE_P(numero, prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCE_P');
+}
+
+export function getCE_Q(prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCE_Q');
+}
+
+export function getCE_R(prevFilter, automa) {
+	// TODO
+	alert('Non ancora implementato getCE_R');
 }
 
 /////////////// METODI CHIAMATI DA PULSANTI
