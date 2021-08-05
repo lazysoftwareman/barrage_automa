@@ -16,8 +16,8 @@ import {
     getBE_Numero,
     resetInputs,
 } from './barrage.js';
+import { initMazzo } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay, sorgenti } from './mappa.js';
-import { deckSize, mazzo, mescola } from './old.js';
 import {
     testBE_CentraleMia1,
     testBE_CentraleMia2,
@@ -36,14 +36,6 @@ export function initPage() {
 	initMazzo();
 	addHandlers();
 	// initDorsoMazzo();
-}
-
-export function initMazzo() {
-	resetInputs();
-	for (var i = 0; i < deckSize; i++) {
-		mazzo.push(i + 1);
-	}
-	mescola(mazzo);
 }
 
 // @ts-ignore

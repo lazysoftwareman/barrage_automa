@@ -1,6 +1,6 @@
 // @ts-check
+import { carteCriteri, curCartaCriteri, resetMazzo } from './deck.js';
 import { centraliCondotte, condotteDighe, condotteVal, dighePay, percorsi, percorsiDi } from './mappa.js';
-import { resetOlds } from './old.js';
 import {
     getCapienzaDiga,
     getCentraliDiProprieta,
@@ -57,8 +57,7 @@ export function resetInputs() {
 	dighePresenti = [];
 	digheGocce = [];
 	sorgentiGocce = [];
-
-	resetOlds();
+	resetMazzo();
 }
 
 /////////////// BL CRITERI
@@ -71,10 +70,9 @@ ESEMPIO INPUT
 /**
  * @param {string} tipo B(ase), E(levazione), CO(ndotta), CE(ntrale)
  * @param {string} zona
- * @param {string} criterio
  * @param {string} automa
  */
-export function costruisci(tipo, zona, criterio, automa) {
+export function costruisci(tipo, zona, automa) {
 	criterioPasso = 0;
 	let prevFilter = undefined;
 	if (tipo == 'B' && zona) {
@@ -103,10 +101,10 @@ export function costruisci(tipo, zona, criterio, automa) {
 		show(prevFilter);
 		return prevFilter;
 	}
-	return eseguiCriterioPasso(tipo, prevFilter, criterio, automa);
+	return eseguiCriterioPasso(tipo, prevFilter, automa);
 }
 
-export function eseguiCriterioPasso(tipo, prevFilter, criterio, automa) {
+export function eseguiCriterioPasso(tipo, prevFilter, automa) {
 	while (criterioPasso <= 4) {
 		criterioPasso++;
 		let position = criterioPasso - 1;
@@ -115,7 +113,7 @@ export function eseguiCriterioPasso(tipo, prevFilter, criterio, automa) {
 		} else if (tipo == 'CE') {
 			position += 8;
 		}
-		let criteri = criterio.split("_");
+		let criteri = carteCriteri[curCartaCriteri].split("_");
 		let lettera = criteri[position];
 		let prefix = tipo == 'B' || tipo == 'E' ? 'BE' : tipo;
 		let ordine = criteri[criteri.length - 1];

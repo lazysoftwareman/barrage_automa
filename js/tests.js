@@ -1,5 +1,6 @@
 // @ts-check
 import { centraliCostruite, condotteCostruite, costruisci, dighePresenti, getBE_A, getBE_B, getBE_E } from './barrage.js';
+import { initMazzo, pesca } from './deck.js';
 import { initPage } from './init.js';
 import { printArray } from './provider.js';
 
@@ -119,6 +120,7 @@ export function testCostruisciInizio() {
     dighePresenti.push({ diga: 'DF_3', chi: 'N', livello: 1 });
     dighePresenti.push({ diga: 'DF_7', chi: 'N', livello: 2 });
     dighePresenti.push({ diga: 'DF_8', chi: 'N', livello: 3 });
-    let criteri = 'E_A_C_1_H_J_I_10B_L_P_K_12_DAB';
-    let output = costruisci('B', undefined, criteri, 'A');
+    initMazzo();
+    pesca();
+    let output = costruisci('B', undefined, 'A');
 }
