@@ -11,7 +11,7 @@
 </head>
 
 <body onload='initPage();'>
-	<div class="titolo">
+	<!-- <div class="titolo">
 		<span>Barrage Automa</span>
 		<input type="button" value="testBE_Condotta1" id="testBE_Condotta1" />
 		<input type="button" value="testBE_Condotta2" id="testBE_Condotta2" />
@@ -20,10 +20,19 @@
 		<input type="button" value="testBE_CentraleNaturale1" id="testBE_CentraleNaturale1" />
 		<input type="button" value="testBE_CentraleNaturale2" id="testBE_CentraleNaturale2" />
 		<input type="button" value="testCostruisciInizio" id="testCostruisciInizio" />
-	</div>
+	</div> -->
 	<div id="mainContainer">
-		<div id="mappaContainer" class="mappa">
-			<!-- <img src="img/mappa_small.jpg" id="mappa" /> -->
+		<div id="deckContainer" class="deck" style="display: block;">
+			<div id="cartaAzioni" class="cartaContainer">
+				<img id="cartaF" class="cartaImg" />
+			</div>
+			<div id="cartaCriteri" class="cartaContainer">
+				<img id="cartaB" class="cartaImg" />
+			</div>
+			<div id="mappaSwitch">M</div>
+		</div>
+		<div id="mappaContainer" class="mappa" style="display: none;">
+			<div id="deckSwitch">D</div>
 			<div id="rigaS" class=rigaArea>
 				<div id="areaSA" class="area areaBacino">
 					<div id="areaSAContent" style="display: none;">
@@ -216,6 +225,8 @@
 			<!-- <div id="P3_Selector" class="selector">U</div>
 			<div id="P4_Selector" class="selector">U</div> -->
 			<div id="P0_Selector" class="selector">N</div>
+			<div id="footer">Giocatore selezionato: <span id="giocatoreText"></span>&nbsp;&nbsp;Criterio attuale: <span
+					id="criteriText"></span></div>
 		</div>
 	</div>
 </body>

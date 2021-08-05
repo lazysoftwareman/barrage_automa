@@ -1,5 +1,5 @@
 // @ts-check
-import { deckSize, indice, pesca } from './deck';
+import { deckSize, indice } from './deck.js';
 
 export function getNumCarteRimanenti() {
     return deckSize - (indice + 1);
@@ -11,7 +11,7 @@ export function getImmagine(folderName, fileName) {
     if (folderName == 'deck') {
         immagine.id = "c_pescata";
         immagine.className = "mazzo front animated flipInY";
-        immagine.onclick = pescaEMostra;
+        //immagine.onclick = pescaEMostra;
     } else {
         immagine.className = "cartaround";
     }
@@ -21,20 +21,4 @@ export function getImmagine(folderName, fileName) {
 export function getDado3() {
     let rand = Math.random();
     return Math.ceil(rand * 3);
-}
-
-//////////////////// VIEW
-
-export function pescaEMostra() {
-    let carta = 'a_' + pesca() + '.jpg';
-    mostra(carta);
-    document.getElementById('numPescate').innerHTML = ('' + indice);
-}
-
-export function mostra(carta) {
-    let cartaPescata = document.getElementById('c_pescata');
-    if (cartaPescata) {
-        document.getElementById('risultato').removeChild(cartaPescata);
-    }
-    document.getElementById('risultato').appendChild(getImmagine('deck', carta));
 }

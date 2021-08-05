@@ -16,25 +16,16 @@ import {
     getBE_Numero,
     resetInputs,
 } from './barrage.js';
-import { initMazzo } from './deck.js';
+import { initMazzo, pesca } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay, sorgenti } from './mappa.js';
-import {
-    testBE_CentraleMia1,
-    testBE_CentraleMia2,
-    testBE_CentraleNaturale1,
-    testBE_CentraleNaturale2,
-    testBE_Condotta1,
-    testBE_Condotta2,
-    testCostruisciInizio,
-} from './tests.js';
-
-
+import { hideMappa, initDiminesions, showMappa } from './view.js';
 
 
 export function initPage() {
 	resetInputs();
 	initMazzo();
 	addHandlers();
+	initDiminesions();
 	// initDorsoMazzo();
 }
 
@@ -58,6 +49,10 @@ window.getBE_F = getBE_F;
 window.getBE_Numero = getBE_Numero;
 
 export function addHandlers() {
+	//deck:
+	document.getElementById('cartaAzioni').addEventListener('click', pesca);
+	document.getElementById('mappaSwitch').addEventListener('click', showMappa);
+	document.getElementById('deckSwitch').addEventListener('click', hideMappa);
 	//sorgenti:
 	for (let sorgente of sorgenti) {
 		let area = document.getElementById('area' + sorgente);
@@ -102,11 +97,11 @@ export function addHandlers() {
 	document.getElementById('P0_Selector').addEventListener('click', function () { changePlayerSelected('N'); }, false);
 	// TESTS
 
-	document.getElementById('testBE_Condotta1').addEventListener('click', testBE_Condotta1);
-	document.getElementById('testBE_Condotta2').addEventListener('click', testBE_Condotta2);
-	document.getElementById('testBE_CentraleMia1').addEventListener('click', testBE_CentraleMia1);
-	document.getElementById('testBE_CentraleMia2').addEventListener('click', testBE_CentraleMia2);
-	document.getElementById('testBE_CentraleNaturale1').addEventListener('click', testBE_CentraleNaturale1);
-	document.getElementById('testBE_CentraleNaturale2').addEventListener('click', testBE_CentraleNaturale2);
-	document.getElementById('testCostruisciInizio').addEventListener('click', testCostruisciInizio);
+	// document.getElementById('testBE_Condotta1').addEventListener('click', testBE_Condotta1);
+	// document.getElementById('testBE_Condotta2').addEventListener('click', testBE_Condotta2);
+	// document.getElementById('testBE_CentraleMia1').addEventListener('click', testBE_CentraleMia1);
+	// document.getElementById('testBE_CentraleMia2').addEventListener('click', testBE_CentraleMia2);
+	// document.getElementById('testBE_CentraleNaturale1').addEventListener('click', testBE_CentraleNaturale1);
+	// document.getElementById('testBE_CentraleNaturale2').addEventListener('click', testBE_CentraleNaturale2);
+	// document.getElementById('testCostruisciInizio').addEventListener('click', testCostruisciInizio);
 }

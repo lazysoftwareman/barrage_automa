@@ -1,4 +1,7 @@
 // @ts-check
+import { mostraCarte } from './view.js';
+
+
 /**
  * Mappatura carte criteri
  * @type {string[]}
@@ -57,8 +60,8 @@ export const deckSize = 20;
  */
 export let mazzo = [];
 export let indice = 0;
-export let curCartaAzioni = mazzo[indice];
-export let curCartaCriteri = indice > 0 ? mazzo[indice - 1] : undefined;
+export let curCartaAzioni = undefined;
+export let curCartaCriteri = undefined;
 
 export function resetMazzo() {
     mazzo = [];
@@ -70,6 +73,9 @@ export function initMazzo() {
         mazzo.push('' + (i + 1));
     }
     mescola();
+    curCartaAzioni = mazzo[indice];
+    curCartaCriteri = indice > 0 ? mazzo[indice - 1] : undefined;
+    mostraCarte();
 }
 
 export function mescola() {
@@ -90,5 +96,8 @@ export function pesca() {
     if (indice >= deckSize) {
         initMazzo();
     }
-    return mazzo[indice++];
+    indice++;
+    curCartaAzioni = mazzo[indice];
+    curCartaCriteri = indice > 0 ? mazzo[indice - 1] : undefined;
+    mostraCarte();
 }

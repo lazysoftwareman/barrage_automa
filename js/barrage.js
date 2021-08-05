@@ -996,9 +996,14 @@ export function changePlayerSelected(player) {
 	for (let player in playerMap) {
 		let p = playerMap[player];
 		document.getElementById(p + '_Selector').style.borderColor = 'var(--borderColor)';
+		document.getElementById(p + '_Selector').style.borderWidth = '2px';
 	}
 	if (playerSelected) {
 		let p = playerMap[playerSelected];
 		document.getElementById(p + '_Selector').style.borderColor = 'var(--selectionColor)';
+		document.getElementById(p + '_Selector').style.borderWidth = '3px';
+		document.getElementById('giocatoreText').innerHTML = playerSelected;
+	} else {
+		document.getElementById('giocatoreText').innerHTML = '';
 	}
 }
