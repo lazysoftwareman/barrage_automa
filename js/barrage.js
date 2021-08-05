@@ -121,7 +121,20 @@ export function eseguiCriterioPasso(tipo, prevFilter, automa) {
 		if (criterioPasso == 4) {
 			output = window['get' + prefix + '_Numero'](prevFilter, lettera);
 		} else {
-			output = window['get' + prefix + '_' + lettera](tipo, prevFilter, automa, ordine);
+			if (prefix == 'BE') {
+				output = window['getBE_' + lettera](tipo, prevFilter, automa, ordine);
+			} else if (prefix == 'CO') {
+				// TODO qua è da passare min e max
+				output = window['getCO_' + lettera](undefined, undefined, prevFilter, automa);
+			} else {
+				let veraLettera = lettera;
+				let numero = undefined;
+				if (lettera.length == 1) {
+					output = window['getCE_' + lettera](prevFilter, automa);
+				} else {
+					// TODO
+				}
+			}
 		}
 		if (!output || output.length == 0) {
 			// Nessun sistema completo, continuiamo
@@ -724,11 +737,6 @@ export function getBE_Numero(prevFilter, numero) {
 export function getCO_0_SistemaCompleto(prevFilter, automa) {
 	// TODO
 	alert('Non ancora implementato getCO_0_SistemaCompleto');
-}
-
-export function getCO_Numero(prevFilter, automa) {
-	// TODO
-	alert('Non ancora implementato getCO_Numero');
 }
 
 export function getCO_Numero(prevFilter, automa) {
