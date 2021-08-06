@@ -1,53 +1,102 @@
 // @ts-check
 import {
-    addCentrale,
-    addCondotta,
-    addDiga,
-    addGocciaDiga,
-    addGocciaSorgente,
-    azioneCostruisci,
-    changePlayerSelected,
-    getBE_0_SistemaCompleto,
-    getBE_A,
-    getBE_B,
-    getBE_C,
-    getBE_D,
-    getBE_E,
-    getBE_F,
-    getBE_Numero,
-    resetInputs,
+	addCentrale,
+	addCondotta,
+	addDiga,
+	addGocciaDiga,
+	addGocciaSorgente,
+	azioneCostruisci,
+	changePlayerSelected,
+	getBE_0_SistemaCompleto,
+	getBE_A,
+	getBE_B,
+	getBE_C,
+	getBE_D,
+	getBE_E,
+	getBE_F,
+	getBE_Numero,
+	getCE_0_SistemaCompleto,
+	getCE_M,
+	getCE_N,
+	getCE_Numero,
+	getCE_OP,
+	getCE_P,
+	getCE_Q,
+	getCE_R,
+	getCO_G,
+	getCO_H,
+	getCO_I,
+	getCO_J,
+	getCO_K,
+	getCO_L,
+	getCO_Numero,
+	resetInputs,
 } from './barrage.js';
 import { azioni, initMazzo, pesca } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay, sorgenti } from './mappa.js';
 import { hideMappa, initDiminesions, showMappa } from './view.js';
 
+// @ts-ignore
+window.initPage = initPage;
 
 export function initPage() {
 	resetInputs();
 	initMazzo();
 	addHandlers();
+	addGlobalVariables();
 	initDiminesions();
-	// initDorsoMazzo();
 }
 
-// @ts-ignore
-window.initPage = initPage;
-// @ts-ignore
-window.getBE_0_SistemaCompleto = getBE_0_SistemaCompleto;
-// @ts-ignore
-window.getBE_A = getBE_A;
-// @ts-ignore
-window.getBE_B = getBE_B;
-// @ts-ignore
-window.getBE_C = getBE_C;
-// @ts-ignore
-window.getBE_D = getBE_D;
-// @ts-ignore
-window.getBE_E = getBE_E;
-// @ts-ignore
-window.getBE_F = getBE_F;
-// @ts-ignore
-window.getBE_Numero = getBE_Numero;
+function addGlobalVariables() {
+	// @ts-ignore
+	window.getBE_0_SistemaCompleto = getBE_0_SistemaCompleto;
+	// @ts-ignore
+	window.getBE_Numero = getBE_Numero;
+	// @ts-ignore
+	window.getBE_A = getBE_A;
+	// @ts-ignore
+	window.getBE_B = getBE_B;
+	// @ts-ignore
+	window.getBE_C = getBE_C;
+	// @ts-ignore
+	window.getBE_D = getBE_D;
+	// @ts-ignore
+	window.getBE_E = getBE_E;
+	// @ts-ignore
+	window.getBE_F = getBE_F;
+	// @ts-ignore
+	window.getCO_0_SistemaCompleto = getBE_F;
+	// @ts-ignore
+	window.getCO_Numero = getCO_Numero;
+	// @ts-ignore
+	window.getCO_G = getCO_G;
+	// @ts-ignore
+	window.getCO_H = getCO_H;
+	// @ts-ignore
+	window.getCO_I = getCO_I;
+	// @ts-ignore
+	window.getCO_J = getCO_J;
+	// @ts-ignore
+	window.getCO_K = getCO_K;
+	// @ts-ignore
+	window.getCO_L = getCO_L;
+	// @ts-ignore
+	window.getCE_0_SistemaCompleto = getCE_0_SistemaCompleto;
+	// @ts-ignore
+	window.getCE_Numero = getCE_Numero;
+	// @ts-ignore
+	window.getCE_M = getCE_M;
+	// @ts-ignore
+	window.getCE_N = getCE_N;
+	// @ts-ignore
+	window.getCE_OP = getCE_OP;
+	// @ts-ignore
+	window.getCE_P = getCE_P;
+	// @ts-ignore
+	window.getCE_Q = getCE_Q;
+	// @ts-ignore
+	window.getCE_R = getCE_R;
+}
 
 export function addHandlers() {
 	//deck:

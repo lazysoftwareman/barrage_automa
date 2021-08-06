@@ -2,18 +2,18 @@
 import { carteCriteri, curCartaCriteri, resetMazzo } from './deck.js';
 import { centraliCondotte, condotteDighe, condotteVal, dighePay, percorsi, percorsiDi } from './mappa.js';
 import {
-    getCapienzaDiga,
-    getCentraliDiProprieta,
-    getCondotteCheScaricanoInArea,
-    getGocceInSorgente,
-    getLivelloDiga,
-    getNumeroCentrale,
-    getNumeroDiga,
-    getProprietarioCondotta,
-    getProprietarioDiga,
-    getZonaCondotta,
-    intersecArray,
-    printArray,
+	getCapienzaDiga,
+	getCentraliDiProprieta,
+	getCondotteCheScaricanoInArea,
+	getGocceInSorgente,
+	getLivelloDiga,
+	getNumeroCentrale,
+	getNumeroDiga,
+	getProprietarioCondotta,
+	getProprietarioDiga,
+	getZonaCondotta,
+	intersecArray,
+	printArray,
 } from './provider.js';
 
 
@@ -138,7 +138,7 @@ export function costruisci(tipo, zona, minCondotta, maxCondotta, automa) {
 }
 
 export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, prevFilter, automa) {
-	while (criterioPasso <= 4) {
+	while (criterioPasso < 4) {
 		criterioPasso++;
 		let position = criterioPasso - 1;
 		if (tipo == 'CO') {
@@ -758,6 +758,9 @@ export function getBE_Numero(prevFilter, numero) {
 			actual = 1;
 		}
 		let digaF = 'DF_' + numero;
+		if (!prevFilter) {
+			prevFilter = [];
+		}
 		if (prevFilter.includes(digaF)) {
 			return [digaF];
 		}
@@ -765,6 +768,7 @@ export function getBE_Numero(prevFilter, numero) {
 		if (prevFilter.includes(digaP)) {
 			return [digaP];
 		}
+		counter++;
 	}
 	return [];
 }
