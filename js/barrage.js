@@ -74,7 +74,7 @@ export function azioneCostruisci(azione) {
 	let minCondotta;
 	let maxCondotta;
 	if (cosa.startsWith('D')) {
-		tipo = 'D';
+		tipo = 'B';
 		if (cosa.length == 2) {
 			zona = cosa.substr(1, 1);
 		}
