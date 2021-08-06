@@ -2,19 +2,19 @@
 import { carteCriteri, curCartaCriteri, resetMazzo } from './deck.js';
 import { centraliCondotte, condotteDighe, condotteVal, dighePay, percorsi, percorsiDi } from './mappa.js';
 import {
-	getCapienzaDiga,
-	getCentraliDiProprieta,
-	getCondotteCheScaricanoInArea,
-	getGocceInSorgente,
-	getLivelloDiga,
-	getNumeroCentrale,
-	getNumeroDiga,
-	getProprietarioCondotta,
-	getProprietarioDiga,
-	getZonaCondotta,
-	intersecArray,
-	printArray,
+    getCapienzaDiga,
+    getCentraliDiProprieta,
+    getCondotteCheScaricanoInArea,
+    getGocceInSorgente,
+    getLivelloDiga,
+    getNumeroCentrale,
+    getNumeroDiga,
+    getProprietarioCondotta,
+    getProprietarioDiga,
+    getZonaCondotta,
+    intersecArray,
 } from './provider.js';
+import { mostraRisultati, resetRisultati } from './view.js';
 
 
 /////////////// INPUT
@@ -67,7 +67,12 @@ export function azioneCostruisci(azione) {
 	// if (!playerSelected.startsWith('A')) {
 	// 	return;
 	// }
+	resetRisultati();
 	const automa = 'A';
+	if (!curCartaCriteri) {
+		alert('Bisogna pescare una carta criteri affinché l\'automa possa costruire')
+		return;
+	}
 	const cosa = azione.substr(1, azione.length - 1);
 	let tipo;
 	let zona;
@@ -115,7 +120,7 @@ export function costruisci(tipo, zona, minCondotta, maxCondotta, automa) {
 			alert('Non si può costruire una base in quella zona');
 			return [];
 		} else if (prevFilter.length == 1) {
-			show(prevFilter);
+			mostraRisultati(prevFilter);
 			return prevFilter;
 		}
 	}
@@ -131,7 +136,7 @@ export function costruisci(tipo, zona, minCondotta, maxCondotta, automa) {
 		// Nessun sistema completo, continuiamo
 	} else if (prevFilter.length > 0) {
 		// Ci sono dei risultati, mostriamoli
-		show(prevFilter);
+		mostraRisultati(prevFilter);
 		return prevFilter;
 	}
 	return eseguiCriterioPasso(tipo, minCondotta, maxCondotta, prevFilter, automa);
@@ -175,14 +180,10 @@ export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, prevFilter, 
 			// Nessun sistema completo, continuiamo
 		} else if (output.length > 0) {
 			// Ci sono dei risultati, mostriamoli
-			show(output);
+			mostraRisultati(output);
 			return output;
 		}
 	}
-}
-
-export function show(output) {
-	alert(printArray(output));
 }
 
 /**
@@ -923,6 +924,7 @@ export function addGocciaDiga(diga) {
  * @param {string} diga
  */
 export function addDiga(diga) {
+	resetRisultati();
 	let chi = playerSelected;
 	if (chi == undefined) {
 		return;
@@ -967,6 +969,7 @@ export function addDiga(diga) {
  * @param {string} condotta
  */
 export function addCondotta(condotta) {
+	resetRisultati();
 	let chi = playerSelected;
 	if (chi == undefined || chi == 'N') {
 		return;
@@ -1001,6 +1004,7 @@ export function addCondotta(condotta) {
  * @param {string} centrale
  */
 export function addCentrale(centrale) {
+	resetRisultati();
 	let chi = playerSelected;
 	if (chi == undefined || chi == 'N') {
 		return;

@@ -75,40 +75,45 @@ body {
 	border: solid 2px var(--borderColor);
 	border-radius: 5px;
 	float: left;
+	cursor: pointer;
+}
+.azioneButton div {	
+	margin: 0.5vh;
+	width: 2.5vh;
+	height: 2.5vh;
 	background-color: var(--blackColor);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: contain;
-	cursor: pointer;
 }
-#azione_CD {
+#azione_CD div{
 	background-image: url('../img/CD.png');
 }
-#azione_CDM{
+#azione_CDM div{
 	background-image: url('../img/CDM.png');
 }
-#azione_CDC{
+#azione_CDC div{
 	background-image: url('../img/CDC.png');
 }
-#azione_CE{
+#azione_CE div{
 	background-image: url('../img/CE.png');
 }
-#azione_CCO{
+#azione_CCO div{
 	background-image: url('../img/CCO.png');
 }
-#azione_CCO3{
+#azione_CCO3 div{
 	background-image: url('../img/CCO3.png');
 }
-#azione_CCO4{
+#azione_CCO4 div{
 	background-image: url('../img/CCO4.png');
 }
-#azione_CCE{
+#azione_CCE div{
 	background-image: url('../img/CCE.png');
 }
-#azione_CAP{
+#azione_CAP div{
 	background-image: url('../img/CAP.png');
 }
-#azione_CAM{
+#azione_CAM div{
 	background-image: url('../img/CAM.png');
 }
 
@@ -142,14 +147,14 @@ body {
 	cursor: pointer;
 }
 .rigaArea {
-	width: 100%;
+	width: 61.8vh;
 	display: flex;
 	flex-direction: row;
-	position: relative;
+	position: absolute;
 }
 .area {
 	display: block;
-	position: relative;
+	position: absolute;
 	/* float: left; */
 }
 .areaBacino {
@@ -189,11 +194,10 @@ body {
 	color: var(--borderColor);
 }
 .areaCondotta {
-	width: 2.5vh;
-	height: 2.5vh;
+	width: 2.6vh;
+	height: 2.6vh;
 	border: solid 2px var(--borderColor);
 	border-radius: 1.4vh;
-	position: relative;
 }
 .areaCondotta div {
 	height: 100%;
@@ -218,142 +222,219 @@ body {
 	height: 100%;
 }
 #rigaS {
-	top: 3%;
+	top: 8%;
 }
 #rigaS .areaBacino {
 	width: 7.6vh;
-	height: 5.2vh;
+	height: 4.5vh;
 }
 #rigaDP_14G {
-	top: 6.5%;
+	top: 16.7%;
 }
 #rigaDP_14G .areaBacino {
 	width: 7.6vh;
 	height: 4.5vh;
 }
 #rigaDP_14 {
-	top: 6.2%;
+	top: 21.6%;
 }
 #rigaC_14 {
-	top: 6.2%;
+	top: 25.3%;
 }
 #rigaC_14 .areaBacino {
 	width: 5.3vh;
-	height: 3.5vh;
+	height: 3.7vh;
 }
 #rigaC_14 .areaCondotta {
 	top: 0.6vh;
 }
 #rigaDF_14 {
-	top: 6.2%;
+	top: 29.5%;
 }
 #rigaCP_57 {
-	top: 11%;
+	top: 38%;
 }
 #rigaCF_57 {
-	top: 10.5%;
+	top: 40.8%;
+}
+#rigaDP_57G {
+	top: 44%;
+}
+#rigaDP_57G .areaBacino {
+	width: 7.6vh;
+	height: 3.5vh;
+}
+#rigaDP_57 {
+	top: 47.8%;
+}
+#rigaC_57 {
+	top: 51.5%;
+}
+#rigaC_57 .areaBacino {
+	width: 5.3vh;
+	height: 3.7vh;
+}
+#rigaC_57 .areaCondotta {
+	top: 0.6vh;
+}
+#rigaDF_57 {
+	top: 55.5%;
 }
 #areaSA {
-	left: 6vh;
+	left: 10%;
 }
 #areaSB {
-	left: 13vh;
+	left: 33.5%;
 }
 #areaSC {
-	left: 18.2vh;
+	left: 57%;
 }
 #areaSD {
-	left: 24.5vh;
+	left: 79.5%;
 }
 #areaDP_1G {
-	left: 6vh;
+	left: 10%;
 }
 #areaDP_2G {
-	left: 13vh;
+	left: 33.5%;
 }
 #areaDP_3G {
-	left: 18.2vh;
+	left: 57%;
 }
 #areaDP_4G {
-	left: 24.5vh;
+	left: 79.5%;
 }
 #areaDP_1 {
-	left: 8.1vh;
+	left: 13%;
 }
 #areaDP_2 {
-	left: 17.5vh;
+	left: 36%;
 }
 #areaDP_3 {
-	left: 27vh;
+	left: 59.5%;
 }
 #areaDP_4 {
-	left: 36vh;
+	left: 82%;
 }
 #areaC_1A {
-	left: 4.5vh;
+	left: 7.5%;
 }
 #areaDF_1G {
-	left: 4.5vh;
+	left: 12.2%;
 }
 #areaC_1B {
-	left: 4.5vh;
+	left: 21.5%;
 }
 #areaC_2A {
-	left: 6.7vh;
+	left: 30.5%;
 }
 #areaDF_2G {
-	left: 6.7vh;
+	left: 35.3%;
 }
 #areaC_2B {
-	left: 6.5vh;
+	left: 44.4%;
 }
 #areaC_3A {
-	left: 9vh;
+	left: 53.7%;
 }
 #areaDF_3G {
-	left: 9vh;
+	left: 58.7%;
 }
 #areaC_3B {
-	left: 9vh;
+	left: 68%;
 }
 #areaC_4A {
-	left: 10.5vh;
+	left: 76%;
 }
 #areaDF_4G {
-	left: 10.5vh;
+	left: 80.9%;
 }
 #areaC_4B {
-	left: 10.5vh;
+	left: 90.2%;
 }
 #areaDF_1 {
-	left: 8.1vh;
+	left: 13%;
 }
 #areaDF_2 {
-	left: 17.5vh;
+	left: 36%;
 }
 #areaDF_3 {
-	left: 27vh;
+	left: 59.5%;
 }
 #areaDF_4 {
-	left: 36vh;
+	left: 82%;
 }
 #areaCP_5 {
-	left: 17.5vh;
+	left: 28.3%;
 }
 #areaCP_6 {
-	left: 26.3vh;
+	left: 51.7%;
 }
 #areaCP_7 {
-	left: 35.8vh;
+	left: 76%;
 }
 #areaCF_5 {
-	left: 17.5vh;
+	left: 28.3%;
 }
 #areaCF_6 {
-	left: 26.3vh;
+	left: 51.7%;
 }
 #areaCF_7 {
-	left: 35.8vh;
+	left: 76%;
+}
+#areaDP_5G {
+	left: 26%;
+}
+#areaDP_6G {
+	left: 49%;
+}
+#areaDP_7G {
+	left: 74%;
+}
+#areaDP_5 {
+	left: 29%;
+}
+#areaDP_6 {
+	left: 52%;
+}
+#areaDP_7 {
+	left: 77%;
+}
+#areaC_5A {
+	left: 23.3%;
+}
+#areaDF_5G {
+	left: 28.3%;
+}
+#areaC_5B {
+	left: 37.5%;
+}
+#areaC_6A {
+	left: 46.6%;
+}
+#areaDF_6G {
+	left: 51.6%;
+}
+#areaC_6B {
+	left: 60.8%;
+}
+#areaC_7A {
+	left: 70.8%;
+}
+#areaDF_7G {
+	left: 75.8%;
+}
+#areaC_7B {
+	left: 85%;
+}
+#areaDF_5 {
+	left: 29%;
+}
+#areaDF_6 {
+	left: 52%;
+}
+#areaDF_7 {
+	left: 77%;
 }
 
 

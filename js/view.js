@@ -1,4 +1,6 @@
 import { azioni, carteAzioni, carteCriteri, curCartaAzioni, curCartaCriteri } from './deck.js';
+import { centraliFree, centraliPay, condotte, digheFree, dighePay } from './mappa.js';
+import { printArray } from './provider.js';
 
 // @ts-check
 export function initDiminesions() {
@@ -37,5 +39,33 @@ export function mostraAzioni() {
     }
     for (const az of azioniInCarta) {
         document.getElementById('azione_' + az).style.borderColor = 'var(--selectionColor)';
+    }
+}
+
+/**
+ * Mostra i risultati del filtraggio
+ * @param {string[]} output 
+ */
+export function mostraRisultati(outputs) {
+    for (const output of outputs) {
+        const element = document.getElementById('area' + output);
+        if (element) {
+            element.style.borderColor = 'var(--selectionColor)';
+            element.style.borderWidth = '3px';
+            element.style.backgroundColor = 'rgba(227, 175, 84, 0.5)';
+        }
+    }
+    alert(printArray(outputs));
+}
+
+export function resetRisultati() {
+    const elems = [...dighePay, ...digheFree, ...condotte, ...centraliPay, ...centraliFree];
+    for (const elem of elems) {
+        const element = document.getElementById('area' + elem);
+        if (element) {
+            element.style.borderColor = 'var(--borderColor)';
+            element.style.borderWidth = '2px';
+            element.style.backgroundColor = 'transparent';
+        }
     }
 }
