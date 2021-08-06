@@ -5,6 +5,7 @@ import {
     addDiga,
     addGocciaDiga,
     addGocciaSorgente,
+    azioneCostruisci,
     changePlayerSelected,
     getBE_0_SistemaCompleto,
     getBE_A,
@@ -16,7 +17,7 @@ import {
     getBE_Numero,
     resetInputs,
 } from './barrage.js';
-import { initMazzo, pesca } from './deck.js';
+import { azioni, initMazzo, pesca } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay, sorgenti } from './mappa.js';
 import { hideMappa, initDiminesions, showMappa } from './view.js';
 
@@ -53,6 +54,12 @@ export function addHandlers() {
 	document.getElementById('cartaAzioni').addEventListener('click', pesca);
 	document.getElementById('mappaSwitch').addEventListener('click', showMappa);
 	document.getElementById('deckSwitch').addEventListener('click', hideMappa);
+	//Azioni:
+	for (const azione of azioni) {
+		document.getElementById('azione_' + azione).addEventListener('click', function () {
+			azioneCostruisci(azione);
+		}, false);
+	}
 	//sorgenti:
 	for (let sorgente of sorgenti) {
 		let area = document.getElementById('area' + sorgente);

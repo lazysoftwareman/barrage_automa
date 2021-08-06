@@ -62,18 +62,51 @@ export function resetInputs() {
 
 /////////////// BL CRITERI
 
-/*
-ESEMPIO CARTA CRITERI: E_A_C_1_H_J_I_10B_L_P_K_12_DAB
-ESEMPIO INPUT 
-*/
+export function azioneCostruisci(azione) {
+	// questo solo quando ci sarà il multiautoma
+	// if (!playerSelected.startsWith('A')) {
+	// 	return;
+	// }
+	const automa = 'A';
+	const cosa = azione.substr(1, azione.length - 1);
+	let tipo;
+	let zona;
+	let minCondotta;
+	let maxCondotta;
+	if (cosa.startsWith('D')) {
+		tipo = 'D';
+		if (cosa.length == 2) {
+			zona = cosa.substr(1, 1);
+		}
+	} else if (cosa.startsWith('E')) {
+		tipo = 'E';
+	} else if (cosa.startsWith('CO')) {
+		tipo = 'CO';
+		if (cosa.length == 3) {
+			minCondotta = cosa.substr(2, 1);
+		}
+	} else if (cosa.startsWith('CE')) {
+		tipo = 'CE';
+	} else if (cosa.startsWith('A')) {
+		tipo = 'A';
+	} else {
+		alert('Azione non valida: ' + azione);
+		return;
+	}
+	return costruisci(tipo, zona, minCondotta, maxCondotta, automa);
+}
 
 /**
  * @param {string} tipo B(ase), E(levazione), CO(ndotta), CE(ntrale)
  * @param {string} zona
  * @param {string} automa
  */
-export function costruisci(tipo, zona, automa) {
+export function costruisci(tipo, zona, minCondotta, maxCondotta, automa) {
 	criterioPasso = 0;
+	if (tipo == 'A') {
+		alert('Non ancora implementata la gestione delle abitazioni');
+		return;
+	}
 	let prevFilter = undefined;
 	if (tipo == 'B' && zona) {
 		prevFilter = getB_Zona(zona);
@@ -101,10 +134,10 @@ export function costruisci(tipo, zona, automa) {
 		show(prevFilter);
 		return prevFilter;
 	}
-	return eseguiCriterioPasso(tipo, prevFilter, automa);
+	return eseguiCriterioPasso(tipo, minCondotta, maxCondotta, prevFilter, automa);
 }
 
-export function eseguiCriterioPasso(tipo, prevFilter, automa) {
+export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, prevFilter, automa) {
 	while (criterioPasso <= 4) {
 		criterioPasso++;
 		let position = criterioPasso - 1;
@@ -124,15 +157,17 @@ export function eseguiCriterioPasso(tipo, prevFilter, automa) {
 			if (prefix == 'BE') {
 				output = window['getBE_' + lettera](tipo, prevFilter, automa, ordine);
 			} else if (prefix == 'CO') {
-				// TODO qua è da passare min e max
-				output = window['getCO_' + lettera](undefined, undefined, prevFilter, automa);
+				output = window['getCO_' + lettera](minCondotta, maxCondotta, prevFilter, automa);
 			} else {
-				let veraLettera = lettera;
-				let numero = undefined;
 				if (lettera.length == 1) {
 					output = window['getCE_' + lettera](prevFilter, automa);
 				} else {
-					// TODO
+					if (lettera == 'OP') {
+						output = getCE_OP(prevFilter, automa);
+					} else {
+						let numero = lettera.substr(1, 1);
+						output = getCE_P(numero, prevFilter, automa);
+					}
 				}
 			}
 		}

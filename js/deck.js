@@ -1,12 +1,11 @@
 // @ts-check
-import { mostraCarte } from './view.js';
-
+import { mostraAzioni, mostraCarte } from './view.js';
 
 /**
  * Mappatura carte criteri
  * @type {string[]}
  */
-export let carteCriteri = [];
+export const carteCriteri = [];
 carteCriteri['1'] = 'A_B_E_1_G_I_J_1A_Q_M_N_5_ABC';
 carteCriteri['2'] = 'E_A_C_5_H_J_I_10A_N_M_Q_12_CDA';
 carteCriteri['3'] = 'D_A_B_2_I_J_G_5B_M_N_Q_9_BCD';
@@ -32,16 +31,16 @@ carteCriteri['20'] = 'F_B_A_4_I_J_G_6B_M_N_Q_10_DAB';
  * Mappatura carte azione
  * @type {string[]}
  */
-export let carteAzioni = [];
+export const carteAzioni = [];
 carteAzioni['1'] = 'X_X_CD_CE_X_X_X_X';
-carteAzioni['2'] = 'X_CCO_CA+_X_X_X_X';
+carteAzioni['2'] = 'X_CCO_CAP_X_X_X_X';
 carteAzioni['3'] = 'X_X_CCO_CCE_X_X_X_X';
-carteAzioni['4'] = 'X_X_CD_CA-_X_X_X_X';
+carteAzioni['4'] = 'X_X_CD_CAM_X_X_X_X';
 carteAzioni['5'] = 'X_CDM_X_X_X_X';
 carteAzioni['6'] = 'X_X_CE_CCO_X_X_X_X';
 carteAzioni['7'] = 'X_X_CCO3_CE_X_X_X_X';
 carteAzioni['8'] = 'X_X_CE_CCE_X_X_X_X';
-carteAzioni['9'] = 'X_X_CD_CA-_X_X_X_X';
+carteAzioni['9'] = 'X_X_CD_CAM_X_X_X_X';
 carteAzioni['10'] = 'X_X_CE_CD_X_X_X_X';
 carteAzioni['11'] = 'X_X_CE_CCE_X_X_X_X';
 carteAzioni['12'] = 'X_X_CD_CCO_X_X_X_X';
@@ -51,8 +50,10 @@ carteAzioni['15'] = 'X_X_CDC_CCE_X_X_X_X';
 carteAzioni['16'] = 'X_X_CCO_X_X_X_X';
 carteAzioni['17'] = 'X_X_CD_X_X_X_X';
 carteAzioni['18'] = 'X_X_CCE_X_X_X_X';
-carteAzioni['19'] = 'X_CCE_CA+_X_X_X_X';
+carteAzioni['19'] = 'X_CCE_CAP_X_X_X_X';
 carteAzioni['20'] = 'X_X_CCO4_X_X_X_X';
+
+export const azioni = ['CD', 'CDM', 'CDC', 'CE', 'CCO', 'CCO3', 'CCO4', 'CCE', 'CAP', 'CAM'];
 
 export const deckSize = 20;
 /**
@@ -100,4 +101,5 @@ export function pesca() {
     curCartaAzioni = mazzo[indice];
     curCartaCriteri = indice > 0 ? mazzo[indice - 1] : undefined;
     mostraCarte();
+    mostraAzioni();
 }

@@ -52,6 +52,66 @@ body {
 	background-position: center;
 	background-size: contain;
 }
+#mappaToolbar {
+	position: absolute;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	top: 0.25vh;
+	width: 57.5vh;
+	height: 4vh;
+	border: 3px solid var(--blackColor);
+	background-color: #4a4a4a;
+	border-radius: 5px;
+}
+.azioneButton {	
+	width: 3.5vh;
+	height: 3.5vh;
+    vertical-align: middle;
+    text-align: center;
+	line-height: 3.5vh;
+	font-weight: bold;
+	color: var(--blackColor);
+	border: solid 2px var(--borderColor);
+	border-radius: 5px;
+	float: left;
+	background-color: var(--blackColor);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	cursor: pointer;
+}
+#azione_CD {
+	background-image: url('../img/CD.png');
+}
+#azione_CDM{
+	background-image: url('../img/CDM.png');
+}
+#azione_CDC{
+	background-image: url('../img/CDC.png');
+}
+#azione_CE{
+	background-image: url('../img/CE.png');
+}
+#azione_CCO{
+	background-image: url('../img/CCO.png');
+}
+#azione_CCO3{
+	background-image: url('../img/CCO3.png');
+}
+#azione_CCO4{
+	background-image: url('../img/CCO4.png');
+}
+#azione_CCE{
+	background-image: url('../img/CCE.png');
+}
+#azione_CAP{
+	background-image: url('../img/CAP.png');
+}
+#azione_CAM{
+	background-image: url('../img/CAM.png');
+}
+
 #footer {
 	margin-left: auto;
     margin-right: auto;
@@ -75,10 +135,11 @@ body {
 	color: var(--blackColor);
 	border: solid 2px var(--blackColor);
 	border-radius: 5px;
-	position: relative;
-	top: -3.2vh;
-	left: 58.9vh;
+	position: absolute;
+	top: 1.2vh;
+	left: calc(((100vw + 61.8vh) / 2) - 2.9vh);
 	background-color: var(--selectionColor);
+	cursor: pointer;
 }
 .rigaArea {
 	width: 100%;
@@ -308,6 +369,7 @@ body {
 	border: solid 2px var(--borderColor);
 	border-radius: 5px;
 	position: absolute;
+	cursor: pointer;
 }
 #P1_Selector {
 	bottom: 9.5vh;

@@ -1,4 +1,4 @@
-import { carteCriteri, curCartaAzioni, curCartaCriteri } from './deck.js';
+import { azioni, carteAzioni, carteCriteri, curCartaAzioni, curCartaCriteri } from './deck.js';
 
 // @ts-check
 export function initDiminesions() {
@@ -26,5 +26,16 @@ export function mostraCarte() {
         document.getElementById('criteriText').innerHTML = carteCriteri[curCartaCriteri];
     } else {
         document.getElementById('criteriText').innerHTML = '';
+    }
+}
+
+export function mostraAzioni() {
+    let currentAzioni = carteAzioni[curCartaAzioni];
+    let azioniInCarta = currentAzioni.split('_').filter((az) => az.startsWith('C'));
+    for (const az of azioni) {
+        document.getElementById('azione_' + az).style.borderColor = 'var(--borderColor)';
+    }
+    for (const az of azioniInCarta) {
+        document.getElementById('azione_' + az).style.borderColor = 'var(--selectionColor)';
     }
 }
