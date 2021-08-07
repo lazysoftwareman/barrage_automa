@@ -221,6 +221,9 @@ body {
 .areaCentrale div img {
 	height: 100%;
 }
+
+/* Righe */
+
 #rigaS {
 	top: 8%;
 }
@@ -280,6 +283,44 @@ body {
 #rigaDF_57 {
 	top: 55.5%;
 }
+#rigaCP_810 {	
+	top: 62%;
+}
+#rigaCF_810 {	
+	top: 64.8%;
+}
+#rigaDP_810G {
+	top: 68%;
+}
+#rigaDP_810G .areaBacino {
+	width: 7.6vh;
+	height: 3.5vh;
+}
+#rigaDP_810 {
+	top: 71.8%;
+}
+#rigaC_810 {
+	top: 75.5%;
+}
+#rigaC_810 .areaBacino {
+	width: 5.3vh;
+	height: 3.7vh;
+}
+#rigaC_810 .areaCondotta {
+	top: 0.6vh;
+}
+#rigaDF_810 {
+	top: 79.5%;
+}
+#rigaCP_1112 {	
+	top: 87.4%;
+}
+#rigaCF_1112 {	
+	top: 90.3%;
+}
+
+/* Aree */
+
 #areaSA {
 	left: 10%;
 }
@@ -436,6 +477,121 @@ body {
 #areaDF_7 {
 	left: 77%;
 }
+#areaCP_8 {
+	left: 16.8%;
+}
+#areaCP_9 {
+	left: 40.9%;
+}
+#areaCP_10A {
+	left: 61%;
+}
+#areaCP_10B {
+	left: 69.4%;
+}
+#areaCF_8A {
+	left: 12.7%;
+}
+#areaCF_8B {
+	left: 21%;
+}
+#areaCF_9A {
+	left: 36.8%;
+}
+#areaCF_9B {
+	left: 45.1%;
+}
+#areaCF_10 {
+	left: 65.2%;
+}
+#areaDP_8G {
+	left: 14.5%;
+}
+#areaDP_9G {
+	left: 38.5%;
+}
+#areaDP_10G {
+	left: 62.5%;
+}
+#areaDP_8 {
+	left: 17.5%;
+}
+#areaDP_9 {
+	left: 41.5%;
+}
+#areaDP_10 {
+	left: 65.8%;
+}
+#areaC_8A {
+	left: 11.8%;
+}
+#areaDF_8G {
+	left: 16.8%;
+}
+#areaC_8B {
+	left: 26%;
+}
+#areaC_9A {
+	left: 35.6%;
+}
+#areaDF_9G {
+	left: 40.6%;
+}
+#areaC_9B {
+	left: 49.8%;
+}
+#areaC_10A {
+	left: 60%;
+}
+#areaDF_10G {
+	left: 65%;
+}
+#areaC_10B {
+	left: 74.2%;
+}
+#areaDF_8 {
+	left: 17.5%;
+}
+#areaDF_9 {
+	left: 41.5%;
+}
+#areaDF_10 {
+	left: 65.8%;
+}
+#areaCP_11A {
+	left: 23.6%;
+}
+#areaCP_11B {
+	left: 32%;
+}
+#areaCP_12A {
+	left: 65.9%;
+}
+#areaCP_12B {
+	left: 74.2%;
+}
+#areaCF_11A {
+	left: 23.6%;
+}
+#areaCF_11B {
+	left: 32%;
+}
+#areaCF_12 {
+	left: 65.9%;
+}
+#areaCP_12C {
+	left: 74.2%;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 /* Selection color: #e3af54 */
