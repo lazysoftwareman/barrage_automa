@@ -25,6 +25,21 @@ export function getZonaCondotta(condotta) {
 }
 
 /**
+ * Ritorna M(ontagna), C(ollina), P(ianura) in base alla diga
+ * @param {string} diga
+ */
+export function getZonaDiga(diga) {
+    let numero = diga.substring(3, diga.length);
+    if (numero == '10' || numero == '9' || numero == '8') {
+        return 'P';
+    } else if (numero == '7' || numero == '6' || numero == '5') {
+        return 'C';
+    } else {
+        return 'M';
+    }
+}
+
+/**
  * Ritorna di chi è la condotta
  * @param {string} condotta
  */

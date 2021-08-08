@@ -1,36 +1,37 @@
 // @ts-check
 import {
-	addCentrale,
-	addCondotta,
-	addDiga,
-	addGocciaDiga,
-	addGocciaSorgente,
-	azioneCostruisci,
-	changePlayerSelected,
-	getBE_0_SistemaCompleto,
-	getBE_A,
-	getBE_B,
-	getBE_C,
-	getBE_D,
-	getBE_E,
-	getBE_F,
-	getBE_Numero,
-	getCE_0_SistemaCompleto,
-	getCE_M,
-	getCE_N,
-	getCE_Numero,
-	getCE_OP,
-	getCE_P,
-	getCE_Q,
-	getCE_R,
-	getCO_G,
-	getCO_H,
-	getCO_I,
-	getCO_J,
-	getCO_K,
-	getCO_L,
-	getCO_Numero,
-	resetInputs,
+    addCentrale,
+    addCondotta,
+    addDiga,
+    addGocciaDiga,
+    addGocciaSorgente,
+    azioneCostruisci,
+    azioneCostruisciContinua,
+    changePlayerSelected,
+    getBE_0_SistemaCompleto,
+    getBE_A,
+    getBE_B,
+    getBE_C,
+    getBE_D,
+    getBE_E,
+    getBE_F,
+    getBE_Numero,
+    getCE_0_SistemaCompleto,
+    getCE_M,
+    getCE_N,
+    getCE_Numero,
+    getCE_OP,
+    getCE_P,
+    getCE_Q,
+    getCE_R,
+    getCO_G,
+    getCO_H,
+    getCO_I,
+    getCO_J,
+    getCO_K,
+    getCO_L,
+    getCO_Numero,
+    resetInputs,
 } from './barrage.js';
 import { azioni, initMazzo, pesca } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay, sorgenti } from './mappa.js';
@@ -38,6 +39,9 @@ import { hideMappa, initDiminesions, showMappa } from './view.js';
 
 // @ts-ignore
 window.initPage = initPage;
+
+export const azioniPrincipali = [];
+export const azioniContinua = [];
 
 export function initPage() {
 	resetInputs();
@@ -105,9 +109,13 @@ export function addHandlers() {
 	document.getElementById('deckSwitch').addEventListener('click', hideMappa);
 	//Azioni:
 	for (const azione of azioni) {
-		document.getElementById('azione_' + azione).addEventListener('click', function () {
+		azioniPrincipali[azione] = function () {
 			azioneCostruisci(azione);
-		}, false);
+		};
+		azioniContinua[azione] = function () {
+			azioneCostruisciContinua(azione);
+		};
+		document.getElementById('azione_' + azione).addEventListener('click', azioniPrincipali[azione], false);
 	}
 	//sorgenti:
 	for (let sorgente of sorgenti) {
@@ -160,4 +168,18 @@ export function addHandlers() {
 	// document.getElementById('testBE_CentraleNaturale1').addEventListener('click', testBE_CentraleNaturale1);
 	// document.getElementById('testBE_CentraleNaturale2').addEventListener('click', testBE_CentraleNaturale2);
 	// document.getElementById('testCostruisciInizio').addEventListener('click', testCostruisciInizio);
+}
+
+export function resetAzioni() {
+	for (const azione of azioni) {
+		document.getElementById('azione_' + azione).removeEventListener('click', azioniContinua[azione], false);
+		document.getElementById('azione_' + azione).removeEventListener('click', azioniPrincipali[azione], false);
+		document.getElementById('azione_' + azione).addEventListener('click', azioniPrincipali[azione], false);
+	}
+}
+
+export function setAzioneContinua(azione) {
+	document.getElementById('azione_' + azione).removeEventListener('click', azioniContinua[azione], false);
+	document.getElementById('azione_' + azione).removeEventListener('click', azioniPrincipali[azione], false);
+	document.getElementById('azione_' + azione).addEventListener('click', azioniContinua[azione], false);
 }

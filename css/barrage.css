@@ -633,26 +633,29 @@ body {
 .deck {
 	margin-left: auto;
     margin-right: auto;
-	height: 100%;
-	width: 100vw;
+    margin-top: 5vh;
+	height: 90vh;
+	width: 61.8vh;
 	font-size: 12pt;
 	border-radius: 4px;
-	display: block;
     min-width: 250px;
 	text-align: center;
 }
 .cartaContainer {
 	box-sizing: border-box;
-	height: 35%;
+	height: 39.5%;
 	width: calc(var(--vh)*52.4);
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: calc(var(--vh)*10);
+	margin-top: 5vh;
 	border: solid 2px var(--borderColor);
 	border-radius: 5px;
 }
 #cartaAzioni {
 	border: solid 2px var(--blackColor);
+}
+#cartaCriteri {
+	margin-top: 1vh;
 }
 .cartaImg {
 	width: 98%;
@@ -669,8 +672,23 @@ body {
 	border: solid 2px var(--blackColor);
 	border-radius: 5px;
 	position: absolute;
-	top: calc(5% - 1.25vh);
+	top: 1.2vh;
 	left: calc(50vw + var(--vh)*26 - 2.7vh);
+	background-color: var(--selectionColor);
+}
+#startButton {	
+	width: 10vh;
+	height: 2.5vh;
+    vertical-align: middle;
+    text-align: center;
+	line-height: 2.5vh;
+	font-weight: bold;
+	color: var(--blackColor);
+	border: solid 2px var(--blackColor);
+	border-radius: 5px;
+	position: absolute;
+	top: 50vh;
+	left: calc(50vw - 5vh);
 	background-color: var(--selectionColor);
 }
 

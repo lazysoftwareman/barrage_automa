@@ -1,5 +1,6 @@
 // @ts-check
 import { carteCriteri, curCartaCriteri, resetMazzo } from './deck.js';
+import { resetAzioni, setAzioneContinua } from './init.js';
 import { centraliCondotte, condotteDighe, condotteVal, dighePay, percorsi, percorsiDi } from './mappa.js';
 import {
     getCapienzaDiga,
@@ -12,6 +13,7 @@ import {
     getProprietarioCondotta,
     getProprietarioDiga,
     getZonaCondotta,
+    getZonaDiga,
     intersecArray,
 } from './provider.js';
 import { mostraRisultati, resetRisultati } from './view.js';
@@ -49,6 +51,7 @@ playerColor['A'] = 'R';
 playerColor['N'] = 'N';
 
 export let criterioPasso = 0;
+export let actualResult = [];
 export let playerSelected = undefined;
 
 export function resetInputs() {
@@ -68,6 +71,8 @@ export function azioneCostruisci(azione) {
 	// 	return;
 	// }
 	resetRisultati();
+	resetAzioni();
+	setAzioneContinua(azione)
 	const automa = 'A';
 	if (!curCartaCriteri) {
 		alert('Bisogna pescare una carta criteri affinché l\'automa possa costruire')
@@ -101,6 +106,41 @@ export function azioneCostruisci(azione) {
 	return costruisci(tipo, zona, minCondotta, maxCondotta, automa);
 }
 
+export function azioneCostruisciContinua(azione) {
+	// questo solo quando ci sarà il multiautoma
+	// if (!playerSelected.startsWith('A')) {
+	// 	return;
+	// }
+	resetRisultati();
+	const automa = 'A';
+	if (!curCartaCriteri) {
+		alert('Bisogna pescare una carta criteri affinché l\'automa possa costruire')
+		return;
+	}
+	const cosa = azione.substr(1, azione.length - 1);
+	let tipo;
+	let minCondotta;
+	let maxCondotta;
+	if (cosa.startsWith('D')) {
+		tipo = 'B';
+	} else if (cosa.startsWith('E')) {
+		tipo = 'E';
+	} else if (cosa.startsWith('CO')) {
+		tipo = 'CO';
+		if (cosa.length == 3) {
+			minCondotta = cosa.substr(2, 1);
+		}
+	} else if (cosa.startsWith('CE')) {
+		tipo = 'CE';
+	} else if (cosa.startsWith('A')) {
+		tipo = 'A';
+	} else {
+		alert('Azione non valida: ' + azione);
+		return;
+	}
+	return eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa);
+}
+
 /**
  * @param {string} tipo B(ase), E(levazione), CO(ndotta), CE(ntrale)
  * @param {string} zona
@@ -108,41 +148,49 @@ export function azioneCostruisci(azione) {
  */
 export function costruisci(tipo, zona, minCondotta, maxCondotta, automa) {
 	criterioPasso = 0;
+	actualResult = [];
 	if (tipo == 'A') {
 		alert('Non ancora implementata la gestione delle abitazioni');
 		return;
 	}
-	let prevFilter = undefined;
 	if (tipo == 'B' && zona) {
-		prevFilter = getB_Zona(zona);
-		if (prevFilter.length == 0) {
+		actualResult = getB_Zona(zona);
+		if (actualResult.length == 0) {
 			// ci fermiamo qua alert o qualcosa del genere
 			alert('Non si può costruire una base in quella zona');
-			return [];
-		} else if (prevFilter.length == 1) {
-			mostraRisultati(prevFilter);
-			return prevFilter;
+			return;
+		} else if (actualResult.length == 1) {
+			actualResult = actualResult;
+			mostraRisultati();
+			return;
 		}
 	}
 	// Sistema completo
 	if (tipo == 'B') {
-		prevFilter = getBE_0_SistemaCompleto(tipo, prevFilter, automa);
+		actualResult = getBE_0_SistemaCompleto(tipo, automa);
 	} else if (tipo == 'CO') {
-		prevFilter = getCO_0_SistemaCompleto(prevFilter, automa);
+		actualResult = getCO_0_SistemaCompleto(automa);
 	} else if (tipo == 'CE') {
-		prevFilter = getCE_0_SistemaCompleto(prevFilter, automa);
+		actualResult = getCE_0_SistemaCompleto(automa);
 	}
-	if (!prevFilter || prevFilter.length == 0) {
+	if (!actualResult || actualResult.length == 0) {
 		// Nessun sistema completo, continuiamo
-	} else if (prevFilter.length > 0) {
-		// Ci sono dei risultati, mostriamoli
-		mostraRisultati(prevFilter);
-		return prevFilter;
+		eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa);
+	} else if (actualResult.length > 0) {
+		// Ci sono dei risultati, se di sicuro devo filtrare ancora, filtro, altrimenti mostro
+		if (devoSicuramenteFiltrare(tipo)) {
+			return eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa);
+		} else {
+			mostraRisultati();
+			return;
+		}
 	}
-	return eseguiCriterioPasso(tipo, minCondotta, maxCondotta, prevFilter, automa);
 }
 
-export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, prevFilter, automa) {
+export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa) {
+	const criteri = carteCriteri[curCartaCriteri].split("_");
+	const ordine = criteri[criteri.length - 1];
+	const prefix = tipo == 'B' || tipo == 'E' ? 'BE' : tipo;
 	while (criterioPasso < 4) {
 		criterioPasso++;
 		let position = criterioPasso - 1;
@@ -151,38 +199,109 @@ export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, prevFilter, 
 		} else if (tipo == 'CE') {
 			position += 8;
 		}
-		let criteri = carteCriteri[curCartaCriteri].split("_");
 		let lettera = criteri[position];
-		let prefix = tipo == 'B' || tipo == 'E' ? 'BE' : tipo;
-		let ordine = criteri[criteri.length - 1];
-		let output = undefined;
 		if (criterioPasso == 4) {
-			output = window['get' + prefix + '_Numero'](prevFilter, lettera);
+			actualResult = window['get' + prefix + '_Numero'](lettera);
 		} else {
 			if (prefix == 'BE') {
-				output = window['getBE_' + lettera](tipo, prevFilter, automa, ordine);
+				actualResult = window['getBE_' + lettera](tipo, automa, ordine);
 			} else if (prefix == 'CO') {
-				output = window['getCO_' + lettera](minCondotta, maxCondotta, prevFilter, automa);
+				actualResult = window['getCO_' + lettera](minCondotta, maxCondotta, automa);
 			} else {
 				if (lettera.length == 1) {
-					output = window['getCE_' + lettera](prevFilter, automa);
+					actualResult = window['getCE_' + lettera](automa);
 				} else {
 					if (lettera == 'OP') {
-						output = getCE_OP(prevFilter, automa);
+						actualResult = getCE_OP(automa);
 					} else {
 						let numero = lettera.substr(1, 1);
-						output = getCE_P(numero, prevFilter, automa);
+						actualResult = getCE_P(numero, automa);
 					}
 				}
 			}
 		}
-		if (!output || output.length == 0) {
+		if (!actualResult || actualResult.length == 0) {
 			// Nessun sistema completo, continuiamo
-		} else if (output.length > 0) {
-			// Ci sono dei risultati, mostriamoli
-			mostraRisultati(output);
-			return output;
+		} else if (actualResult.length > 0) {
+			// Ci sono dei risultati, se di sicuro devo filtrare ancora, filtro, altrimenti mostro
+			if (devoSicuramenteFiltrare(tipo)) {
+				// Devo sicuramente ancora filtrare, continuiamo
+			} else {
+				mostraRisultati();
+				return;
+			}
 		}
+	}
+	// Finiti i criteri, resetto
+	criterioPasso = 0;
+	actualResult = [];
+	resetAzioni();
+	mostraRisultati();
+}
+
+export function devoSicuramenteFiltrare(tipo) {
+	if (tipo == 'B' || tipo == 'E') {
+		// se ci sono più di 1 risultato in pianura (se c'è), o se non c'è in collina
+		// o se non c'è in montagna, significa che devo necessariamente filtrare ancora
+		let resultP = 0;
+		let resultC = 0;
+		let resultM = 0;
+		for (const res of actualResult) {
+			const zona = getZonaDiga(res);
+			if (zona == 'M') {
+				resultM++;
+			} else if (zona == 'C') {
+				resultC++;
+			} else {
+				resultP++;
+			}
+		}
+		if (resultP > 1) {
+			return true;
+		} else if (resultP == 0) {
+			if (resultC > 1) {
+				return true;
+			} else if (resultC == 0) {
+				if (resultM > 1) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	} else if (tipo == 'CO') {
+		let result = [];
+		for (let i = 0; i < 5; i++) {
+			result['' + (i + 1)] = 0;
+		}
+		for (const res of actualResult) {
+			const valore = condotteVal[res];
+			result['' + valore]++;
+		}
+		for (let i = 0; i < 5; i++) {
+			let res = result['' + (i + 1)];
+			if (res == 0) {
+				continue;
+			}
+			if (res > 1) {
+				// quelle di valore più basso sono più di una, devo sicuramente filtrare ancora
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
+	} else if (tipo == 'CE') {
+		// per le centrali le mostro sempre
+		return false;
+	} else {
+		// per le abitazioni per ora non le gestisco
+		alert('Non ancora implementata la gestione delle abitazioni');
+		return false;
 	}
 }
 
@@ -212,10 +331,9 @@ export function getB_Zona(zona) {
  * BASE O ELEVAZIONE, completamento sistema, solo per BASE.
  * Da applicare come primo criterio, a parte quello della zona se c'è
  * @param {string} tipo se 'E' ritorna array vuoto
- * @param {string[]} prevFilter
  * @param {string} automa
 **/
-export function getBE_0_SistemaCompleto(tipo, prevFilter, automa) {
+export function getBE_0_SistemaCompleto(tipo, automa) {
 	if (tipo != 'B') {
 		return [];
 	}
@@ -242,12 +360,12 @@ export function getBE_0_SistemaCompleto(tipo, prevFilter, automa) {
 		}
 	}
 	if (digheValide.length == 0) {
-		return prevFilter ? prevFilter : [];
-	} if (!prevFilter || prevFilter.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
 		return digheValide;
 	} else {
 		// intersezione
-		return intersecArray(prevFilter, digheValide);
+		return intersecArray(actualResult, digheValide);
 	}
 }
 
@@ -257,12 +375,11 @@ export function getBE_0_SistemaCompleto(tipo, prevFilter, automa) {
  * prevFilter: filtro precedente (se presente)
  * automa: l'automa da usare
  * @param {string} tipo
- * @param {string[]} prevFilter
  * @param {string} automa
  */
-export function getBE_A(tipo, prevFilter, automa, ordine) {
+export function getBE_A(tipo, automa, ordine) {
 	if (condotteCostruite.length == 0) {
-		return prevFilter ? prevFilter : [];
+		return actualResult ? actualResult : [];
 	}
 	condotteCostruite.sort(function (a, b) {
 		if (condotteVal[a.condotta] != condotteVal[b.condotta]) {
@@ -350,12 +467,12 @@ export function getBE_A(tipo, prevFilter, automa, ordine) {
 		}
 	}
 	if (digheValide.length == 0) {
-		return prevFilter ? prevFilter : [];
-	} if (!prevFilter || prevFilter.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
 		return digheValide;
 	} else {
 		// intersezione
-		return intersecArray(prevFilter, digheValide);
+		return intersecArray(actualResult, digheValide);
 	}
 }
 
@@ -365,16 +482,15 @@ export function getBE_A(tipo, prevFilter, automa, ordine) {
  * prevFilter: filtro precedente (se presente)
  * automa: l'automa da usare
  * @param {string} tipo
- * @param {string[]} prevFilter
  * @param {string} automa
 **/
-export function getBE_B(tipo, prevFilter, automa, ordine) {
+export function getBE_B(tipo, automa, ordine) {
 	if (centraliCostruite.length == 0) {
-		return prevFilter ? prevFilter : [];
+		return actualResult ? actualResult : [];
 	}
 	let centraliProprie = getCentraliDiProprieta(automa);
 	if (centraliProprie.length == 0) {
-		return prevFilter ? prevFilter : [];
+		return actualResult ? actualResult : [];
 	}
 	let condotte = [];
 	for (let i = 0; i < centraliProprie.length; i++) {
@@ -404,12 +520,12 @@ export function getBE_B(tipo, prevFilter, automa, ordine) {
 		}
 	}
 	if (digheValide.length == 0) {
-		return prevFilter ? prevFilter : [];
-	} if (!prevFilter || prevFilter.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
 		return digheValide;
 	} else {
 		// intersezione
-		return intersecArray(prevFilter, digheValide);
+		return intersecArray(actualResult, digheValide);
 	}
 }
 
@@ -419,10 +535,9 @@ export function getBE_B(tipo, prevFilter, automa, ordine) {
  * prevFilter: filtro precedente (se presente)
  * automa: l'automa da usare
  * @param {string} tipo
- * @param {string[]} prevFilter
  * @param {string} automa
 **/
-export function getBE_D(tipo, prevFilter, automa, ordine) {
+export function getBE_D(tipo, automa, ordine) {
 	let dighe = dighePay;
 	let digheValide = [];
 	for (let i = 0; i < dighe.length; i++) {
@@ -438,12 +553,12 @@ export function getBE_D(tipo, prevFilter, automa, ordine) {
 		}
 	}
 	if (digheValide.length == 0) {
-		return prevFilter ? prevFilter : [];
-	} if (!prevFilter || prevFilter.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
 		return digheValide;
 	} else {
 		// intersezione
-		return intersecArray(prevFilter, digheValide);
+		return intersecArray(actualResult, digheValide);
 	}
 }
 
@@ -453,12 +568,11 @@ export function getBE_D(tipo, prevFilter, automa, ordine) {
  * prevFilter: filtro precedente (se presente)
  * automa: l'automa da usare
  * @param {string} tipo
- * @param {string[]} prevFilter
  * @param {string} automa
 **/
-export function getBE_E(tipo, prevFilter, automa, ordine) {
+export function getBE_E(tipo, automa, ordine) {
 	if (centraliCostruite.length == 0) {
-		return prevFilter ? prevFilter : [];
+		return actualResult ? actualResult : [];
 	}
 	let digheValide = [];
 	// le dighe sotto alle centrali esistenti
@@ -555,12 +669,12 @@ export function getBE_E(tipo, prevFilter, automa, ordine) {
 		}
 	}
 	if (digheValide.length == 0) {
-		return prevFilter ? prevFilter : [];
-	} if (!prevFilter || prevFilter.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
 		return digheValide;
 	} else {
 		// intersezione
-		return intersecArray(prevFilter, digheValide);
+		return intersecArray(actualResult, digheValide);
 	}
 }
 
@@ -570,10 +684,9 @@ export function getBE_E(tipo, prevFilter, automa, ordine) {
  * prevFilter: filtro precedente (se presente)
  * automa: l'automa da usare
  * @param {string} tipo
- * @param {string[]} prevFilter
  * @param {string} automa
 **/
-export function getBE_F(tipo, prevFilter, automa, ordine) {
+export function getBE_F(tipo, automa, ordine) {
 	// i numeri destinazione sono dal 5 al 12
 	// cerco le condotte che portano lì e vedo quali di queste zone hanno dighe dell'automa o naturali o non ci sono dighe
 	// (guardando prima la P, se vuota, guardo la F)
@@ -622,12 +735,12 @@ export function getBE_F(tipo, prevFilter, automa, ordine) {
 		}
 	}
 	if (digheValide.length == 0) {
-		return prevFilter ? prevFilter : [];
-	} if (!prevFilter || prevFilter.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
 		return digheValide;
 	} else {
 		// intersezione
-		return intersecArray(prevFilter, digheValide);
+		return intersecArray(actualResult, digheValide);
 	}
 }
 
@@ -637,11 +750,10 @@ export function getBE_F(tipo, prevFilter, automa, ordine) {
  * prevFilter: filtro precedente (se presente)
  * automa: l'automa da usare
  * @param {string} tipo
- * @param {string[]} prevFilter
  * @param {string} automa
  * @param {string} ordine del tipo ACD o BAC
  */
-export function getBE_C(tipo, prevFilter, automa, ordine) {
+export function getBE_C(tipo, automa, ordine) {
 	let sorgentiPiene = [];
 	for (let i = 0; i < sorgentiGocce.length; i++) {
 		let sorg = sorgentiGocce[i];
@@ -733,12 +845,12 @@ export function getBE_C(tipo, prevFilter, automa, ordine) {
 		}
 	}
 	if (digheValide.length == 0) {
-		return prevFilter ? prevFilter : [];
-	} if (!prevFilter || prevFilter.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
 		return digheValide;
 	} else {
 		// intersezione
-		return intersecArray(prevFilter, digheValide);
+		return intersecArray(actualResult, digheValide);
 	}
 }
 
@@ -747,10 +859,9 @@ export function getBE_C(tipo, prevFilter, automa, ordine) {
  * tipo: 'B' o 'E' per Base o Elevazione
  * prevFilter: filtro precedente (se presente)
  * automa: l'automa da usare
- * @param {string[]} prevFilter
  * @param {string} numero primo numero da cui partire
  */
-export function getBE_Numero(prevFilter, numero) {
+export function getBE_Numero(numero) {
 	let counter = 0;
 	let actual = +numero;
 	while (counter < 10) {
@@ -758,15 +869,15 @@ export function getBE_Numero(prevFilter, numero) {
 		if (actual > 10) {
 			actual = 1;
 		}
-		let digaF = 'DF_' + numero;
-		if (!prevFilter) {
-			prevFilter = [];
+		let digaF = 'DF_' + actual;
+		if (!actualResult) {
+			actualResult = [];
 		}
-		if (prevFilter.includes(digaF)) {
+		if (actualResult.includes(digaF)) {
 			return [digaF];
 		}
-		let digaP = 'DP_' + numero;
-		if (prevFilter.includes(digaP)) {
+		let digaP = 'DP_' + actual;
+		if (actualResult.includes(digaP)) {
 			return [digaP];
 		}
 		counter++;
@@ -774,84 +885,164 @@ export function getBE_Numero(prevFilter, numero) {
 	return [];
 }
 
-export function getCO_0_SistemaCompleto(prevFilter, automa) {
-	// TODO
-	alert('Non ancora implementato getCO_0_SistemaCompleto');
+/**
+ * CONDOTTA, completamento sistema
+ * Da applicare come primo criterio
+ * @param {string} automa
+**/
+export function getCO_0_SistemaCompleto(automa) {
+	let centraliProprie = getCentraliDiProprieta(automa);
+	if (centraliProprie.length == 0) {
+		return [];
+	}
+	let condotte = [];
+	for (let i = 0; i < centraliProprie.length; i++) {
+		let currCondotte = centraliCondotte[centraliProprie[i]];
+		for (let j = 0; j < currCondotte.length; j++) {
+			if (!getProprietarioCondotta(currCondotte[j])) {
+				condotte.push(currCondotte[j]);
+			}
+		}
+	}
+	let condotteValide = [];
+	for (const condotta of condotte) {
+		let currDighe = condotteDighe[condotta];
+		for (const diga of currDighe) {
+			if (getProprietarioDiga(diga) &&
+				(getProprietarioDiga(diga) == automa || getProprietarioDiga(diga) == 'N')) {
+				condotteValide.push(condotta);
+				break;
+			}
+		}
+	}
+	if (condotteValide.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
+		return condotteValide;
+	} else {
+		// intersezione
+		return intersecArray(actualResult, condotteValide);
+	}
 }
 
-export function getCO_Numero(prevFilter, automa) {
-	// TODO
-	alert('Non ancora implementato getCO_Numero');
+/**
+ * CONDOTTA, numero
+ * @param {string} numeroLettera primo numero da cui partire (tipo 7B)
+ */
+export function getCO_Numero(numeroLettera) {
+	let counter = 0;
+	let numero = numeroLettera.substring(0, numeroLettera.length - 1);
+	let lettera = numeroLettera.substr(numeroLettera.length - 1, 1);
+	let actual = +numero;
+	while (counter < 10) {
+		actual = actual + counter;
+		if (actual > 10) {
+			actual = 1;
+		}
+		if (lettera == 'A') {
+			let condottaA = 'C_' + actual + 'A';
+			if (!actualResult) {
+				actualResult = [];
+			}
+			if (actualResult.includes(condottaA)) {
+				return [condottaA];
+			}
+		}
+		let condottaB = 'C_' + actual + 'B';
+		if (!actualResult) {
+			actualResult = [];
+		}
+		if (actualResult.includes(condottaB)) {
+			return [condottaB];
+		}
+		lettera = 'A';
+		counter++;
+	}
+	return [];
 }
 
-export function getCO_G(min, max, prevFilter, automa) {
+export function getCO_G(min, max, automa) {
 	// TODO
 	alert('Non ancora implementato getCO_G');
+	return [];
 }
 
-export function getCO_H(min, max, prevFilter, automa) {
+export function getCO_H(min, max, automa) {
 	// TODO
 	alert('Non ancora implementato getCO_H');
+	return [];
 }
 
-export function getCO_I(min, max, prevFilter, automa) {
+export function getCO_I(min, max, automa) {
 	// TODO
 	alert('Non ancora implementato getCO_I');
+	return [];
 }
 
-export function getCO_J(min, max, prevFilter, automa) {
+export function getCO_J(min, max, automa) {
 	// TODO
 	alert('Non ancora implementato getCO_J');
+	return [];
 }
 
-export function getCO_K(min, max, prevFilter, automa) {
+export function getCO_K(min, max, automa) {
 	// TODO
 	alert('Non ancora implementato getCO_K');
+	return [];
 }
 
-export function getCO_L(min, max, prevFilter, automa) {
+export function getCO_L(min, max, automa) {
 	// TODO
 	alert('Non ancora implementato getCO_L');
+	return [];
 }
 
-export function getCE_0_SistemaCompleto(prevFilter, automa) {
+export function getCE_0_SistemaCompleto(automa) {
 	// TODO
 	alert('Non ancora implementato getCE_0_SistemaCompleto');
+	return [];
 }
 
-export function getCE_Numero(prevFilter, automa) {
+export function getCE_Numero(automa) {
 	// TODO
 	alert('Non ancora implementato getCE_Numero');
+	return [];
 }
 
-export function getCE_M(prevFilter, automa) {
+export function getCE_M(automa) {
 	// TODO
 	alert('Non ancora implementato getCE_M');
+	return [];
 }
 
-export function getCE_N(prevFilter, automa) {
+export function getCE_N(automa) {
 	// TODO
 	alert('Non ancora implementato getCE_N');
+	return [];
 }
 
-export function getCE_OP(prevFilter, automa) {
+export function getCE_OP(automa) {
 	// TODO
 	alert('Non ancora implementato getCE_OP');
+	return [];
 }
 
-export function getCE_P(numero, prevFilter, automa) {
+export function getCE_P(numero, automa) {
 	// TODO
 	alert('Non ancora implementato getCE_P');
+	return [];
 }
 
-export function getCE_Q(prevFilter, automa) {
+export function getCE_Q(automa) {
 	// TODO
 	alert('Non ancora implementato getCE_Q');
+	return [];
 }
 
-export function getCE_R(prevFilter, automa) {
+export function getCE_R(automa) {
 	// TODO
 	alert('Non ancora implementato getCE_R');
+	return [];
 }
 
 /////////////// METODI CHIAMATI DA PULSANTI
@@ -860,6 +1051,8 @@ export function getCE_R(prevFilter, automa) {
  * @param {string} sorgente
  */
 export function addGocciaSorgente(sorgente) {
+	resetRisultati();
+	resetAzioni();
 	let gocceSorg = undefined;
 	for (let i = 0; i < sorgentiGocce.length; i++) {
 		if (sorgentiGocce[i].sorgente == sorgente) {
@@ -892,6 +1085,8 @@ export function addGocciaSorgente(sorgente) {
  * @param {string} diga
  */
 export function addGocciaDiga(diga) {
+	resetRisultati();
+	resetAzioni();
 	let gocceDig = undefined;
 	for (let i = 0; i < digheGocce.length; i++) {
 		if (digheGocce[i].diga == diga) {
@@ -925,6 +1120,7 @@ export function addGocciaDiga(diga) {
  */
 export function addDiga(diga) {
 	resetRisultati();
+	resetAzioni();
 	let chi = playerSelected;
 	if (chi == undefined) {
 		return;
@@ -970,6 +1166,7 @@ export function addDiga(diga) {
  */
 export function addCondotta(condotta) {
 	resetRisultati();
+	resetAzioni();
 	let chi = playerSelected;
 	if (chi == undefined || chi == 'N') {
 		return;
@@ -1005,6 +1202,7 @@ export function addCondotta(condotta) {
  */
 export function addCentrale(centrale) {
 	resetRisultati();
+	resetAzioni();
 	let chi = playerSelected;
 	if (chi == undefined || chi == 'N') {
 		return;

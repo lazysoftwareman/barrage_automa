@@ -1,6 +1,6 @@
+import { actualResult } from './barrage.js';
 import { azioni, carteAzioni, carteCriteri, curCartaAzioni, curCartaCriteri } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay } from './mappa.js';
-import { printArray } from './provider.js';
 
 // @ts-check
 export function initDiminesions() {
@@ -40,14 +40,28 @@ export function mostraAzioni() {
     for (const az of azioniInCarta) {
         document.getElementById('azione_' + az).style.borderColor = 'var(--selectionColor)';
     }
+    //Riordino
+    const divs = [];
+    for (const azione of azioni) {
+        divs[azione] = document.getElementById('azione_' + azione);
+    }
+    document.getElementById('mappaToolbar').innerHTML = '';
+    for (const az of azioniInCarta) {
+        document.getElementById('mappaToolbar').appendChild(divs[az]);
+    }
+    for (const az of azioni) {
+        if (!azioniInCarta.includes(az)) {
+            document.getElementById('mappaToolbar').appendChild(divs[az]);
+        }
+    }
 }
 
 /**
  * Mostra i risultati del filtraggio
  * @param {string[]} output 
  */
-export function mostraRisultati(outputs) {
-    for (const output of outputs) {
+export function mostraRisultati() {
+    for (const output of actualResult) {
         const element = document.getElementById('area' + output);
         if (element) {
             element.style.borderColor = 'var(--selectionColor)';
@@ -55,7 +69,7 @@ export function mostraRisultati(outputs) {
             element.style.backgroundColor = 'rgba(227, 175, 84, 0.5)';
         }
     }
-    alert(printArray(outputs));
+    // alert(printArray(actualResult));
 }
 
 export function resetRisultati() {
