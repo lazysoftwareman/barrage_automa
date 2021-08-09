@@ -6,4 +6,4 @@ import * as tests from './tests.js';
 import * as provider from './provider.js';
 import * as deck from './deck.js';
 import * as view from './view.js';
-import * as old from './old.js';
+import * as playersPage from './playersPage.js';

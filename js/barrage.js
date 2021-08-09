@@ -42,13 +42,7 @@ export let digheGocce = [];
 export let sorgentiGocce = [];
 
 export let playerMap = [];
-playerMap['U'] = 'P1';
-playerMap['A'] = 'P2';
-playerMap['N'] = 'P0';
 export let playerColor = [];
-playerColor['U'] = 'G';
-playerColor['A'] = 'R';
-playerColor['N'] = 'N';
 
 export let criterioPasso = 0;
 export let actualResult = [];
@@ -66,14 +60,26 @@ export function resetInputs() {
 /////////////// BL CRITERI
 
 export function azioneCostruisci(azione) {
-	// questo solo quando ci sarà il multiautoma
-	// if (!playerSelected.startsWith('A')) {
-	// 	return;
-	// }
+	let automa;
+	let automaCount = 0;
+	for (const player in playerMap) {
+		if (player.startsWith('A')) {
+			automaCount++;
+		}
+	}
+	if (automaCount > 1) {
+		if (!playerSelected || !playerSelected.startsWith('A')) {
+			alert('Bisogna selezionare l\'automa che vuole costruire');
+			return;
+		} else {
+			automa = playerSelected;
+		}
+	} else {
+		automa = 'A';
+	}
 	resetRisultati();
 	resetAzioni();
-	setAzioneContinua(azione)
-	const automa = 'A';
+	setAzioneContinua(azione);
 	if (!curCartaCriteri) {
 		alert('Bisogna pescare una carta criteri affinché l\'automa possa costruire')
 		return;
@@ -107,12 +113,24 @@ export function azioneCostruisci(azione) {
 }
 
 export function azioneCostruisciContinua(azione) {
-	// questo solo quando ci sarà il multiautoma
-	// if (!playerSelected.startsWith('A')) {
-	// 	return;
-	// }
+	let automa;
+	let automaCount = 0;
+	for (const player in playerMap) {
+		if (player.startsWith('A')) {
+			automaCount++;
+		}
+	}
+	if (automaCount > 1) {
+		if (!playerSelected || !playerSelected.startsWith('A')) {
+			alert('Bisogna selezionare l\'automa che vuole costruire');
+			return;
+		} else {
+			automa = playerSelected;
+		}
+	} else {
+		automa = 'A';
+	}
 	resetRisultati();
-	const automa = 'A';
 	if (!curCartaCriteri) {
 		alert('Bisogna pescare una carta criteri affinché l\'automa possa costruire')
 		return;

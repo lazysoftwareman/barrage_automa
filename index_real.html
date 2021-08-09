@@ -10,7 +10,7 @@
 	<script type="module" src="js/app.js"></script>
 </head>
 
-<body>
+<body onload='initPlayersPage();'>
 	<!-- <div class="titolo">
 		<span>Barrage Automa</span>
 		<input type="button" value="testBE_Condotta1" id="testBE_Condotta1" />
@@ -23,6 +23,28 @@
 	</div> -->
 	<div id="mainContainer">
 		<div id="deckContainer" class="deck">
+			<div id="playersContainer">
+				<div id="playersTitoli">
+					<div>Giocatore</div>
+					<div>Colore</div>
+				</div>
+				<div id="playersP1" class="playersRow">
+					<div id="playerP1" class="playerChoose">AUTOMA 1</div>
+					<div id="colorP1" class="colorChoose"></div>
+				</div>
+				<div id="playersP2" class="playersRow">
+					<div id="playerP2" class="playerChoose">UMANO 1</div>
+					<div id="colorP2" class="colorChoose"></div>
+				</div>
+				<div id="playersP3" class="playersRow">
+					<div id="playerP3" class="playerChoose"></div>
+					<div id="colorP3" class="colorChoose"></div>
+				</div>
+				<div id="playersP4" class="playersRow">
+					<div id="playerP4" class="playerChoose"></div>
+					<div id="colorP4" class="colorChoose"></div>
+				</div>
+			</div>
 			<a href="main.html">
 				<div id="startButton">START</div>
 			</a>

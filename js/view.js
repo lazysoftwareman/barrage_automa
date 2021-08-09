@@ -1,4 +1,4 @@
-import { actualResult } from './barrage.js';
+import { actualResult, playerColor, playerMap } from './barrage.js';
 import { azioni, carteAzioni, carteCriteri, curCartaAzioni, curCartaCriteri } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay } from './mappa.js';
 
@@ -29,6 +29,45 @@ export function mostraCarte() {
     } else {
         document.getElementById('criteriText').innerHTML = '';
     }
+}
+
+export function mostraPlayers() {
+    let playersCount = 0;
+    for (const player in playerMap) {
+        playersCount++;
+    }
+    if (playersCount < 5) {
+        document.getElementById('P0_Selector').style.left = 'calc(((100vw - 61.8vh) / 2) + 4.5vh)';
+        document.getElementById('P4_Selector').style.display = 'none';
+        if (playersCount < 4) {
+            document.getElementById('P3_Selector').style.display = 'none';
+        }
+    }
+    for (const player in playerColor) {
+        const pNum = playerMap[player];
+        if (pNum != 'P0') {
+            const color = playerColor[player];
+            let colorCss;
+            if (color == 'G') {
+                colorCss = 'var(--greenPlayer)';
+            } else if (color == 'R') {
+                colorCss = 'var(--redPlayer)';
+            } else if (color == 'W') {
+                colorCss = 'var(--whitePlayer)';
+            } else {
+                colorCss = 'var(--blackPlayer)';
+            }
+            document.getElementById(pNum + '_Selector').innerHTML = player;
+            document.getElementById(pNum + '_Selector').style.backgroundColor = colorCss;
+            if (color == 'W') {
+                document.getElementById(pNum + '_Selector').style.color = 'var(--blackPlayer)';
+            } else {
+                document.getElementById(pNum + '_Selector').style.color = 'var(--borderColor)';
+            }
+        }
+
+    }
+    // TODO
 }
 
 export function mostraAzioni() {
