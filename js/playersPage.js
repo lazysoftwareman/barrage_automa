@@ -25,8 +25,25 @@ export function initPlayersPage() {
     }
 }
 
-export function changeColor(player) {
-
+export function changeColor(num) {
+    const actualColor = colorChosen[num - 1];
+    if (!actualColor) {
+        return;
+    }
+    let idx = colors.indexOf(actualColor);
+    idx++;
+    if (idx > 3) {
+        idx = 0;
+    }
+    const newColor = colors[idx];
+    let oldIdx = colorChosen.indexOf(newColor);
+    if (oldIdx >= 0) {
+        colorChosen[oldIdx] = actualColor;
+        document.getElementById('colorP' + (oldIdx + 1)).style.backgroundColor = colorsCss[actualColor];
+    }
+    colorChosen[num - 1] = newColor;
+    document.getElementById('colorP' + num).style.backgroundColor = colorsCss[newColor];
+    aggiornaParametri();
 }
 
 export function changePlayer(num) {
@@ -35,7 +52,19 @@ export function changePlayer(num) {
     }
     let players = [];
     if (num == 3) {
-        players = ['U2', 'A2'];
+        if (!playersChosen[3]) {
+            players = ['U2', 'A2'];
+        } else {
+            const player = playersChosen[3];
+            const num = player.substr(1, 1);
+            if (num == '3') {
+                players = ['U2', 'A2'];
+            } else {
+                const lettera = player.substr(0, 1);
+                const altra = lettera == 'A' ? 'U' : 'A';
+                players = [altra + '2', lettera + '3'];
+            }
+        }
     } else {
         const chosen3 = playersChosen[2];
         const other = chosen3 == 'U2' ? 'A2' : 'U2';
@@ -76,19 +105,29 @@ export function changePlayer(num) {
             }
             if (playersChosen[3]) {
                 playersChosen.splice(3, 1);
-                document.getElementById('playerP4').innerHTML = '';
+                document.getElementById('playerP4').innerHTML = '&nbsp;';
             }
         }
-        if (colorChosen[2]) {
-            colorChosen.splice(2, 1);
-            document.getElementById('colorP3').style.backgroundColor = 'transparent';
+        if (colorChosen[num - 1]) {
+            colorChosen.splice(num - 1, 1);
+            document.getElementById('colorP' + num).style.backgroundColor = 'transparent';
         }
-        if (playersChosen[2]) {
-            playersChosen.splice(2, 1);
-            document.getElementById('playerP3').innerHTML = '';
+        if (playersChosen[num - 1]) {
+            playersChosen.splice(num - 1, 1);
+            document.getElementById('playerP' + num).innerHTML = '&nbsp;';
         }
     }
+    aggiornaParametri();
+}
 
-
-
+export function aggiornaParametri() {
+    let href = 'main.html?';
+    for (let i = 0; i < playersChosen.length; i++) {
+        if (i != 0) {
+            href += '&';
+        }
+        href += playersChosen[i] + '=' + colorChosen[i];
+    }
+    // @ts-ignore
+    document.getElementById('aMain').href = href;
 }

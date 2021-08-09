@@ -1,5 +1,5 @@
 import { actualResult, playerColor, playerMap } from './barrage.js';
-import { azioni, carteAzioni, carteCriteri, curCartaAzioni, curCartaCriteri } from './deck.js';
+import { azioni, carteAzioni, carteCriteri, curCartaAzioni, curCartaCriteri, deckSize, indice } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay } from './mappa.js';
 
 // @ts-check
@@ -22,13 +22,17 @@ export function hideMappa() {
 export function mostraCarte() {
     if (curCartaAzioni) {
         document.getElementById('cartaF').src = 'img/deck/f_' + curCartaAzioni + '.jpg';
+    } else {
+        document.getElementById('cartaF').src = '';
     }
     if (curCartaCriteri) {
         document.getElementById('cartaB').src = 'img/deck/b_' + curCartaCriteri + '.jpg';
         document.getElementById('criteriText').innerHTML = carteCriteri[curCartaCriteri];
     } else {
+        document.getElementById('cartaB').src = '';
         document.getElementById('criteriText').innerHTML = '';
     }
+    document.getElementById('cartePescate').innerHTML = '' + indice + ' / ' + deckSize;
 }
 
 export function mostraPlayers() {
@@ -67,12 +71,11 @@ export function mostraPlayers() {
         }
 
     }
-    // TODO
 }
 
 export function mostraAzioni() {
     let currentAzioni = carteAzioni[curCartaAzioni];
-    let azioniInCarta = currentAzioni.split('_').filter((az) => az.startsWith('C'));
+    let azioniInCarta = currentAzioni ? currentAzioni.split('_').filter((az) => az.startsWith('C')) : [];
     for (const az of azioni) {
         document.getElementById('azione_' + az).style.borderColor = 'var(--borderColor)';
     }

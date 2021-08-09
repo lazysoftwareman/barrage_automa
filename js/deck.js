@@ -95,6 +95,7 @@ export function mescola() {
 
 export function pesca() {
     if (indice >= deckSize) {
+        resetMazzo();
         initMazzo();
     }
     indice++;

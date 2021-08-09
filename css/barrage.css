@@ -13,7 +13,19 @@
 	/* Dimensions */
 	--vh: 1vh;
   }
-
+/* oranienbaum-regular - latin */
+@font-face {
+	font-family: 'Oranienbaum';
+	font-style: normal;
+	font-weight: 400;
+	src: url('../fonts/oranienbaum-v10-latin-regular.eot'); /* IE9 Compat Modes */
+	src: local(''),
+		 url('../fonts/oranienbaum-v10-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+		 url('../fonts/oranienbaum-v10-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+		 url('../fonts/oranienbaum-v10-latin-regular.woff') format('woff'), /* Modern Browsers */
+		 url('../fonts/oranienbaum-v10-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+		 url('../fonts/oranienbaum-v10-latin-regular.svg#Oranienbaum') format('svg'); /* Legacy iOS */
+  }
 html {
 	width: 100%;
 	height: -webkit-fill-available;
@@ -24,7 +36,7 @@ body {
 	font-size: 1em;
 	background-image: linear-gradient(#fefefe, #ccb454, #439952);
 	color: #422;
-	font-family: Serif;
+	font-family: Oranienbaum;
 	overflow: hidden;
 	height: 100%;
     width: 100%;
@@ -664,6 +676,7 @@ body {
 }
 #cartaAzioni {
 	border: solid 2px var(--blackColor);
+	cursor: pointer;
 }
 #cartaCriteri {
 	margin-top: 1vh;
@@ -686,8 +699,17 @@ body {
 	top: 1.2vh;
 	left: calc(50vw + var(--vh)*26 - 2.7vh);
 	background-color: var(--selectionColor);
+	cursor: pointer;
 }
+#footerCarte {
+	margin-top: 1vh;
+	font-size: 10pt;
+	text-align: left;
+	width: calc(var(--vh)*52.4);
+	margin-left: auto;
+	margin-right: auto;
 
+}
 
 
 
@@ -696,17 +718,21 @@ body {
 	display: table;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: 15vh;
 }
-#playersTitoli, .playersRow{	
+#playersTitoli, .playersRow {	
 	display: table-row;
 }
-#playersTitoli div{	
+.playerCell {
+	display: table-cell;
+}
+#playersTitoli div {	
 	display: table-cell;
 }
 .playerChoose {
-	display: table-cell;
-	width: 15vh;
+	width: 12vh;
 	height: 2.5vh;
+	margin-right: 1vh;
     vertical-align: middle;
     text-align: center;
 	line-height: 2.5vh;
@@ -714,12 +740,13 @@ body {
 	color: var(--blackColor);
 	border: solid 2px var(--blackColor);
 	border-radius: 5px;
-	background-color: whitesmoke;	
+	background-color: whitesmoke;
+	cursor: pointer;
 }
 .colorChoose {
-	display: table-cell;	
 	width: 2.5vh;
 	height: 2.5vh;
+	margin-left: 1vh;
     vertical-align: middle;
     text-align: center;
 	line-height: 2.5vh;
@@ -728,6 +755,7 @@ body {
 	border: solid 2px var(--blackColor);
 	border-radius: 5px;
 	background-color: transparent;
+	cursor: pointer;
 }
 #startButton {	
 	width: 10vh;
@@ -743,9 +771,15 @@ body {
 	top: 50vh;
 	left: calc(50vw - 5vh);
 	background-color: var(--selectionColor);
+	cursor: pointer;
 }
 
-
+.titolo {
+	font-size: 24pt;
+}
+.descrizione {
+	text-align: justify;
+}
 
 
 
