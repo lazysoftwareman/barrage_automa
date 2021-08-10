@@ -12,6 +12,8 @@
 	--nullPlayer: #9d734a;
 	/* Dimensions */
 	--vh: 1vh;
+	--mh: 1vh;
+	--mw: 1vw;
   }
 /* oranienbaum-regular - latin */
 @font-face {
@@ -28,10 +30,10 @@
   }
 html {
 	width: 100%;
-	height: -webkit-fill-available;
+	height: 100%;
 }
 body {
-	min-height: 100vh;
+	min-height: 100%;
 	min-height: -webkit-fill-available;
 	font-size: 1em;
 	background-image: linear-gradient(#fefefe, #ccb454, #439952);
@@ -44,16 +46,17 @@ body {
 }
 
 #mainContainer {	
-	height: calc(var(--vh)*100);
+	/* height: calc(var(--vh)*100); */
+	height: 100%;
 	width: 100%;
 }
 
 .mappa {
 	margin-left: auto;
     margin-right: auto;
-	margin-top: 5vh;
-	height: 90vh;
-	width: 61.8vh;
+	margin-top: calc(var(--vh)*5);
+	height: 90%;
+	width: calc(var(--vh)*61.8);
 	font-size: 12pt;
 	border-radius: 4px;
 	display: block;
@@ -69,9 +72,9 @@ body {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	top: 0.25vh;
-	width: 57.5vh;
-	height: 4vh;
+	top: 0.25%;
+	width: calc(var(--vh)*57.5);
+	height: 4%;
 	border: 3px solid var(--blackColor);
 	background-color: #4a4a4a;
 	border-radius: 5px;
@@ -132,15 +135,15 @@ body {
 #footer {
 	margin-left: auto;
     margin-right: auto;
-	height: 5vh;
-	width: 61.8vh;
+	height: calc(var(--vh)*5);
+	width: calc(var(--vh)*61.8);
 	position: absolute;
 	bottom: 0vh;
 	font-size: 10pt;
 	display: block;
     min-width: 250px;
 	text-align: left;
-	line-height: 5vh;
+	line-height: calc(var(--vh)*5);
 }
 #deckSwitch {	
 	width: 2.5vh;
@@ -153,16 +156,25 @@ body {
 	border: solid 2px var(--blackColor);
 	border-radius: 5px;
 	position: absolute;
-	top: 1.2vh;
+	top: 1.2%;
 	left: calc(((100vw + 61.8vh) / 2) - 2.9vh);
 	background-color: var(--selectionColor);
 	cursor: pointer;
 }
 .rigaArea {
-	width: 61.8vh;
+	width: calc(var(--vh)*61.8);
 	display: flex;
 	flex-direction: row;
 	position: absolute;
+}
+.rigaDiga {
+	height: calc(var(--mh)*3.5);
+}
+.rigaCondotta {
+	height: calc(var(--mh)*4.5);
+}
+.rigaCentrale {
+	height: calc(var(--mh)*2.5);
 }
 .area {
 	display: block;
@@ -187,8 +199,8 @@ body {
 	color: var(--borderColor);
 }
 .areaDiga {
-	width: 4.2vh;
-	height: 3.3vh;
+	width: 7%;
+	height: 100%;
 	border: solid 2px var(--borderColor);
 	border-radius: 5px;
 }
@@ -206,8 +218,8 @@ body {
 	color: var(--borderColor);
 }
 .areaCondotta {
-	width: 2.6vh;
-	height: 2.6vh;
+	width: 4.5%;
+	height: 65%;
 	border: solid 2px var(--borderColor);
 	border-radius: 1.4vh;
 }
@@ -220,8 +232,8 @@ body {
 	height: 100%;
 }
 .areaCentrale {
-	width: 4.9vh;
-	height: 2.7vh;
+	width: 8%;
+	height: 100%;
 	border: solid 2px var(--borderColor);
 	border-radius: 5px;
 }
@@ -237,98 +249,102 @@ body {
 /* Righe */
 
 #rigaS {
-	top: 8%;
+    top: calc(var(--vh)*5 + var(--mh)*4);
+    height: calc(var(--mh)*4.5);
 }
 #rigaS .areaBacino {
-	width: 7.6vh;
-	height: 4.5vh;
+	width: 13%;
+	height: 100%;
 }
 #rigaDP_14G {
-	top: 16.7%;
+	height: calc(var(--mh)*4.5);
+	top: calc(var(--vh)*5 + var(--mh)*13.5);
 }
 #rigaDP_14G .areaBacino {
-	width: 7.6vh;
-	height: 4.5vh;
+	width: 13%;
+	height: 100%;
 }
 #rigaDP_14 {
-	top: 21.6%;
+	top: calc(var(--vh)*5 + var(--mh)*18.5);
 }
 #rigaC_14 {
-	top: 25.3%;
+	top: calc(var(--vh)*5 + var(--mh)*23);
 }
 #rigaC_14 .areaBacino {
-	width: 5.3vh;
-	height: 3.7vh;
+	width: 8.5%;
+	height: 90%;
 }
 #rigaC_14 .areaCondotta {
-	top: 0.6vh;
+	top: 12%;
 }
 #rigaDF_14 {
-	top: 29.5%;
+	top: calc(var(--vh)*5 + var(--mh)*27.5);
 }
 #rigaCP_57 {
-	top: 38%;
+	top: calc(var(--vh)*5 + var(--mh)*37);
 }
 #rigaCF_57 {
-	top: 40.8%;
+	top: calc(var(--vh)*5 + var(--mh)*40);
 }
 #rigaDP_57G {
-	top: 44%;
+	height: calc(var(--mh)*4);
+	top: calc(var(--vh)*5 + var(--mh)*43);
 }
 #rigaDP_57G .areaBacino {
-	width: 7.6vh;
-	height: 3.5vh;
+	width: 13%;
+	height: 100%;
 }
 #rigaDP_57 {
-	top: 47.8%;
+	top: calc(var(--vh)*5 + var(--mh)*47.6);
 }
 #rigaC_57 {
-	top: 51.5%;
+	top: calc(var(--vh)*5 + var(--mh)*52);
 }
 #rigaC_57 .areaBacino {
-	width: 5.3vh;
-	height: 3.7vh;
+	width: 8.5%;
+	height: 90%;
 }
 #rigaC_57 .areaCondotta {
-	top: 0.6vh;
+	top: 12%;
 }
 #rigaDF_57 {
-	top: 55.5%;
+	top: calc(var(--vh)*5 + var(--mh)*56.6);
 }
 #rigaCP_810 {	
-	top: 62%;
+	top: calc(var(--vh)*5 + var(--mh)*63.7);
 }
 #rigaCF_810 {	
-	top: 64.8%;
+	top: calc(var(--vh)*5 + var(--mh)*66.7);
 }
 #rigaDP_810G {
-	top: 68%;
+	height: calc(var(--mh)*4);
+	top: calc(var(--vh)*5 + var(--mh)*70);
 }
 #rigaDP_810G .areaBacino {
-	width: 7.6vh;
-	height: 3.5vh;
+	width: 13%;
+	height: 100%;
 }
 #rigaDP_810 {
-	top: 71.8%;
+	top: calc(var(--vh)*5 + var(--mh)*74.5);
 }
 #rigaC_810 {
-	top: 75.5%;
+	top: calc(var(--vh)*5 + var(--mh)*78.6);
 }
 #rigaC_810 .areaBacino {
-	width: 5.3vh;
-	height: 3.7vh;
+	width: 8.5%;
+	height: 90%;
 }
 #rigaC_810 .areaCondotta {
-	top: 0.6vh;
+	top: 12%;
 }
 #rigaDF_810 {
-	top: 79.5%;
+	top: calc(var(--vh)*5 + var(--mh)*83);
 }
 #rigaCP_1112 {	
-	top: 87.4%;
+	top: calc(var(--vh)*5 + var(--mh)*91.9);
 }
 #rigaCF_1112 {	
-	top: 90.3%;
+	top: calc(var(--vh)*5 + var(--mh)*94.8);
 }
 
 /* Aree */
@@ -621,29 +637,29 @@ body {
 	cursor: pointer;
 }
 #P1_Selector {
-	bottom: 9.5vh;
-	left: calc(((100vw - 61.8vh) / 2) + 1vh);
+	bottom: 9.5%;
+	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*1.6);
 	background-color: var(--greenPlayer);
 }
 #P2_Selector {
-	bottom: 6vh;
-	left: calc(((100vw - 61.8vh) / 2) + 1vh);
+	bottom: 6%;
+	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*1.6);
 	background-color: var(--redPlayer);
 }
 #P3_Selector {
-	bottom: 9.5vh;
-	left: calc(((100vw - 61.8vh) / 2) + 4.5vh);
+	bottom: 9.5%;
+	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*7.5);
 	background-color: var(--whitePlayer);
 	color: var(--blackPlayer);
 }
 #P4_Selector {
-	bottom: 6vh;
-	left: calc(((100vw - 61.8vh) / 2) + 4.5vh);
+	bottom: 6%;
+	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*7.5);
 	background-color: var(--blackPlayer);
 }
 #P0_Selector {
-	bottom: 6vh;
-	left: calc(((100vw - 61.8vh) / 2) + 8vh);
+	bottom: 6%;
+	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*13.5);
 	background-color: var(--nullPlayer);
 }
 
@@ -666,7 +682,7 @@ body {
 }
 .cartaContainer {
 	box-sizing: border-box;
-	height: 39.5%;
+	height: calc(var(--vh)*35.7);
 	width: calc(var(--vh)*52.4);
 	margin-left: auto;
 	margin-right: auto;
@@ -713,7 +729,18 @@ body {
 
 
 
-
+#playersPageContainer {
+	margin-left: auto;
+    margin-right: auto;
+    margin-top: calc(var(--vh) * 5);
+	margin-bottom: calc(var(--vh) * 5);;
+	height: 90%;
+	width: 33%;
+	font-size: 12pt;
+	border-radius: 4px;
+    min-width: 250px;
+	text-align: center;
+}
 #playersContainer {
 	display: table;
 	margin-left: auto;
@@ -783,3 +810,40 @@ body {
 
 
 
+@media only screen and (orientation: portrait) {
+	#playersPageContainer {
+		width: 96%;
+	}
+	.deck {
+		margin-top: 5%;
+		height: 90%;
+		width: 90%;
+	}
+	.cartaContainer {
+		height: calc(90vw * 0.68);
+		width: 100%;
+	}
+	#footerCarte {
+		width: 100%;
+	}
+	#mappaSwitch {
+		left: calc(94vw - 2.5vh); 
+	}
+	.mappa {
+		width: 96%;
+		height: calc(96vw * 1.453);
+		background-position: unset;
+	}
+	#mappaToolbar {
+		width: calc(92vw - 2.5vh);
+	}
+	#deckSwitch {
+		left: calc(97vw - 2.5vh)
+	}
+	#footer {
+		width: 96%;
+	}
+	.rigaArea {
+		width: 96%;
+	}
+}

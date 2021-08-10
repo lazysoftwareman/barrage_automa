@@ -7,11 +7,25 @@ export function initDiminesions() {
     let vh = window.innerHeight * 0.01;
     // Then we set the value in the --vh custom property to the root of the document
     document.documentElement.style.setProperty('--vh', `${vh}px`);
+    const mappa = document.getElementById('mappaContainer');
+    if (mappa) {
+        const height = mappa.clientHeight * 0.01;
+        const width = mappa.clientWidth * 0.01;
+        document.documentElement.style.setProperty('--mh', `${height}px`);
+        document.documentElement.style.setProperty('--mw', `${width}px`);
+    }
 }
 
 export function showMappa() {
     document.getElementById('deckContainer').style.display = 'none';
     document.getElementById('mappaContainer').style.display = 'block';
+    const mappa = document.getElementById('mappaContainer');
+    if (mappa) {
+        const height = mappa.clientHeight * 0.01;
+        const width = mappa.clientWidth * 0.01;
+        document.documentElement.style.setProperty('--mh', `${height}px`);
+        document.documentElement.style.setProperty('--mw', `${width}px`);
+    }
 }
 
 export function hideMappa() {
@@ -41,7 +55,7 @@ export function mostraPlayers() {
         playersCount++;
     }
     if (playersCount < 5) {
-        document.getElementById('P0_Selector').style.left = 'calc(((100vw - 61.8vh) / 2) + 4.5vh)';
+        document.getElementById('P0_Selector').style.left = 'calc(((100vw - var(--mw)*100) / 2) + var(--mw)*4.5)';
         document.getElementById('P4_Selector').style.display = 'none';
         if (playersCount < 4) {
             document.getElementById('P3_Selector').style.display = 'none';

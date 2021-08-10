@@ -1,4 +1,6 @@
 // @ts-check
+import { initDiminesions } from './view.js';
+
 
 // @ts-ignore
 window.initPlayersPage = initPlayersPage;
@@ -14,6 +16,7 @@ colorsCss['B'] = 'var(--blackPlayer)';
 colorsCss['W'] = 'var(--whitePlayer)';
 
 export function initPlayersPage() {
+    initDiminesions();
     for (let i = 0; i < 4; i++) {
         if (!playersChosen[i]) {
             document.getElementById('playerP' + (i + 1)).addEventListener('click', function () { changePlayer((i + 1)); }, false);
