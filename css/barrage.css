@@ -62,7 +62,7 @@ body {
 	display: block;
     min-width: 250px;
 	text-align: center;
-	background-image: url('../img/mappa_small.jpg');
+	background-image: url('../img/mappa_small2.jpg');
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: contain;
@@ -174,7 +174,7 @@ body {
 	height: calc(var(--mh)*4.5);
 }
 .rigaCentrale {
-	height: calc(var(--mh)*2.5);
+	height: calc(var(--mh)*3.5);
 }
 .area {
 	display: block;
@@ -218,10 +218,10 @@ body {
 	color: var(--borderColor);
 }
 .areaCondotta {
-	width: 4.5%;
-	height: 65%;
+	width: 6%;
+	height: 90%;
 	border: solid 2px var(--borderColor);
-	border-radius: 1.4vh;
+	border-radius: calc(var(--mw)*4);
 }
 .areaCondotta div {
 	height: 100%;
@@ -232,7 +232,7 @@ body {
 	height: 100%;
 }
 .areaCentrale {
-	width: 8%;
+	width: 7%;
 	height: 100%;
 	border: solid 2px var(--borderColor);
 	border-radius: 5px;
@@ -268,27 +268,27 @@ body {
 	top: calc(var(--vh)*5 + var(--mh)*18.5);
 }
 #rigaC_14 {
-	top: calc(var(--vh)*5 + var(--mh)*23);
+	top: calc(var(--vh)*5 + var(--mh)*22.7);
 }
 #rigaC_14 .areaBacino {
 	width: 8.5%;
 	height: 90%;
 }
-#rigaC_14 .areaCondotta {
+/* #rigaC_14 .areaCondotta {
 	top: 12%;
-}
+} */
 #rigaDF_14 {
-	top: calc(var(--vh)*5 + var(--mh)*27.5);
+	top: calc(var(--vh)*5 + var(--mh)*27.3);
 }
 #rigaCP_57 {
-	top: calc(var(--vh)*5 + var(--mh)*37);
+	top: calc(var(--vh)*5 + var(--mh)*35.5);
 }
 #rigaCF_57 {
-	top: calc(var(--vh)*5 + var(--mh)*40);
+	top: calc(var(--vh)*5 + var(--mh)*39.6);
 }
 #rigaDP_57G {
-	height: calc(var(--mh)*4);
-	top: calc(var(--vh)*5 + var(--mh)*43);
+	height: calc(var(--mh)*3.6);
+	top: calc(var(--vh)*5 + var(--mh)*43.5);
 }
 #rigaDP_57G .areaBacino {
 	width: 13%;
@@ -298,27 +298,27 @@ body {
 	top: calc(var(--vh)*5 + var(--mh)*47.6);
 }
 #rigaC_57 {
-	top: calc(var(--vh)*5 + var(--mh)*52);
+	top: calc(var(--vh)*5 + var(--mh)*51.7);
 }
 #rigaC_57 .areaBacino {
 	width: 8.5%;
 	height: 90%;
 }
-#rigaC_57 .areaCondotta {
+/* #rigaC_57 .areaCondotta {
 	top: 12%;
-}
+} */
 #rigaDF_57 {
-	top: calc(var(--vh)*5 + var(--mh)*56.6);
+	top: calc(var(--vh)*5 + var(--mh)*56.1);
 }
 #rigaCP_810 {	
-	top: calc(var(--vh)*5 + var(--mh)*63.7);
+	top: calc(var(--vh)*5 + var(--mh)*62.4);
 }
 #rigaCF_810 {	
 	top: calc(var(--vh)*5 + var(--mh)*66.7);
 }
 #rigaDP_810G {
-	height: calc(var(--mh)*4);
-	top: calc(var(--vh)*5 + var(--mh)*70);
+	height: calc(var(--mh)*3.5);
+	top: calc(var(--vh)*5 + var(--mh)*70.5);
 }
 #rigaDP_810G .areaBacino {
 	width: 13%;
@@ -334,17 +334,17 @@ body {
 	width: 8.5%;
 	height: 90%;
 }
-#rigaC_810 .areaCondotta {
+/* #rigaC_810 .areaCondotta {
 	top: 12%;
-}
+} */
 #rigaDF_810 {
 	top: calc(var(--vh)*5 + var(--mh)*83);
 }
 #rigaCP_1112 {	
-	top: calc(var(--vh)*5 + var(--mh)*91.9);
+	top: calc(var(--vh)*5 + var(--mh)*90.4);
 }
 #rigaCF_1112 {	
-	top: calc(var(--vh)*5 + var(--mh)*94.8);
+	top: calc(var(--vh)*5 + var(--mh)*94.7);
 }
 
 /* Aree */
@@ -383,10 +383,10 @@ body {
 	left: 59.5%;
 }
 #areaDP_4 {
-	left: 82%;
+	left: 81.8%;
 }
 #areaC_1A {
-	left: 7.5%;
+	left: 5.5%;
 }
 #areaDF_1G {
 	left: 12.2%;
@@ -395,25 +395,25 @@ body {
 	left: 21.5%;
 }
 #areaC_2A {
-	left: 30.5%;
+	left: 28.5%;
 }
 #areaDF_2G {
 	left: 35.3%;
 }
 #areaC_2B {
-	left: 44.4%;
+	left: 44.7%;
 }
 #areaC_3A {
-	left: 53.7%;
+	left: 51.7%;
 }
 #areaDF_3G {
 	left: 58.7%;
 }
 #areaC_3B {
-	left: 68%;
+	left: 67.7%;
 }
 #areaC_4A {
-	left: 76%;
+	left: 74.5%;
 }
 #areaDF_4G {
 	left: 80.9%;
@@ -431,25 +431,25 @@ body {
 	left: 59.5%;
 }
 #areaDF_4 {
-	left: 82%;
+	left: 81.7%;
 }
 #areaCP_5 {
-	left: 28.3%;
+	left: 29%;
 }
 #areaCP_6 {
-	left: 51.7%;
+	left: 52%;
 }
 #areaCP_7 {
-	left: 76%;
+	left: 76.5%;
 }
 #areaCF_5 {
-	left: 28.3%;
+	left: 29%;
 }
 #areaCF_6 {
-	left: 51.7%;
+	left: 52%;
 }
 #areaCF_7 {
-	left: 76%;
+	left: 76.5%;
 }
 #areaDP_5G {
 	left: 26%;
@@ -467,28 +467,28 @@ body {
 	left: 52%;
 }
 #areaDP_7 {
-	left: 77%;
+	left: 76.6%;
 }
 #areaC_5A {
-	left: 23.3%;
+	left: 21.3%;
 }
 #areaDF_5G {
 	left: 28.3%;
 }
 #areaC_5B {
-	left: 37.5%;
+	left: 37.3%;
 }
 #areaC_6A {
-	left: 46.6%;
+	left: 44.6%;
 }
 #areaDF_6G {
 	left: 51.6%;
 }
 #areaC_6B {
-	left: 60.8%;
+	left: 60.7%;
 }
 #areaC_7A {
-	left: 70.8%;
+	left: 68.8%;
 }
 #areaDF_7G {
 	left: 75.8%;
@@ -503,34 +503,34 @@ body {
 	left: 52%;
 }
 #areaDF_7 {
-	left: 77%;
+	left: 76.6%;
 }
 #areaCP_8 {
-	left: 16.8%;
+	left: 17.3%;
 }
 #areaCP_9 {
-	left: 40.9%;
+	left: 41.4%;
 }
 #areaCP_10A {
-	left: 61%;
+	left: 61.7%;
 }
 #areaCP_10B {
-	left: 69.4%;
+	left: 69.7%;
 }
 #areaCF_8A {
-	left: 12.7%;
+	left: 13.2%;
 }
 #areaCF_8B {
-	left: 21%;
+	left: 21.5%;
 }
 #areaCF_9A {
-	left: 36.8%;
+	left: 37.3%;
 }
 #areaCF_9B {
-	left: 45.1%;
+	left: 45.6%;
 }
 #areaCF_10 {
-	left: 65.2%;
+	left: 65.7%;
 }
 #areaDP_8G {
 	left: 14.5%;
@@ -542,16 +542,16 @@ body {
 	left: 62.5%;
 }
 #areaDP_8 {
-	left: 17.5%;
+	left: 17.3%;
 }
 #areaDP_9 {
-	left: 41.5%;
+	left: 41.3%;
 }
 #areaDP_10 {
-	left: 65.8%;
+	left: 65.6%;
 }
 #areaC_8A {
-	left: 11.8%;
+	left: 9.8%;
 }
 #areaDF_8G {
 	left: 16.8%;
@@ -560,7 +560,7 @@ body {
 	left: 26%;
 }
 #areaC_9A {
-	left: 35.6%;
+	left: 33.7%;
 }
 #areaDF_9G {
 	left: 40.6%;
@@ -569,7 +569,7 @@ body {
 	left: 49.8%;
 }
 #areaC_10A {
-	left: 60%;
+	left: 58%;
 }
 #areaDF_10G {
 	left: 65%;
@@ -587,28 +587,28 @@ body {
 	left: 65.8%;
 }
 #areaCP_11A {
-	left: 23.6%;
+	left: 24%;
 }
 #areaCP_11B {
-	left: 32%;
+	left: 32.2%;
 }
 #areaCP_12A {
-	left: 65.9%;
+	left: 66.6%;
 }
 #areaCP_12B {
-	left: 74.2%;
+	left: 74.5%;
 }
 #areaCF_11A {
-	left: 23.6%;
+	left: 24%;
 }
 #areaCF_11B {
-	left: 32%;
+	left: 32.2%;
 }
 #areaCF_12 {
-	left: 65.9%;
+	left: 66.6%;
 }
 #areaCP_12C {
-	left: 74.2%;
+	left: 74.5%;
 }
 
 
