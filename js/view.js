@@ -55,7 +55,7 @@ export function mostraPlayers() {
         playersCount++;
     }
     if (playersCount < 5) {
-        document.getElementById('P0_Selector').style.left = 'calc(((100vw - var(--mw)*100) / 2) + var(--mw)*4.5)';
+        document.getElementById('P0_Selector').style.left = 'calc(((100vw - var(--mw)*100) / 2) + var(--mw)*9)';
         document.getElementById('P4_Selector').style.display = 'none';
         if (playersCount < 4) {
             document.getElementById('P3_Selector').style.display = 'none';

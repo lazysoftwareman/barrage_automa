@@ -648,18 +648,18 @@ body {
 }
 #P3_Selector {
 	bottom: 9.5%;
-	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*7.5);
+	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*9);
 	background-color: var(--whitePlayer);
 	color: var(--blackPlayer);
 }
 #P4_Selector {
 	bottom: 6%;
-	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*7.5);
+	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*9);
 	background-color: var(--blackPlayer);
 }
 #P0_Selector {
 	bottom: 6%;
-	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*13.5);
+	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*16.5);
 	background-color: var(--nullPlayer);
 }
 
@@ -827,6 +827,8 @@ body {
 		width: 100%;
 	}
 	#mappaSwitch {
+		width: 5.5vw;
+		height: 5.5vw;
 		left: calc(94vw - 2.5vh); 
 	}
 	.mappa {
@@ -838,6 +840,8 @@ body {
 		width: calc(92vw - 2.5vh);
 	}
 	#deckSwitch {
+		width: 5.5vw;
+		height: 5.5vw;
 		left: calc(97vw - 2.5vh)
 	}
 	#footer {
@@ -845,5 +849,13 @@ body {
 	}
 	.rigaArea {
 		width: 96%;
+	}
+	.selector {	
+		width: 5.5vw;
+		height: 5.5vw;
+	}
+	.azioneButton {
+		width: 7.7vw;
+		height: 7.7vw;
 	}
 }
