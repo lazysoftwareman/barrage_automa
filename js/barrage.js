@@ -1,7 +1,16 @@
 // @ts-check
 import { carteCriteri, curCartaCriteri, resetMazzo } from './deck.js';
 import { resetAzioni, setAzioneContinua } from './init.js';
-import { centraliCondotte, condotteDighe, condotteVal, dighePay, percorsi, percorsiDi } from './mappa.js';
+import {
+    centraliCondotte,
+    condotte,
+    condotteDighe,
+    condotteVal,
+    digheFree,
+    dighePay,
+    percorsi,
+    percorsiDi,
+} from './mappa.js';
 import {
     getCapienzaDiga,
     getCentraliDiProprieta,
@@ -219,7 +228,7 @@ export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa) {
 		}
 		let lettera = criteri[position];
 		if (criterioPasso == 4) {
-			actualResult = window['get' + prefix + '_Numero'](lettera);
+			actualResult = window['get' + prefix + '_Numero'](tipo, lettera, automa);
 		} else {
 			if (prefix == 'BE') {
 				actualResult = window['getBE_' + lettera](tipo, automa, ordine);
@@ -249,6 +258,10 @@ export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa) {
 				return;
 			}
 		}
+	}
+	// Se finiti i criteri non ho risultati, mostro alert
+	if (!actualResult || actualResult.length == 0) {
+		alert('Non è possibile costruire la struttura selezionata')
 	}
 	// Finiti i criteri, resetto
 	criterioPasso = 0;
@@ -395,7 +408,7 @@ export function getBE_0_SistemaCompleto(tipo, automa) {
  * @param {string} tipo
  * @param {string} automa
  */
-export function getBE_A(tipo, automa, ordine) {
+export function getBE_A(tipo, automa, _ordine) {
 	if (condotteCostruite.length == 0) {
 		return actualResult ? actualResult : [];
 	}
@@ -502,7 +515,7 @@ export function getBE_A(tipo, automa, ordine) {
  * @param {string} tipo
  * @param {string} automa
 **/
-export function getBE_B(tipo, automa, ordine) {
+export function getBE_B(tipo, automa, _ordine) {
 	if (centraliCostruite.length == 0) {
 		return actualResult ? actualResult : [];
 	}
@@ -555,7 +568,7 @@ export function getBE_B(tipo, automa, ordine) {
  * @param {string} tipo
  * @param {string} automa
 **/
-export function getBE_D(tipo, automa, ordine) {
+export function getBE_D(tipo, automa, _ordine) {
 	let dighe = dighePay;
 	let digheValide = [];
 	for (let i = 0; i < dighe.length; i++) {
@@ -588,7 +601,7 @@ export function getBE_D(tipo, automa, ordine) {
  * @param {string} tipo
  * @param {string} automa
 **/
-export function getBE_E(tipo, automa, ordine) {
+export function getBE_E(tipo, automa, _ordine) {
 	if (centraliCostruite.length == 0) {
 		return actualResult ? actualResult : [];
 	}
@@ -704,7 +717,7 @@ export function getBE_E(tipo, automa, ordine) {
  * @param {string} tipo
  * @param {string} automa
 **/
-export function getBE_F(tipo, automa, ordine) {
+export function getBE_F(tipo, automa, _ordine) {
 	// i numeri destinazione sono dal 5 al 12
 	// cerco le condotte che portano lì e vedo quali di queste zone hanno dighe dell'automa o naturali o non ci sono dighe
 	// (guardando prima la P, se vuota, guardo la F)
@@ -879,7 +892,22 @@ export function getBE_C(tipo, automa, ordine) {
  * automa: l'automa da usare
  * @param {string} numero primo numero da cui partire
  */
-export function getBE_Numero(numero) {
+export function getBE_Numero(tipo, numero, automa) {
+	if (!actualResult || actualResult.length == 0) {
+		// Non ho trovato niente di valido finora. Considero tutte come valide
+		actualResult = [];
+		for (const diga of digheFree.concat(dighePay)) {
+			if (tipo == 'B') {
+				if (!getProprietarioDiga(diga)) {
+					actualResult.push(diga);
+				}
+			} else {
+				if (getProprietarioDiga(diga) && getProprietarioDiga(diga) == automa && getLivelloDiga(diga) < 3) {
+					actualResult.push(diga);
+				}
+			}
+		}
+	}
 	let counter = 0;
 	let actual = +numero;
 	while (counter < 10) {
@@ -888,9 +916,6 @@ export function getBE_Numero(numero) {
 			actual = 1;
 		}
 		let digaF = 'DF_' + actual;
-		if (!actualResult) {
-			actualResult = [];
-		}
 		if (actualResult.includes(digaF)) {
 			return [digaF];
 		}
@@ -947,7 +972,16 @@ export function getCO_0_SistemaCompleto(automa) {
  * CONDOTTA, numero
  * @param {string} numeroLettera primo numero da cui partire (tipo 7B)
  */
-export function getCO_Numero(numeroLettera) {
+export function getCO_Numero(_tipo, numeroLettera, _automa) {
+	if (!actualResult || actualResult.length == 0) {
+		// Non ho trovato niente di valido finora. Considero tutte come valide
+		actualResult = [];
+		for (const condotta of condotte) {
+			if (!getProprietarioCondotta(condotta)) {
+				actualResult.push(condotta);
+			}
+		}
+	}
 	let counter = 0;
 	let numero = numeroLettera.substring(0, numeroLettera.length - 1);
 	let lettera = numeroLettera.substr(numeroLettera.length - 1, 1);
@@ -979,85 +1013,85 @@ export function getCO_Numero(numeroLettera) {
 	return [];
 }
 
-export function getCO_G(min, max, automa) {
+export function getCO_G(_min, _max, _automa) {
 	// TODO
 	alert('Non ancora implementato getCO_G');
 	return [];
 }
 
-export function getCO_H(min, max, automa) {
+export function getCO_H(_min, _max, _automa) {
 	// TODO
 	alert('Non ancora implementato getCO_H');
 	return [];
 }
 
-export function getCO_I(min, max, automa) {
+export function getCO_I(_min, _max, _automa) {
 	// TODO
 	alert('Non ancora implementato getCO_I');
 	return [];
 }
 
-export function getCO_J(min, max, automa) {
+export function getCO_J(_min, _max, _automa) {
 	// TODO
 	alert('Non ancora implementato getCO_J');
 	return [];
 }
 
-export function getCO_K(min, max, automa) {
+export function getCO_K(_min, _max, _automa) {
 	// TODO
 	alert('Non ancora implementato getCO_K');
 	return [];
 }
 
-export function getCO_L(min, max, automa) {
+export function getCO_L(_min, _max, _automa) {
 	// TODO
 	alert('Non ancora implementato getCO_L');
 	return [];
 }
 
-export function getCE_0_SistemaCompleto(automa) {
+export function getCE_0_SistemaCompleto(_automa) {
 	// TODO
 	alert('Non ancora implementato getCE_0_SistemaCompleto');
 	return [];
 }
 
-export function getCE_Numero(automa) {
+export function getCE_Numero(_tipo, _numero, _automa) {
 	// TODO
 	alert('Non ancora implementato getCE_Numero');
 	return [];
 }
 
-export function getCE_M(automa) {
+export function getCE_M(_automa) {
 	// TODO
 	alert('Non ancora implementato getCE_M');
 	return [];
 }
 
-export function getCE_N(automa) {
+export function getCE_N(_automa) {
 	// TODO
 	alert('Non ancora implementato getCE_N');
 	return [];
 }
 
-export function getCE_OP(automa) {
+export function getCE_OP(_automa) {
 	// TODO
 	alert('Non ancora implementato getCE_OP');
 	return [];
 }
 
-export function getCE_P(numero, automa) {
+export function getCE_P(_numero, _automa) {
 	// TODO
 	alert('Non ancora implementato getCE_P');
 	return [];
 }
 
-export function getCE_Q(automa) {
+export function getCE_Q(_automa) {
 	// TODO
 	alert('Non ancora implementato getCE_Q');
 	return [];
 }
 
-export function getCE_R(automa) {
+export function getCE_R(_automa) {
 	// TODO
 	alert('Non ancora implementato getCE_R');
 	return [];
