@@ -50,8 +50,13 @@ body {
 	height: 100%;
 	width: 100%;
 }
-
-.mappa {
+#mappaContainer {
+	height: 100%;
+	width: calc(var(--vh)*61.8);	
+	margin-left: auto;
+    margin-right: auto;
+}
+#mappa {
 	margin-left: auto;
     margin-right: auto;
 	margin-top: calc(var(--vh)*5);
@@ -72,8 +77,8 @@ body {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	top: 0.25%;
-	width: calc(var(--vh)*57.5);
+	top: -4.75%;
+	width: calc(var(--mw)*100 - 6px);
 	height: 4%;
 	border: 3px solid var(--blackColor);
 	background-color: #4a4a4a;
@@ -138,7 +143,7 @@ body {
 	height: calc(var(--vh)*5);
 	width: calc(var(--vh)*61.8);
 	position: absolute;
-	bottom: 0vh;
+	top: calc(var(--mh)*100);
 	font-size: 10pt;
 	display: block;
     min-width: 250px;
@@ -146,18 +151,18 @@ body {
 	line-height: calc(var(--vh)*5);
 }
 #deckSwitch {	
-	width: 2.5vh;
-	height: 2.5vh;
+	width: calc(var(--mw)*19);
+	height: calc(var(--mw)*4.5);
     vertical-align: middle;
     text-align: center;
-	line-height: 2.5vh;
+	line-height: calc(var(--mw)*4.5);
 	font-weight: bold;
 	color: var(--blackColor);
 	border: solid 2px var(--blackColor);
 	border-radius: 5px;
 	position: absolute;
-	top: 1.2%;
-	left: calc(((100vw + 61.8vh) / 2) - 2.9vh);
+	top: calc(var(--mh)*101);
+	left: calc(var(--mw)*81);
 	background-color: var(--selectionColor);
 	cursor: pointer;
 }
@@ -249,7 +254,7 @@ body {
 /* Righe */
 
 #rigaS {
-    top: calc(var(--vh)*5 + var(--mh)*4);
+    top: calc(var(--mh)*4);
     height: calc(var(--mh)*4.5);
 }
 #rigaS .areaBacino {
@@ -258,17 +263,17 @@ body {
 }
 #rigaDP_14G {
 	height: calc(var(--mh)*4.5);
-	top: calc(var(--vh)*5 + var(--mh)*13.5);
+	top: calc(var(--mh)*13.5);
 }
 #rigaDP_14G .areaBacino {
 	width: 13%;
 	height: 100%;
 }
 #rigaDP_14 {
-	top: calc(var(--vh)*5 + var(--mh)*18.5);
+	top: calc(var(--mh)*18.5);
 }
 #rigaC_14 {
-	top: calc(var(--vh)*5 + var(--mh)*22.7);
+	top: calc(var(--mh)*22.7);
 }
 #rigaC_14 .areaBacino {
 	width: 8.5%;
@@ -278,27 +283,27 @@ body {
 	top: 12%;
 } */
 #rigaDF_14 {
-	top: calc(var(--vh)*5 + var(--mh)*27.3);
+	top: calc(var(--mh)*27.3);
 }
 #rigaCP_57 {
-	top: calc(var(--vh)*5 + var(--mh)*35.5);
+	top: calc(var(--mh)*35.5);
 }
 #rigaCF_57 {
-	top: calc(var(--vh)*5 + var(--mh)*39.6);
+	top: calc(var(--mh)*39.6);
 }
 #rigaDP_57G {
 	height: calc(var(--mh)*3.6);
-	top: calc(var(--vh)*5 + var(--mh)*43.5);
+	top: calc( var(--mh)*43.5);
 }
 #rigaDP_57G .areaBacino {
 	width: 13%;
 	height: 100%;
 }
 #rigaDP_57 {
-	top: calc(var(--vh)*5 + var(--mh)*47.6);
+	top: calc(var(--mh)*47.6);
 }
 #rigaC_57 {
-	top: calc(var(--vh)*5 + var(--mh)*51.7);
+	top: calc( var(--mh)*51.7);
 }
 #rigaC_57 .areaBacino {
 	width: 8.5%;
@@ -308,27 +313,27 @@ body {
 	top: 12%;
 } */
 #rigaDF_57 {
-	top: calc(var(--vh)*5 + var(--mh)*56.1);
+	top: calc(var(--mh)*56.1);
 }
 #rigaCP_810 {	
-	top: calc(var(--vh)*5 + var(--mh)*62.4);
+	top: calc(var(--mh)*62.4);
 }
 #rigaCF_810 {	
-	top: calc(var(--vh)*5 + var(--mh)*66.7);
+	top: calc(var(--mh)*66.7);
 }
 #rigaDP_810G {
 	height: calc(var(--mh)*3.5);
-	top: calc(var(--vh)*5 + var(--mh)*70.5);
+	top: calc(var(--mh)*70.5);
 }
 #rigaDP_810G .areaBacino {
 	width: 13%;
 	height: 100%;
 }
 #rigaDP_810 {
-	top: calc(var(--vh)*5 + var(--mh)*74.5);
+	top: calc(var(--mh)*74.5);
 }
 #rigaC_810 {
-	top: calc(var(--vh)*5 + var(--mh)*78.6);
+	top: calc(var(--mh)*78.6);
 }
 #rigaC_810 .areaBacino {
 	width: 8.5%;
@@ -338,13 +343,13 @@ body {
 	top: 12%;
 } */
 #rigaDF_810 {
-	top: calc(var(--vh)*5 + var(--mh)*83);
+	top: calc(var(--mh)*83);
 }
 #rigaCP_1112 {	
-	top: calc(var(--vh)*5 + var(--mh)*90.4);
+	top: calc(var(--mh)*90.4);
 }
 #rigaCF_1112 {	
-	top: calc(var(--vh)*5 + var(--mh)*94.7);
+	top: calc(var(--mh)*94.7);
 }
 
 /* Aree */
@@ -624,11 +629,11 @@ body {
 
 /* Selection color: #e3af54 */
 .selector {	
-	width: 2.5vh;
-	height: 2.5vh;
+	width: calc(var(--mw)*4.5);
+	height: calc(var(--mw)*4.5);
     vertical-align: middle;
     text-align: center;
-	line-height: 2.5vh;
+	line-height: calc(var(--mw)*4.5);
 	font-weight: bold;
 	color: var(--borderColor);
 	border: solid 2px var(--borderColor);
@@ -637,29 +642,29 @@ body {
 	cursor: pointer;
 }
 #P1_Selector {
-	bottom: 9.5%;
-	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*1.6);
+	bottom: calc(10% + var(--mw)*1.6);
+	left: calc(var(--mw)*1.6);
 	background-color: var(--greenPlayer);
 }
 #P2_Selector {
-	bottom: 6%;
-	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*1.6);
+	bottom: calc(10% + var(--mw)*7.7);
+	left: calc(var(--mw)*1.6);
 	background-color: var(--redPlayer);
 }
 #P3_Selector {
-	bottom: 9.5%;
-	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*9);
+	bottom: calc(10% + var(--mw)*1.6);
+	left: calc(var(--mw)*7.7);
 	background-color: var(--whitePlayer);
 	color: var(--blackPlayer);
 }
 #P4_Selector {
-	bottom: 6%;
-	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*9);
+	bottom: calc(10% + var(--mw)*7.7);
+	left: calc(var(--mw)*7.7);
 	background-color: var(--blackPlayer);
 }
 #P0_Selector {
-	bottom: 6%;
-	left: calc(((100vw - var(--mw)*100) / 2) + var(--mw)*16.5);
+	bottom: calc(10% + var(--mw)*1.6);
+	left:calc(var(--mw)*13.8);
 	background-color: var(--nullPlayer);
 }
 
@@ -702,7 +707,7 @@ body {
 	margin: 1%;
 }
 #mappaSwitch {	
-	width: 2.5vh;
+	width: 8vh;
 	height: 2.5vh;
     vertical-align: middle;
     text-align: center;
@@ -712,8 +717,8 @@ body {
 	border: solid 2px var(--blackColor);
 	border-radius: 5px;
 	position: absolute;
-	top: 1.2vh;
-	left: calc(50vw + var(--vh)*26 - 2.7vh);
+	top: calc(var(--vh)*71.4 + 2vh);
+	left: calc(var(--vh)*52.4 - 4vh);
 	background-color: var(--selectionColor);
 	cursor: pointer;
 }
@@ -827,28 +832,34 @@ body {
 		width: 100%;
 	}
 	#mappaSwitch {
-		width: 5.5vw;
+		width: 18vw;
 		height: 5.5vw;
-		left: calc(94vw - 2.5vh); 
+		line-height: 5.5vw;
+		left: 71vw; 
+		top: 127vw;
 	}
-	.mappa {
-		width: 96%;
+	#mappaContainer {
+		height: calc((96vw * 1.453) * 1.111);
+		width: 96%;	
+		margin-left: auto;
+		margin-right: auto;
+	}
+	#mappa {
+		width: 100%;
 		height: calc(96vw * 1.453);
 		background-position: unset;
 	}
-	#mappaToolbar {
-		width: calc(92vw - 2.5vh);
-	}
 	#deckSwitch {
-		width: 5.5vw;
+		width: 18vw;
 		height: 5.5vw;
-		left: calc(97vw - 2.5vh)
+		line-height: 5.5vw;
+		left: 75vw;
 	}
 	#footer {
 		width: 96%;
 	}
 	.rigaArea {
-		width: 96%;
+		width: 100%;
 	}
 	.selector {	
 		width: 5.5vw;

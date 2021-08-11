@@ -7,30 +7,40 @@ export function initDiminesions() {
     let vh = window.innerHeight * 0.01;
     // Then we set the value in the --vh custom property to the root of the document
     document.documentElement.style.setProperty('--vh', `${vh}px`);
-    const mappa = document.getElementById('mappaContainer');
+    const mappa = document.getElementById('mappa');
     if (mappa) {
         const height = mappa.clientHeight * 0.01;
         const width = mappa.clientWidth * 0.01;
-        document.documentElement.style.setProperty('--mh', `${height}px`);
+        document.documentElement.style.setProperty('--mh', `${(height)}px`);
         document.documentElement.style.setProperty('--mw', `${width}px`);
     }
 }
 
 export function showMappa() {
     document.getElementById('deckContainer').style.display = 'none';
-    document.getElementById('mappaContainer').style.display = 'block';
-    const mappa = document.getElementById('mappaContainer');
-    if (mappa) {
-        const height = mappa.clientHeight * 0.01;
-        const width = mappa.clientWidth * 0.01;
-        document.documentElement.style.setProperty('--mh', `${height}px`);
-        document.documentElement.style.setProperty('--mw', `${width}px`);
+    const element = document.getElementById('mappaContainer');
+    element.style.display = 'block';
+    if (element.className.includes(' animated slideInRight')) {
+        element.className.replace(' animated slideInRight', '');
     }
+    element.className = element.className + ' animated slideInRight';
+    // const mappa = document.getElementById('mappaContainer');
+    // if (mappa) {
+    //     const height = mappa.clientHeight * 0.01;
+    //     const width = mappa.clientWidth * 0.01;
+    //     document.documentElement.style.setProperty('--mh', `${(height)}px`);
+    //     document.documentElement.style.setProperty('--mw', `${width}px`);
+    // }
 }
 
 export function hideMappa() {
     document.getElementById('mappaContainer').style.display = 'none';
-    document.getElementById('deckContainer').style.display = 'block';
+    const element = document.getElementById('deckContainer');
+    element.style.display = 'block';
+    if (element.className.includes(' animated slideInLeft')) {
+        element.className.replace(' animated slideInLeft', '');
+    }
+    element.className = element.className + ' animated slideInLeft';
 }
 
 export function mostraCarte() {
@@ -55,7 +65,7 @@ export function mostraPlayers() {
         playersCount++;
     }
     if (playersCount < 5) {
-        document.getElementById('P0_Selector').style.left = 'calc(((100vw - var(--mw)*100) / 2) + var(--mw)*9)';
+        document.getElementById('P0_Selector').style.left = 'calc(var(--mw)*7.7)';
         document.getElementById('P4_Selector').style.display = 'none';
         if (playersCount < 4) {
             document.getElementById('P3_Selector').style.display = 'none';
@@ -123,6 +133,10 @@ export function mostraRisultati() {
             element.style.borderColor = 'var(--selectionColor)';
             element.style.borderWidth = '3px';
             element.style.backgroundColor = 'rgba(227, 175, 84, 0.5)';
+            if (element.className.includes(' animated flash')) {
+                element.className.replace(' animated flash', '');
+            }
+            element.className = element.className + ' animated flash';
         }
     }
     // alert(printArray(actualResult));

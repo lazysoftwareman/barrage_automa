@@ -22,7 +22,7 @@
 		<input type="button" value="testCostruisciInizio" id="testCostruisciInizio" />
 	</div> -->
 	<div id="mainContainer">
-		<div id="deckContainer" class="deck" style="display: block;">
+		<div id="deckContainer" class="deck" style="display: none;">
 			<div id="cartaAzioni" class="cartaContainer">
 				<img id="cartaF" class="cartaImg" />
 			</div>
@@ -32,9 +32,9 @@
 			<div id="footerCarte">
 				Carte pescate: <span id="cartePescate"></span>
 			</div>
-			<div id="mappaSwitch">M</div>
+			<div id="mappaSwitch">Mappa &rAarr;</div>
 		</div>
-		<div id="mappaContainer" class="mappa" style="display: none;">
+		<div id="mappaContainer" class="" style="display: block;">
 			<div id="mappaToolbar" class="mappaToolbar">
 				<div id="azione_CD" class="azioneButton">
 					<div></div>
@@ -67,495 +67,490 @@
 					<div></div>
 				</div>
 			</div>
-			<div id="deckSwitch">D</div>
-			<div id="rigaS" class=rigaArea>
-				<div id="areaSA" class="area areaBacino">
-					<div id="areaSAContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaSAText"></span>
+			<div id="mappa">
+				<div id="rigaS" class=rigaArea>
+					<div id="areaSA" class="area areaBacino">
+						<div id="areaSAContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaSAText"></span>
+						</div>
+					</div>
+					<div id="areaSB" class="area areaBacino">
+						<div id="areaSBContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaSBText"></span>
+						</div>
+					</div>
+					<div id="areaSC" class="area areaBacino">
+						<div id="areaSCContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaSCText"></span>
+						</div>
+					</div>
+					<div id="areaSD" class="area areaBacino">
+						<div id="areaSDContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaSDText"></span>
+						</div>
 					</div>
 				</div>
-				<div id="areaSB" class="area areaBacino">
-					<div id="areaSBContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaSBText"></span>
+				<div id="rigaDP_14G" class=rigaArea>
+					<div id="areaDP_1G" class="area areaBacino">
+						<div id="areaDP_1GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDP_1GText"></span>
+						</div>
+					</div>
+					<div id="areaDP_2G" class="area areaBacino">
+						<div id="areaDP_2GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDP_2GText"></span>
+						</div>
+					</div>
+					<div id="areaDP_3G" class="area areaBacino">
+						<div id="areaDP_3GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDP_3GText"></span>
+						</div>
+					</div>
+					<div id="areaDP_4G" class="area areaBacino">
+						<div id="areaDP_4GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDP_4GText"></span>
+						</div>
 					</div>
 				</div>
-				<div id="areaSC" class="area areaBacino">
-					<div id="areaSCContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaSCText"></span>
+				<div id="rigaDP_14" class="rigaArea rigaDiga">
+					<div id="areaDP_1" class="area areaDiga">
+						<div id="areaDP_1Content" style="display: none;">
+							<img id="areaDP_1Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_1Text"></span>
+						</div>
+					</div>
+					<div id="areaDP_2" class="area areaDiga">
+						<div id="areaDP_2Content" style="display: none;">
+							<img id="areaDP_2Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_2Text"></span>
+						</div>
+					</div>
+					<div id="areaDP_3" class="area areaDiga">
+						<div id="areaDP_3Content" style="display: none;">
+							<img id="areaDP_3Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_3Text"></span>
+						</div>
+					</div>
+					<div id="areaDP_4" class="area areaDiga">
+						<div id="areaDP_4Content" style="display: none;">
+							<img id="areaDP_4Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_4Text"></span>
+						</div>
 					</div>
 				</div>
-				<div id="areaSD" class="area areaBacino">
-					<div id="areaSDContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaSDText"></span>
+				<div id="rigaC_14" class="rigaArea rigaCondotta">
+					<div id="areaC_1A" class="area areaCondotta">
+						<div id="areaC_1AContent" style="display: none;">
+							<img id="areaC_1AImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaDF_1G" class="area areaBacino">
+						<div id="areaDF_1GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDF_1GText"></span>
+						</div>
+					</div>
+					<div id="areaC_1B" class="area areaCondotta">
+						<div id="areaC_1BContent" style="display: none;">
+							<img id="areaC_1BImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaC_2A" class="area areaCondotta">
+						<div id="areaC_2AContent" style="display: none;">
+							<img id="areaC_2AImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaDF_2G" class="area areaBacino">
+						<div id="areaDF_2GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDF_2GText"></span>
+						</div>
+					</div>
+					<div id="areaC_2B" class="area areaCondotta">
+						<div id="areaC_2BContent" style="display: none;">
+							<img id="areaC_2BImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaC_3A" class="area areaCondotta">
+						<div id="areaC_3AContent" style="display: none;">
+							<img id="areaC_3AImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaDF_3G" class="area areaBacino">
+						<div id="areaDF_3GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDF_3GText"></span>
+						</div>
+					</div>
+					<div id="areaC_3B" class="area areaCondotta">
+						<div id="areaC_3BContent" style="display: none;">
+							<img id="areaC_3BImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaC_4A" class="area areaCondotta">
+						<div id="areaC_4AContent" style="display: none;">
+							<img id="areaC_4AImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaDF_4G" class="area areaBacino">
+						<div id="areaDF_4GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDF_4GText"></span>
+						</div>
+					</div>
+					<div id="areaC_4B" class="area areaCondotta">
+						<div id="areaC_4BContent" style="display: none;">
+							<img id="areaC_4BImg" src="img/CO_R.png" />
+						</div>
+					</div>
+				</div>
+				<div id="rigaDF_14" class="rigaArea rigaDiga">
+					<div id="areaDF_1" class="area areaDiga">
+						<div id="areaDF_1Content" style="display: none;">
+							<img id="areaDF_1Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_1Text"></span>
+						</div>
+					</div>
+					<div id="areaDF_2" class="area areaDiga">
+						<div id="areaDF_2Content" style="display: none;">
+							<img id="areaDF_2Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_2Text"></span>
+						</div>
+					</div>
+					<div id="areaDF_3" class="area areaDiga">
+						<div id="areaDF_3Content" style="display: none;">
+							<img id="areaDF_3Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_3Text"></span>
+						</div>
+					</div>
+					<div id="areaDF_4" class="area areaDiga">
+						<div id="areaDF_4Content" style="display: none;">
+							<img id="areaDF_4Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_4Text"></span>
+						</div>
+					</div>
+				</div>
+				<div id="rigaCP_57" class="rigaArea rigaCentrale">
+					<div id="areaCP_5" class="area areaCentrale">
+						<div id="areaCP_5Content" style="display: none;">
+							<img id="areaCP_5Img" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCP_6" class="area areaCentrale">
+						<div id="areaCP_6Content" style="display: none;">
+							<img id="areaCP_6Img" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCP_7" class="area areaCentrale">
+						<div id="areaCP_7Content" style="display: none;">
+							<img id="areaCP_7Img" src="img/CE_R.png" />
+						</div>
+					</div>
+				</div>
+				<div id="rigaCF_57" class="rigaArea rigaCentrale">
+					<div id="areaCF_5" class="area areaCentrale">
+						<div id="areaCF_5Content" style="display: none;">
+							<img id="areaCF_5Img" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCF_6" class="area areaCentrale">
+						<div id="areaCF_6Content" style="display: none;">
+							<img id="areaCF_6Img" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCF_7" class="area areaCentrale">
+						<div id="areaCF_7Content" style="display: none;">
+							<img id="areaCF_7Img" src="img/CE_R.png" />
+						</div>
+					</div>
+				</div>
+				<div id="rigaDP_57G" class="rigaArea">
+					<div id="areaDP_5G" class="area areaBacino">
+						<div id="areaDP_5GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDP_5GText"></span>
+						</div>
+					</div>
+					<div id="areaDP_6G" class="area areaBacino">
+						<div id="areaDP_6GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDP_6GText"></span>
+						</div>
+					</div>
+					<div id="areaDP_7G" class="area areaBacino">
+						<div id="areaDP_7GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDP_7GText"></span>
+						</div>
+					</div>
+				</div>
+				<div id="rigaDP_57" class="rigaArea rigaDiga">
+					<div id="areaDP_5" class="area areaDiga">
+						<div id="areaDP_5Content" style="display: none;">
+							<img id="areaDP_5Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_5Text"></span>
+						</div>
+					</div>
+					<div id="areaDP_6" class="area areaDiga">
+						<div id="areaDP_6Content" style="display: none;">
+							<img id="areaDP_6Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_6Text"></span>
+						</div>
+					</div>
+					<div id="areaDP_7" class="area areaDiga">
+						<div id="areaDP_7Content" style="display: none;">
+							<img id="areaDP_7Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_7Text"></span>
+						</div>
+					</div>
+				</div>
+				<div id="rigaC_57" class="rigaArea rigaCondotta">
+					<div id="areaC_5A" class="area areaCondotta">
+						<div id="areaC_5AContent" style="display: none;">
+							<img id="areaC_5AImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaDF_5G" class="area areaBacino">
+						<div id="areaDF_5GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDF_5GText"></span>
+						</div>
+					</div>
+					<div id="areaC_5B" class="area areaCondotta">
+						<div id="areaC_5BContent" style="display: none;">
+							<img id="areaC_5BImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaC_6A" class="area areaCondotta">
+						<div id="areaC_6AContent" style="display: none;">
+							<img id="areaC_6AImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaDF_6G" class="area areaBacino">
+						<div id="areaDF_6GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDF_6GText"></span>
+						</div>
+					</div>
+					<div id="areaC_6B" class="area areaCondotta">
+						<div id="areaC_6BContent" style="display: none;">
+							<img id="areaC_6BImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaC_7A" class="area areaCondotta">
+						<div id="areaC_7AContent" style="display: none;">
+							<img id="areaC_7AImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaDF_7G" class="area areaBacino">
+						<div id="areaDF_7GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDF_7GText"></span>
+						</div>
+					</div>
+					<div id="areaC_7B" class="area areaCondotta">
+						<div id="areaC_7BContent" style="display: none;">
+							<img id="areaC_7BImg" src="img/CO_R.png" />
+						</div>
+					</div>
+				</div>
+				<div id="rigaDF_57" class="rigaArea rigaDiga">
+					<div id="areaDF_5" class="area areaDiga">
+						<div id="areaDF_5Content" style="display: none;">
+							<img id="areaDF_5Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_5Text"></span>
+						</div>
+					</div>
+					<div id="areaDF_6" class="area areaDiga">
+						<div id="areaDF_6Content" style="display: none;">
+							<img id="areaDF_6Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_6Text"></span>
+						</div>
+					</div>
+					<div id="areaDF_7" class="area areaDiga">
+						<div id="areaDF_7Content" style="display: none;">
+							<img id="areaDF_7Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_7Text"></span>
+						</div>
+					</div>
+				</div>
+				<div id="rigaCP_810" class="rigaArea rigaCentrale">
+					<div id="areaCP_8" class="area areaCentrale">
+						<div id="areaCP_8Content" style="display: none;">
+							<img id="areaCP_8Img" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCP_9" class="area areaCentrale">
+						<div id="areaCP_9Content" style="display: none;">
+							<img id="areaCP_9Img" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCP_10A" class="area areaCentrale">
+						<div id="areaCP_10AContent" style="display: none;">
+							<img id="areaCP_10AImg" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCP_10B" class="area areaCentrale">
+						<div id="areaCP_10BContent" style="display: none;">
+							<img id="areaCP_10BImg" src="img/CE_R.png" />
+						</div>
+					</div>
+				</div>
+				<div id="rigaCF_810" class="rigaArea rigaCentrale">
+					<div id="areaCF_8A" class="area areaCentrale">
+						<div id="areaCF_8AContent" style="display: none;">
+							<img id="areaCF_8AImg" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCF_8B" class="area areaCentrale">
+						<div id="areaCF_8BContent" style="display: none;">
+							<img id="areaCF_8BImg" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCF_9A" class="area areaCentrale">
+						<div id="areaCF_9AContent" style="display: none;">
+							<img id="areaCF_9AImg" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCF_9B" class="area areaCentrale">
+						<div id="areaCF_9BContent" style="display: none;">
+							<img id="areaCF_9BImg" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCF_10" class="area areaCentrale">
+						<div id="areaCF_10Content" style="display: none;">
+							<img id="areaCF_10Img" src="img/CE_R.png" />
+						</div>
+					</div>
+				</div>
+				<div id="rigaDP_810G" class=rigaArea>
+					<div id="areaDP_8G" class="area areaBacino">
+						<div id="areaDP_8GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDP_8GText"></span>
+						</div>
+					</div>
+					<div id="areaDP_9G" class="area areaBacino">
+						<div id="areaDP_9GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDP_9GText"></span>
+						</div>
+					</div>
+					<div id="areaDP_10G" class="area areaBacino">
+						<div id="areaDP_10GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDP_10GText"></span>
+						</div>
+					</div>
+				</div>
+				<div id="rigaDP_810" class="rigaArea rigaDiga">
+					<div id="areaDP_8" class="area areaDiga">
+						<div id="areaDP_8Content" style="display: none;">
+							<img id="areaDP_8Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_8Text"></span>
+						</div>
+					</div>
+					<div id="areaDP_9" class="area areaDiga">
+						<div id="areaDP_9Content" style="display: none;">
+							<img id="areaDP_9Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_9Text"></span>
+						</div>
+					</div>
+					<div id="areaDP_10" class="area areaDiga">
+						<div id="areaDP_10Content" style="display: none;">
+							<img id="areaDP_10Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_10Text"></span>
+						</div>
+					</div>
+				</div>
+				<div id="rigaC_810" class="rigaArea rigaCondotta">
+					<div id="areaC_8A" class="area areaCondotta">
+						<div id="areaC_8AContent" style="display: none;">
+							<img id="areaC_8AImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaDF_8G" class="area areaBacino">
+						<div id="areaDF_8GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDF_8GText"></span>
+						</div>
+					</div>
+					<div id="areaC_8B" class="area areaCondotta">
+						<div id="areaC_8BContent" style="display: none;">
+							<img id="areaC_8BImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaC_9A" class="area areaCondotta">
+						<div id="areaC_9AContent" style="display: none;">
+							<img id="areaC_9AImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaDF_9G" class="area areaBacino">
+						<div id="areaDF_9GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDF_9GText"></span>
+						</div>
+					</div>
+					<div id="areaC_9B" class="area areaCondotta">
+						<div id="areaC_9BContent" style="display: none;">
+							<img id="areaC_9BImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaC_10A" class="area areaCondotta">
+						<div id="areaC_10AContent" style="display: none;">
+							<img id="areaC_10AImg" src="img/CO_R.png" />
+						</div>
+					</div>
+					<div id="areaDF_10G" class="area areaBacino">
+						<div id="areaDF_10GContent" style="display: none;">
+							<img src="img/goccia.png" /> &nbsp;<span id="areaDF_10GText"></span>
+						</div>
+					</div>
+					<div id="areaC_10B" class="area areaCondotta">
+						<div id="areaC_10BContent" style="display: none;">
+							<img id="areaC_10BImg" src="img/CO_R.png" />
+						</div>
+					</div>
+				</div>
+				<div id="rigaDF_810" class="rigaArea rigaDiga">
+					<div id="areaDF_8" class="area areaDiga">
+						<div id="areaDF_8Content" style="display: none;">
+							<img id="areaDF_8Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_8Text"></span>
+						</div>
+					</div>
+					<div id="areaDF_9" class="area areaDiga">
+						<div id="areaDF_9Content" style="display: none;">
+							<img id="areaDF_9Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_9Text"></span>
+						</div>
+					</div>
+					<div id="areaDF_10" class="area areaDiga">
+						<div id="areaDF_10Content" style="display: none;">
+							<img id="areaDF_10Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_10Text"></span>
+						</div>
+					</div>
+				</div>
+				<div id="rigaCP_1112" class="rigaArea rigaCentrale">
+					<div id="areaCP_11A" class="area areaCentrale">
+						<div id="areaCP_11AContent" style="display: none;">
+							<img id="areaCP_11AImg" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCP_11B" class="area areaCentrale">
+						<div id="areaCP_11BContent" style="display: none;">
+							<img id="areaCP_11BImg" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCP_12A" class="area areaCentrale">
+						<div id="areaCP_12AContent" style="display: none;">
+							<img id="areaCP_12AImg" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCP_12B" class="area areaCentrale">
+						<div id="areaCP_12BContent" style="display: none;">
+							<img id="areaCP_12BImg" src="img/CE_R.png" />
+						</div>
+					</div>
+				</div>
+				<div id="rigaCF_1112" class="rigaArea rigaCentrale">
+					<div id="areaCF_11A" class="area areaCentrale">
+						<div id="areaCF_11AContent" style="display: none;">
+							<img id="areaCF_11AImg" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCF_11B" class="area areaCentrale">
+						<div id="areaCF_11BContent" style="display: none;">
+							<img id="areaCF_11BImg" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCF_12" class="area areaCentrale">
+						<div id="areaCF_12Content" style="display: none;">
+							<img id="areaCF_12Img" src="img/CE_R.png" />
+						</div>
+					</div>
+					<div id="areaCP_12C" class="area areaCentrale">
+						<div id="areaCP_12CContent" style="display: none;">
+							<img id="areaCP_12CImg" src="img/CE_R.png" />
+						</div>
 					</div>
 				</div>
 			</div>
-			<div id="rigaDP_14G" class=rigaArea>
-				<div id="areaDP_1G" class="area areaBacino">
-					<div id="areaDP_1GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDP_1GText"></span>
-					</div>
-				</div>
-				<div id="areaDP_2G" class="area areaBacino">
-					<div id="areaDP_2GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDP_2GText"></span>
-					</div>
-				</div>
-				<div id="areaDP_3G" class="area areaBacino">
-					<div id="areaDP_3GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDP_3GText"></span>
-					</div>
-				</div>
-				<div id="areaDP_4G" class="area areaBacino">
-					<div id="areaDP_4GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDP_4GText"></span>
-					</div>
-				</div>
-			</div>
-			<div id="rigaDP_14" class="rigaArea rigaDiga">
-				<div id="areaDP_1" class="area areaDiga">
-					<div id="areaDP_1Content" style="display: none;">
-						<img id="areaDP_1Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_1Text"></span>
-					</div>
-				</div>
-				<div id="areaDP_2" class="area areaDiga">
-					<div id="areaDP_2Content" style="display: none;">
-						<img id="areaDP_2Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_2Text"></span>
-					</div>
-				</div>
-				<div id="areaDP_3" class="area areaDiga">
-					<div id="areaDP_3Content" style="display: none;">
-						<img id="areaDP_3Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_3Text"></span>
-					</div>
-				</div>
-				<div id="areaDP_4" class="area areaDiga">
-					<div id="areaDP_4Content" style="display: none;">
-						<img id="areaDP_4Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_4Text"></span>
-					</div>
-				</div>
-			</div>
-			<div id="rigaC_14" class="rigaArea rigaCondotta">
-				<div id="areaC_1A" class="area areaCondotta">
-					<div id="areaC_1AContent" style="display: none;">
-						<img id="areaC_1AImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaDF_1G" class="area areaBacino">
-					<div id="areaDF_1GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDF_1GText"></span>
-					</div>
-				</div>
-				<div id="areaC_1B" class="area areaCondotta">
-					<div id="areaC_1BContent" style="display: none;">
-						<img id="areaC_1BImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaC_2A" class="area areaCondotta">
-					<div id="areaC_2AContent" style="display: none;">
-						<img id="areaC_2AImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaDF_2G" class="area areaBacino">
-					<div id="areaDF_2GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDF_2GText"></span>
-					</div>
-				</div>
-				<div id="areaC_2B" class="area areaCondotta">
-					<div id="areaC_2BContent" style="display: none;">
-						<img id="areaC_2BImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaC_3A" class="area areaCondotta">
-					<div id="areaC_3AContent" style="display: none;">
-						<img id="areaC_3AImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaDF_3G" class="area areaBacino">
-					<div id="areaDF_3GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDF_3GText"></span>
-					</div>
-				</div>
-				<div id="areaC_3B" class="area areaCondotta">
-					<div id="areaC_3BContent" style="display: none;">
-						<img id="areaC_3BImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaC_4A" class="area areaCondotta">
-					<div id="areaC_4AContent" style="display: none;">
-						<img id="areaC_4AImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaDF_4G" class="area areaBacino">
-					<div id="areaDF_4GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDF_4GText"></span>
-					</div>
-				</div>
-				<div id="areaC_4B" class="area areaCondotta">
-					<div id="areaC_4BContent" style="display: none;">
-						<img id="areaC_4BImg" src="img/CO_R.png" />
-					</div>
-				</div>
-			</div>
-			<div id="rigaDF_14" class="rigaArea rigaDiga">
-				<div id="areaDF_1" class="area areaDiga">
-					<div id="areaDF_1Content" style="display: none;">
-						<img id="areaDF_1Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_1Text"></span>
-					</div>
-				</div>
-				<div id="areaDF_2" class="area areaDiga">
-					<div id="areaDF_2Content" style="display: none;">
-						<img id="areaDF_2Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_2Text"></span>
-					</div>
-				</div>
-				<div id="areaDF_3" class="area areaDiga">
-					<div id="areaDF_3Content" style="display: none;">
-						<img id="areaDF_3Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_3Text"></span>
-					</div>
-				</div>
-				<div id="areaDF_4" class="area areaDiga">
-					<div id="areaDF_4Content" style="display: none;">
-						<img id="areaDF_4Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_4Text"></span>
-					</div>
-				</div>
-			</div>
-			<div id="rigaCP_57" class="rigaArea rigaCentrale">
-				<div id="areaCP_5" class="area areaCentrale">
-					<div id="areaCP_5Content" style="display: none;">
-						<img id="areaCP_5Img" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCP_6" class="area areaCentrale">
-					<div id="areaCP_6Content" style="display: none;">
-						<img id="areaCP_6Img" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCP_7" class="area areaCentrale">
-					<div id="areaCP_7Content" style="display: none;">
-						<img id="areaCP_7Img" src="img/CE_R.png" />
-					</div>
-				</div>
-			</div>
-			<div id="rigaCF_57" class="rigaArea rigaCentrale">
-				<div id="areaCF_5" class="area areaCentrale">
-					<div id="areaCF_5Content" style="display: none;">
-						<img id="areaCF_5Img" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCF_6" class="area areaCentrale">
-					<div id="areaCF_6Content" style="display: none;">
-						<img id="areaCF_6Img" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCF_7" class="area areaCentrale">
-					<div id="areaCF_7Content" style="display: none;">
-						<img id="areaCF_7Img" src="img/CE_R.png" />
-					</div>
-				</div>
-			</div>
-			<div id="rigaDP_57G" class="rigaArea">
-				<div id="areaDP_5G" class="area areaBacino">
-					<div id="areaDP_5GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDP_5GText"></span>
-					</div>
-				</div>
-				<div id="areaDP_6G" class="area areaBacino">
-					<div id="areaDP_6GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDP_6GText"></span>
-					</div>
-				</div>
-				<div id="areaDP_7G" class="area areaBacino">
-					<div id="areaDP_7GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDP_7GText"></span>
-					</div>
-				</div>
-			</div>
-			<div id="rigaDP_57" class="rigaArea rigaDiga">
-				<div id="areaDP_5" class="area areaDiga">
-					<div id="areaDP_5Content" style="display: none;">
-						<img id="areaDP_5Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_5Text"></span>
-					</div>
-				</div>
-				<div id="areaDP_6" class="area areaDiga">
-					<div id="areaDP_6Content" style="display: none;">
-						<img id="areaDP_6Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_6Text"></span>
-					</div>
-				</div>
-				<div id="areaDP_7" class="area areaDiga">
-					<div id="areaDP_7Content" style="display: none;">
-						<img id="areaDP_7Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_7Text"></span>
-					</div>
-				</div>
-			</div>
-			<div id="rigaC_57" class="rigaArea rigaCondotta">
-				<div id="areaC_5A" class="area areaCondotta">
-					<div id="areaC_5AContent" style="display: none;">
-						<img id="areaC_5AImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaDF_5G" class="area areaBacino">
-					<div id="areaDF_5GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDF_5GText"></span>
-					</div>
-				</div>
-				<div id="areaC_5B" class="area areaCondotta">
-					<div id="areaC_5BContent" style="display: none;">
-						<img id="areaC_5BImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaC_6A" class="area areaCondotta">
-					<div id="areaC_6AContent" style="display: none;">
-						<img id="areaC_6AImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaDF_6G" class="area areaBacino">
-					<div id="areaDF_6GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDF_6GText"></span>
-					</div>
-				</div>
-				<div id="areaC_6B" class="area areaCondotta">
-					<div id="areaC_6BContent" style="display: none;">
-						<img id="areaC_6BImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaC_7A" class="area areaCondotta">
-					<div id="areaC_7AContent" style="display: none;">
-						<img id="areaC_7AImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaDF_7G" class="area areaBacino">
-					<div id="areaDF_7GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDF_7GText"></span>
-					</div>
-				</div>
-				<div id="areaC_7B" class="area areaCondotta">
-					<div id="areaC_7BContent" style="display: none;">
-						<img id="areaC_7BImg" src="img/CO_R.png" />
-					</div>
-				</div>
-			</div>
-			<div id="rigaDF_57" class="rigaArea rigaDiga">
-				<div id="areaDF_5" class="area areaDiga">
-					<div id="areaDF_5Content" style="display: none;">
-						<img id="areaDF_5Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_5Text"></span>
-					</div>
-				</div>
-				<div id="areaDF_6" class="area areaDiga">
-					<div id="areaDF_6Content" style="display: none;">
-						<img id="areaDF_6Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_6Text"></span>
-					</div>
-				</div>
-				<div id="areaDF_7" class="area areaDiga">
-					<div id="areaDF_7Content" style="display: none;">
-						<img id="areaDF_7Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_7Text"></span>
-					</div>
-				</div>
-			</div>
-			<div id="rigaCP_810" class="rigaArea rigaCentrale">
-				<div id="areaCP_8" class="area areaCentrale">
-					<div id="areaCP_8Content" style="display: none;">
-						<img id="areaCP_8Img" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCP_9" class="area areaCentrale">
-					<div id="areaCP_9Content" style="display: none;">
-						<img id="areaCP_9Img" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCP_10A" class="area areaCentrale">
-					<div id="areaCP_10AContent" style="display: none;">
-						<img id="areaCP_10AImg" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCP_10B" class="area areaCentrale">
-					<div id="areaCP_10BContent" style="display: none;">
-						<img id="areaCP_10BImg" src="img/CE_R.png" />
-					</div>
-				</div>
-			</div>
-			<div id="rigaCF_810" class="rigaArea rigaCentrale">
-				<div id="areaCF_8A" class="area areaCentrale">
-					<div id="areaCF_8AContent" style="display: none;">
-						<img id="areaCF_8AImg" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCF_8B" class="area areaCentrale">
-					<div id="areaCF_8BContent" style="display: none;">
-						<img id="areaCF_8BImg" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCF_9A" class="area areaCentrale">
-					<div id="areaCF_9AContent" style="display: none;">
-						<img id="areaCF_9AImg" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCF_9B" class="area areaCentrale">
-					<div id="areaCF_9BContent" style="display: none;">
-						<img id="areaCF_9BImg" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCF_10" class="area areaCentrale">
-					<div id="areaCF_10Content" style="display: none;">
-						<img id="areaCF_10Img" src="img/CE_R.png" />
-					</div>
-				</div>
-			</div>
-			<div id="rigaDP_810G" class=rigaArea>
-				<div id="areaDP_8G" class="area areaBacino">
-					<div id="areaDP_8GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDP_8GText"></span>
-					</div>
-				</div>
-				<div id="areaDP_9G" class="area areaBacino">
-					<div id="areaDP_9GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDP_9GText"></span>
-					</div>
-				</div>
-				<div id="areaDP_10G" class="area areaBacino">
-					<div id="areaDP_10GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDP_10GText"></span>
-					</div>
-				</div>
-			</div>
-			<div id="rigaDP_810" class="rigaArea rigaDiga">
-				<div id="areaDP_8" class="area areaDiga">
-					<div id="areaDP_8Content" style="display: none;">
-						<img id="areaDP_8Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_8Text"></span>
-					</div>
-				</div>
-				<div id="areaDP_9" class="area areaDiga">
-					<div id="areaDP_9Content" style="display: none;">
-						<img id="areaDP_9Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_9Text"></span>
-					</div>
-				</div>
-				<div id="areaDP_10" class="area areaDiga">
-					<div id="areaDP_10Content" style="display: none;">
-						<img id="areaDP_10Img" src="img/B_R.png" /> &nbsp;<span id="areaDP_10Text"></span>
-					</div>
-				</div>
-			</div>
-			<div id="rigaC_810" class="rigaArea rigaCondotta">
-				<div id="areaC_8A" class="area areaCondotta">
-					<div id="areaC_8AContent" style="display: none;">
-						<img id="areaC_8AImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaDF_8G" class="area areaBacino">
-					<div id="areaDF_8GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDF_8GText"></span>
-					</div>
-				</div>
-				<div id="areaC_8B" class="area areaCondotta">
-					<div id="areaC_8BContent" style="display: none;">
-						<img id="areaC_8BImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaC_9A" class="area areaCondotta">
-					<div id="areaC_9AContent" style="display: none;">
-						<img id="areaC_9AImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaDF_9G" class="area areaBacino">
-					<div id="areaDF_9GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDF_9GText"></span>
-					</div>
-				</div>
-				<div id="areaC_9B" class="area areaCondotta">
-					<div id="areaC_9BContent" style="display: none;">
-						<img id="areaC_9BImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaC_10A" class="area areaCondotta">
-					<div id="areaC_10AContent" style="display: none;">
-						<img id="areaC_10AImg" src="img/CO_R.png" />
-					</div>
-				</div>
-				<div id="areaDF_10G" class="area areaBacino">
-					<div id="areaDF_10GContent" style="display: none;">
-						<img src="img/goccia.png" /> &nbsp;<span id="areaDF_10GText"></span>
-					</div>
-				</div>
-				<div id="areaC_10B" class="area areaCondotta">
-					<div id="areaC_10BContent" style="display: none;">
-						<img id="areaC_10BImg" src="img/CO_R.png" />
-					</div>
-				</div>
-			</div>
-			<div id="rigaDF_810" class="rigaArea rigaDiga">
-				<div id="areaDF_8" class="area areaDiga">
-					<div id="areaDF_8Content" style="display: none;">
-						<img id="areaDF_8Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_8Text"></span>
-					</div>
-				</div>
-				<div id="areaDF_9" class="area areaDiga">
-					<div id="areaDF_9Content" style="display: none;">
-						<img id="areaDF_9Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_9Text"></span>
-					</div>
-				</div>
-				<div id="areaDF_10" class="area areaDiga">
-					<div id="areaDF_10Content" style="display: none;">
-						<img id="areaDF_10Img" src="img/B_R.png" /> &nbsp;<span id="areaDF_10Text"></span>
-					</div>
-				</div>
-			</div>
-			<div id="rigaCP_1112" class="rigaArea rigaCentrale">
-				<div id="areaCP_11A" class="area areaCentrale">
-					<div id="areaCP_11AContent" style="display: none;">
-						<img id="areaCP_11AImg" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCP_11B" class="area areaCentrale">
-					<div id="areaCP_11BContent" style="display: none;">
-						<img id="areaCP_11BImg" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCP_12A" class="area areaCentrale">
-					<div id="areaCP_12AContent" style="display: none;">
-						<img id="areaCP_12AImg" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCP_12B" class="area areaCentrale">
-					<div id="areaCP_12BContent" style="display: none;">
-						<img id="areaCP_12BImg" src="img/CE_R.png" />
-					</div>
-				</div>
-			</div>
-			<div id="rigaCF_1112" class="rigaArea rigaCentrale">
-				<div id="areaCF_11A" class="area areaCentrale">
-					<div id="areaCF_11AContent" style="display: none;">
-						<img id="areaCF_11AImg" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCF_11B" class="area areaCentrale">
-					<div id="areaCF_11BContent" style="display: none;">
-						<img id="areaCF_11BImg" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCF_12" class="area areaCentrale">
-					<div id="areaCF_12Content" style="display: none;">
-						<img id="areaCF_12Img" src="img/CE_R.png" />
-					</div>
-				</div>
-				<div id="areaCP_12C" class="area areaCentrale">
-					<div id="areaCP_12CContent" style="display: none;">
-						<img id="areaCP_12CImg" src="img/CE_R.png" />
-					</div>
-				</div>
-			</div>
-
-
-
-
-
-
-
-
 			<div id="P1_Selector" class="selector">A1</div>
 			<div id="P2_Selector" class="selector">A2</div>
 			<div id="P3_Selector" class="selector">U1</div>
 			<div id="P4_Selector" class="selector">U2</div>
 			<div id="P0_Selector" class="selector">N</div>
-			<div id="footer">Giocatore selezionato: <span id="giocatoreText"></span>&nbsp;&nbsp;Criterio attuale: <span
-					id="criteriText"></span></div>
+			<div id="footer">Giocatore selezionato: <span id="giocatoreText"></span>&nbsp;&nbsp;Criterio attuale:
+				<span id="criteriText"></span>
+			</div>
+			<div id="deckSwitch">Mazzo &lAarr;</div>
 		</div>
 	</div>
 </body>

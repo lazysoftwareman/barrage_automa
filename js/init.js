@@ -52,6 +52,7 @@ export function initPage() {
 	addHandlers();
 	addGlobalVariables();
 	initDiminesions();
+	hideMappa();
 }
 
 function addGlobalVariables() {
