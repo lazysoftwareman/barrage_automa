@@ -21,7 +21,7 @@ export function showMappa() {
     const element = document.getElementById('mappaContainer');
     element.style.display = 'block';
     if (element.className.includes(' animated slideInRight')) {
-        element.className.replace(' animated slideInRight', '');
+        element.className = element.className.replace(' animated slideInRight', '');
     }
     element.className = element.className + ' animated slideInRight';
     // const mappa = document.getElementById('mappaContainer');
@@ -38,7 +38,7 @@ export function hideMappa() {
     const element = document.getElementById('deckContainer');
     element.style.display = 'block';
     if (element.className.includes(' animated slideInLeft')) {
-        element.className.replace(' animated slideInLeft', '');
+        element.className = element.className.replace(' animated slideInLeft', '');
     }
     element.className = element.className + ' animated slideInLeft';
 }
@@ -90,7 +90,7 @@ export function mostraPlayers() {
             if (color == 'W') {
                 document.getElementById(pNum + '_Selector').style.color = 'var(--blackPlayer)';
             } else {
-                document.getElementById(pNum + '_Selector').style.color = 'var(--borderColor)';
+                document.getElementById(pNum + '_Selector').style.color = 'var(--whiteBorder)';
             }
         }
 
@@ -134,7 +134,7 @@ export function mostraRisultati() {
             element.style.borderWidth = '3px';
             element.style.backgroundColor = 'rgba(227, 175, 84, 0.5)';
             if (element.className.includes(' animated flash')) {
-                element.className.replace(' animated flash', '');
+                element.className = element.className.replace(' animated flash', '');
             }
             element.className = element.className + ' animated flash';
         }
@@ -147,9 +147,12 @@ export function resetRisultati() {
     for (const elem of elems) {
         const element = document.getElementById('area' + elem);
         if (element) {
-            element.style.borderColor = 'var(--borderColor)';
-            element.style.borderWidth = '2px';
+            element.style.borderColor = 'var(--whiteBorder)';
+            element.style.borderWidth = '1px';
             element.style.backgroundColor = 'transparent';
+            if (element.className.includes(' animated flash')) {
+                element.className = element.className.replace(' animated flash', '');
+            }
         }
     }
 }

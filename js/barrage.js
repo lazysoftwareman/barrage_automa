@@ -1289,7 +1289,7 @@ export function changePlayerSelected(player) {
 	for (let player in playerMap) {
 		let p = playerMap[player];
 		document.getElementById(p + '_Selector').style.borderColor = 'var(--borderColor)';
-		document.getElementById(p + '_Selector').style.borderWidth = '2px';
+		document.getElementById(p + '_Selector').style.borderWidth = '1px';
 	}
 	if (playerSelected) {
 		let p = playerMap[playerSelected];
