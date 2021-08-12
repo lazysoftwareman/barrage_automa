@@ -37,7 +37,8 @@ import {
 } from './barrage.js';
 import { azioni, initMazzo, pesca } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay, sorgenti } from './mappa.js';
-import { chiudiInfo, hideMappa, initDiminesions, mostraInfo, mostraPlayers, showMappa } from './view.js';
+import { colors } from './playersPage.js';
+import { chiudiInfo, hideMappa, initDiminesions, mostraInfo, mostraPlayers, mostraTutto, showMappa } from './view.js';
 
 // @ts-ignore
 window.initPage = initPage;
@@ -54,7 +55,8 @@ export function initPage() {
 	initDiminesions();
 	chiudiInfo();
 	hideMappa();
-
+	preloadImages();
+	mostraTutto();
 }
 
 function addGlobalVariables() {
@@ -238,4 +240,24 @@ export function initPlayers() {
 		playerColor['N'] = 'N';
 	}
 	mostraPlayers();
+}
+
+function preloadImages() {
+	//deck
+	for (let i = 1; i < 21; i++) {
+		var img = new Image();
+		img.src = 'img/deck/f_' + i + '.jpg';
+		img = new Image();
+		img.src = 'img/deck/b_' + i + '.jpg';
+	}
+	for (let color of colors) {
+		var img = new Image();
+		img.src = 'img/B_' + color + '.png';
+		img = new Image();
+		img.src = 'img/CE_' + color + '.png';
+		img = new Image();
+		img.src = 'img/CO_' + color + '.png';
+	}
+	var img = new Image();
+	img.src = 'img/B_N.png';
 }

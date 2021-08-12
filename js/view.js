@@ -1,5 +1,5 @@
 import { actualResult, playerColor, playerMap } from './barrage.js';
-import { azioni, carteAzioni, carteCriteri, curCartaAzioni, curCartaCriteri, deckSize, indice } from './deck.js';
+import { azioni, carteAzioni, curCartaAzioni, curCartaCriteri, deckSize, indice } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay } from './mappa.js';
 import { sleep } from './provider.js';
 
@@ -62,7 +62,6 @@ export async function mostraCarte(oldCartaAzioni) {
             flipCard.className = flipCard.className.replace(' flip', '');
         }
         document.getElementById('cartaB').src = 'img/deck/b_' + curCartaCriteri + '.jpg';
-        document.getElementById('criteriText').innerHTML = carteCriteri[curCartaCriteri];
         flipCard.style.visibility = 'hidden';
     } else {
         if (curCartaAzioni) {
@@ -71,7 +70,6 @@ export async function mostraCarte(oldCartaAzioni) {
             document.getElementById('cartaF').src = '';
         }
         document.getElementById('cartaB').src = '';
-        document.getElementById('criteriText').innerHTML = '';
     }
     document.getElementById('cartePescate').innerHTML = '' + indice + ' / ' + deckSize;
 }
@@ -182,7 +180,15 @@ export function mostraInfo() {
         info.className = ('info animated slideOutDown');
     }
 }
+
 export function chiudiInfo() {
     const info = document.getElementById('info');
     info.className = ('info animated slideOutDown');
+}
+
+export async function mostraTutto() {
+    await sleep(1200);
+    document.getElementById('splash').className = ('animated fadeOut');
+    await sleep(1000);
+    document.getElementById('splash').style.display = 'none';
 }
