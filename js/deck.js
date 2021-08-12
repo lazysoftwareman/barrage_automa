@@ -98,9 +98,10 @@ export function pesca() {
         resetMazzo();
         initMazzo();
     }
+    let oldCartaAzioni = mazzo[indice];
     indice++;
     curCartaAzioni = mazzo[indice];
     curCartaCriteri = indice > 0 ? mazzo[indice - 1] : undefined;
-    mostraCarte();
+    mostraCarte(oldCartaAzioni);
     mostraAzioni();
 }

@@ -37,7 +37,7 @@ import {
 } from './barrage.js';
 import { azioni, initMazzo, pesca } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay, sorgenti } from './mappa.js';
-import { hideMappa, initDiminesions, mostraPlayers, showMappa } from './view.js';
+import { chiudiInfo, hideMappa, initDiminesions, mostraInfo, mostraPlayers, showMappa } from './view.js';
 
 // @ts-ignore
 window.initPage = initPage;
@@ -52,7 +52,9 @@ export function initPage() {
 	addHandlers();
 	addGlobalVariables();
 	initDiminesions();
+	chiudiInfo();
 	hideMappa();
+
 }
 
 function addGlobalVariables() {
@@ -109,8 +111,12 @@ function addGlobalVariables() {
 export function addHandlers() {
 	//deck:
 	document.getElementById('cartaAzioni').addEventListener('click', pesca);
+	document.getElementById('flipCard').addEventListener('click', pesca);
 	document.getElementById('mappaSwitch').addEventListener('click', showMappa);
 	document.getElementById('deckSwitch').addEventListener('click', hideMappa);
+	//info:
+	document.getElementById('infoSwitch').addEventListener('click', mostraInfo);
+	document.getElementById('info').addEventListener('click', chiudiInfo);
 	//Azioni:
 	for (const azione of azioni) {
 		azioniPrincipali[azione] = function () {

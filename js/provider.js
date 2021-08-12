@@ -223,3 +223,7 @@ export function printArray(array) {
     text += ']';
     return text;
 }
+
+export function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

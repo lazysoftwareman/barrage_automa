@@ -693,6 +693,44 @@ body {
 	border: solid 1px var(--whiteBorder);
 	border-radius: 5px;
 }
+#flipCard {
+	position: absolute;
+    width: calc(var(--vh)*51.3);
+    height: calc(var(--vh)*34.5);
+    left: calc(30.9vh - var(--vh)*25.7);
+    top: calc(var(--vh)*0.5);
+	perspective: 600px;
+}
+.flipCardInner {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	transition: transform 1s;
+	transform-style: preserve-3d;
+}
+#flipCardFront, #flipCardBack {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+#flipCardFront {
+	background-color: transparent; 
+}
+#flipCardFrontImg, #flipCardBackImg {
+	width: 100%;
+}
+
+#flipCardBack {
+	background-color: transparent; 
+	transform: rotateX(180deg);
+
+}
+.flip {
+	transform: translateY(calc(var(--vh)*34.5 + 2vh)) rotateX(-180deg);
+}
 #cartaAzioni {
 	border: solid 1px var(--blackColor);
 	cursor: pointer;
@@ -729,8 +767,48 @@ body {
 	margin-right: auto;
 
 }
+#infoSwitch {	
+	width: 10vh;
+	height: 2.5vh;
+    vertical-align: middle;
+    text-align: center;
+	line-height: 2.5vh;
+	font-weight: bold;
+	color: var(--blackColor);
+	border: solid 1px var(--blackColor);
+	border-radius: 5px;
+	position: absolute;
+	top: -3.75vh;	
+	left: calc(30.9vh - var(--vh)*26.2);
+	background-color: transparent;
+	cursor: pointer;
+}
+#info {	
+	position: absolute;
+    top: 5vh;
+    left: calc(50vw - 30.9vh);
+    height: 90vh;
+    width: 61.8vh;
+    font-size: 12pt;
+    border: solid 1px var(--blackColor);
+    border-radius: 4px;
+    min-width: 250px;
+    text-align: center;
+    background-color: rgba(250, 250, 250, 0.9);
+	padding: 2vh;
+}
+#info p{	
+	text-align: justify;
+}
+#infoTitolo {
+	font-size: 16pt;
+	font-weight: bold;
+}
+#infoSottotitolo {
+	font-size: 14pt;
+	font-weight: bold;
 
-
+}
 
 #playersPageContainer {
 	margin-left: auto;
@@ -803,13 +881,13 @@ body {
 	background-color: var(--selectionColor);
 	cursor: pointer;
 }
-
 .titolo {
 	font-size: 24pt;
 }
 .descrizione {
 	text-align: justify;
 }
+
 
 
 
@@ -862,5 +940,15 @@ body {
 	.areaBacino div {
 		height: 80%;
 		top: 10%;
+	}
+	#flipCard {
+		width: 87.5vw;
+		height: 59vw;
+		left: 1vw;
+		top: calc(var(--vh)*0.5);
+		perspective: 600px;
+	}
+	.flip {
+		transform: translateY(calc(59vw + 2vh)) rotateX(-180deg);
 	}
 }

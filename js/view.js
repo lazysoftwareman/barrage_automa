@@ -1,6 +1,7 @@
 import { actualResult, playerColor, playerMap } from './barrage.js';
 import { azioni, carteAzioni, carteCriteri, curCartaAzioni, curCartaCriteri, deckSize, indice } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay } from './mappa.js';
+import { sleep } from './provider.js';
 
 // @ts-check
 export function initDiminesions() {
@@ -43,16 +44,32 @@ export function hideMappa() {
     element.className = element.className + ' animated slideInLeft';
 }
 
-export function mostraCarte() {
+export async function mostraCarte(oldCartaAzioni) {
+    let CartaDaFlippare = oldCartaAzioni ? oldCartaAzioni : curCartaAzioni;
     if (curCartaAzioni) {
         document.getElementById('cartaF').src = 'img/deck/f_' + curCartaAzioni + '.jpg';
     } else {
         document.getElementById('cartaF').src = '';
     }
     if (curCartaCriteri) {
+        const flipCard = document.getElementById('flipCardInner');
+        flipCard.className = flipCard.className + ' flip';
+        document.getElementById('flipCardFrontImg').src = 'img/deck/f_' + CartaDaFlippare + '.jpg';
+        document.getElementById('flipCardBackImg').src = 'img/deck/b_' + CartaDaFlippare + '.jpg';
+        flipCard.style.visibility = 'visible';
+        await sleep(1000);
+        if (flipCard.className.includes(' flip')) {
+            flipCard.className = flipCard.className.replace(' flip', '');
+        }
         document.getElementById('cartaB').src = 'img/deck/b_' + curCartaCriteri + '.jpg';
         document.getElementById('criteriText').innerHTML = carteCriteri[curCartaCriteri];
+        flipCard.style.visibility = 'hidden';
     } else {
+        if (curCartaAzioni) {
+            document.getElementById('cartaF').src = 'img/deck/f_' + curCartaAzioni + '.jpg';
+        } else {
+            document.getElementById('cartaF').src = '';
+        }
         document.getElementById('cartaB').src = '';
         document.getElementById('criteriText').innerHTML = '';
     }
@@ -155,4 +172,17 @@ export function resetRisultati() {
             }
         }
     }
+}
+
+export function mostraInfo() {
+    const info = document.getElementById('info');
+    if (!info.className.includes(' animated slideInUp')) {
+        info.className = 'info animated slideInUp';
+    } else {
+        info.className = ('info animated slideOutDown');
+    }
+}
+export function chiudiInfo() {
+    const info = document.getElementById('info');
+    info.className = ('info animated slideOutDown');
 }
