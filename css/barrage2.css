@@ -1,0 +1,98 @@
+@charset "UTF-8";
+
+:root {
+	/* Colors */
+	--borderColor: #222222;
+	--whiteBorder: whitesmoke;
+	--blackColor: #3a3a3a;
+	--selectionColor: #e3af54;
+	--greenPlayer: #1a7077;
+	--redPlayer: #af2a4b;
+	--blackPlayer: #3a3a3a;
+	--whitePlayer: #e6e7e8;
+	--nullPlayer: #9d734a;
+	/* Dimensions */
+	--vh: 1vh;
+	--mh: 1vh;
+	--mw: 1vw;
+  }
+/* oranienbaum-regular - latin */
+@font-face {
+	font-family: 'Oranienbaum';
+	font-style: normal;
+	font-weight: 400;
+	src: url('../fonts/oranienbaum-v10-latin-regular.eot'); /* IE9 Compat Modes */
+	src: local(''),
+		 url('../fonts/oranienbaum-v10-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+		 url('../fonts/oranienbaum-v10-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+		 url('../fonts/oranienbaum-v10-latin-regular.woff') format('woff'), /* Modern Browsers */
+		 url('../fonts/oranienbaum-v10-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+		 url('../fonts/oranienbaum-v10-latin-regular.svg#Oranienbaum') format('svg'); /* Legacy iOS */
+  }
+html {
+	width: 100%;
+	height: 100%;
+}
+body {
+	min-height: 100%;
+	min-height: -webkit-fill-available;
+	font-size: 1em;
+	background-image: linear-gradient(#fefefe, #ccb454, #439952);
+	color: #422;
+	font-family: Oranienbaum;
+	overflow: hidden;
+	height: 100%;
+    width: 100%;
+	margin: 0;
+}
+#splash {
+	position: absolute;
+	top: 0;
+	left: 0;
+	min-height: 100%;
+	min-height: -webkit-fill-available;
+	background-image: linear-gradient(#fefefe, #ccb454, #439952);
+	overflow: hidden;
+	height: 100%;
+    width: 100%;
+	margin: 0;
+	z-index: 10;
+}
+#mainContainer {
+	height: 100%;
+	width: 100%;
+	background-color: rgba(250, 250, 250, 0.9);
+}
+#mappaContainer {
+	height: 100%;
+	width: calc(var(--vh)*61.8);	
+	margin-left: auto;
+    margin-right: auto;
+	background-color: royalblue;
+}
+.deck {
+	margin-left: auto;
+    margin-right: auto;
+    margin-top: 5vh;
+	height: 90vh;
+	width: 61.8vh;
+    min-width: 250px;
+	background-color: darkred;
+}
+
+
+
+
+@media only screen and (orientation: portrait) {
+	.deck {
+		margin-top: 5%;
+		height: 90%;
+		width: 90%;
+	}
+	#mappaContainer {
+		height: calc((96vw * 1.453) * 1.111);
+		width: 96%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}

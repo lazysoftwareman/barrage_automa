@@ -21,17 +21,10 @@ export function showMappa() {
     document.getElementById('deckContainer').style.display = 'none';
     const element = document.getElementById('mappaContainer');
     element.style.display = 'block';
-    if (element.className.includes(' animated slideInRight')) {
-        element.className = element.className.replace(' animated slideInRight', '');
+    if (element.className.includes(' animated slideInLeft')) {
+        element.className = element.className.replace(' animated slideInLeft', '');
     }
-    element.className = element.className + ' animated slideInRight';
-    // const mappa = document.getElementById('mappaContainer');
-    // if (mappa) {
-    //     const height = mappa.clientHeight * 0.01;
-    //     const width = mappa.clientWidth * 0.01;
-    //     document.documentElement.style.setProperty('--mh', `${(height)}px`);
-    //     document.documentElement.style.setProperty('--mw', `${width}px`);
-    // }
+    element.className = element.className + ' animated slideInLeft';
 }
 
 export function hideMappa() {

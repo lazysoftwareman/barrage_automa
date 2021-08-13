@@ -42,6 +42,8 @@ import { chiudiInfo, hideMappa, initDiminesions, mostraInfo, mostraPlayers, most
 
 // @ts-ignore
 window.initPage = initPage;
+// @ts-ignore
+window.initPageTest = initPageTest;
 
 export const azioniPrincipali = [];
 export const azioniContinua = [];
@@ -260,4 +262,12 @@ function preloadImages() {
 	}
 	var img = new Image();
 	img.src = 'img/B_N.png';
+}
+
+export function initPageTest() {
+	document.getElementById('deckContainer').addEventListener('click', showMappa);
+	document.getElementById('mappaContainer').addEventListener('click', hideMappa);
+	//initDiminesions();
+	hideMappa();
+	//preloadImages();
 }
