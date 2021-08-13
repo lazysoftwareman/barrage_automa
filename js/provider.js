@@ -72,6 +72,22 @@ export function getProprietarioDiga(diga) {
 }
 
 /**
+ * Ritorna di chi è la centrale
+ * @param {string} centrale
+ */
+export function getProprietarioCentrale(centrale) {
+    if (centraliCostruite.length == 0) {
+        return undefined;
+    }
+    for (let i = 0; i < centraliCostruite.length; i++) {
+        if (centraliCostruite[i].centrale == centrale) {
+            return centraliCostruite[i].chi;
+        }
+    }
+    return undefined;
+}
+
+/**
  * Ritorna le dighe di quello passato
  * @param {string} chi
  */

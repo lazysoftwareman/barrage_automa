@@ -3,9 +3,13 @@ import { carteCriteri, curCartaCriteri, resetMazzo } from './deck.js';
 import { resetAzioni, setAzioneContinua } from './init.js';
 import {
     centraliCondotte,
+    centraliFree,
+    centraliPay,
     condotte,
+    condotteCentrali,
     condotteDighe,
     condotteVal,
+    digheCondotte,
     digheFree,
     dighePay,
     percorsi,
@@ -15,10 +19,12 @@ import {
     getCapienzaDiga,
     getCentraliDiProprieta,
     getCondotteCheScaricanoInArea,
+    getDigheDiProprieta,
     getGocceInSorgente,
     getLivelloDiga,
     getNumeroCentrale,
     getNumeroDiga,
+    getProprietarioCentrale,
     getProprietarioCondotta,
     getProprietarioDiga,
     getZonaCondotta,
@@ -1013,67 +1019,676 @@ export function getCO_Numero(_tipo, numeroLettera, _automa) {
 	return [];
 }
 
-export function getCO_G(_min, _max, _automa) {
-	// TODO
-	alert('Non ancora implementato getCO_G');
+function isCondottaCostruibile(condotta, min, max) {
+	if (!getProprietarioCondotta(condotta)) {
+		if (min) {
+			if (condotteVal[condotta] < +min) {
+				// Non valida
+				return false;
+			}
+		}
+		if (max) {
+			if (condotteVal[condotta] > +max) {
+				// Non valida
+				return false;
+			}
+		}
+		return true;;
+	}
+	return false;
+}
+
+/**
+ * CONDOTTA: massimo valore disponibile
+ * @param {string} min valore minimo condotta
+ * @param {string} max valore massimo condotta
+ * @param {string} automa automa
+ * @returns 
+ */
+export function getCO_G(min, max, automa) {
+	const condotteDisp = [];
+	for (const condotta of condotte) {
+		if (isCondottaCostruibile(condotta, min, max)) {
+			condotteDisp.push(condotta);
+		} else {
+			continue;
+		}
+	}
+	if (condotteDisp.length == 0) {
+		return actualResult ? actualResult : [];
+	}
+	condotteDisp.sort((a, b) => {
+		return condotteVal[b] - condotteVal[a]
+	});
+	const condotteValide = [];
+	let maxVal = -1;
+	for (const condotta of condotteDisp) {
+		if (maxVal == -1 || maxVal == condotteVal[condotta]) {
+			maxVal = condotteVal[condotta];
+			condotteValide.push(condotta);
+		} else if (condotteVal[condotta] < maxVal) {
+			break;
+		}
+	}
+	if (condotteValide.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
+		return condotteValide;
+	} else {
+		// intersezione
+		return intersecArray(actualResult, condotteValide);
+	}
+}
+
+/**
+ * CONDOTTA: quasi massimo valore disponibile. Se non presente, massimo
+ * @param {string} min valore minimo condotta
+ * @param {string} max valore massimo condotta
+ * @param {string} automa automa
+ * @returns 
+ */
+export function getCO_H(min, max, automa) {
+	const condotteDisp = [];
+	for (const condotta of condotte) {
+		if (isCondottaCostruibile(condotta, min, max)) {
+			condotteDisp.push(condotta);
+		} else {
+			continue;
+		}
+	}
+	if (condotteDisp.length == 0) {
+		return actualResult ? actualResult : [];
+	}
+	condotteDisp.sort((a, b) => {
+		return condotteVal[b] - condotteVal[a]
+	});
+	const condotteMax = [];
+	const condottePenMax = [];
+	let maxVal = -1;
+	let penMaxVal = -1
+	for (const condotta of condotteDisp) {
+		if (maxVal == -1 || maxVal == condotteVal[condotta]) {
+			maxVal = condotteVal[condotta];
+			condotteMax.push(condotta);
+		} else if (penMaxVal == -1 || penMaxVal == condotteVal[condotta]) {
+			penMaxVal = condotteVal[condotta];
+			condottePenMax.push(condotta);
+		} else {
+			break;
+		}
+	}
+	const condotteValide = condottePenMax.length > 0 ? condottePenMax : condotteMax;
+	if (condotteValide.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
+		return condotteValide;
+	} else {
+		// intersezione
+		return intersecArray(actualResult, condotteValide);
+	}
+}
+
+/**
+ * CONDOTTA - collegata a una diga già costruita propria / neutrale / avversaria
+ * @param {string} min 
+ * @param {string} max 
+ * @param {string} automa 
+ * @returns risultati
+ */
+export function getCO_I(min, max, automa) {
+	const digheProprie = [];
+	const digheNaturali = [];
+	const digheAvversarie = [];
+	for (const diga of digheFree.concat(dighePay)) {
+		if (getProprietarioDiga(diga)) {
+			if (getProprietarioDiga(diga) == automa) {
+				digheProprie.push(diga);
+			} else if (getProprietarioDiga(diga) == 'N') {
+				digheNaturali.push(diga);
+			} else {
+				digheAvversarie.push(diga);
+			}
+		}
+	}
+	const condotteProprie = [];
+	const condotteNaturali = [];
+	const condotteAvversarie = [];
+	for (const diga of digheProprie) {
+		const condotte = digheCondotte[diga];
+		for (const condotta of condotte) {
+			if (isCondottaCostruibile(condotta, min, max)) {
+				condotteProprie.push(condotta);
+			} else {
+				continue;
+			}
+		}
+	}
+	for (const diga of digheNaturali) {
+		const condotte = digheCondotte[diga];
+		for (const condotta of condotte) {
+			if (isCondottaCostruibile(condotta, min, max)) {
+				condotteNaturali.push(condotta);
+			} else {
+				continue;
+			}
+		}
+	}
+	for (const diga of digheAvversarie) {
+		const condotte = digheCondotte[diga];
+		for (const condotta of condotte) {
+			if (isCondottaCostruibile(condotta, min, max)) {
+				condotteAvversarie.push(condotta);
+			} else {
+				continue;
+			}
+		}
+	}
+	// Per ogni valore devo prendere quelle di priorità maggiore
+	// (tipo se per il valore 3 ci sono 0 cond proprie, 2 naturali e 1 avversaria, ritorno le 2 naturali e basta)
+	const condPerNumero = [];
+	let valoriOccupati = [];
+	for (const cond of condotteProprie) {
+		const val = condotteVal[cond];
+		if (!condPerNumero['' + val]) {
+			condPerNumero['' + val] = [];
+			valoriOccupati.push('' + val);
+		}
+		condPerNumero['' + val].push(cond);
+	}
+	let altriValori = [];
+	for (const cond of condotteNaturali) {
+		const val = condotteVal[cond];
+		if (!valoriOccupati.includes('' + val)) {
+			if (!condPerNumero['' + val]) {
+				condPerNumero['' + val] = [];
+				altriValori.push(cond);
+			}
+			condPerNumero['' + val].push(cond);
+		}
+	}
+	valoriOccupati = valoriOccupati.concat(altriValori);
+	for (const cond of condotteAvversarie) {
+		const val = condotteVal[cond];
+		if (!valoriOccupati.includes('' + val)) {
+			if (!condPerNumero['' + val]) {
+				condPerNumero['' + val] = [];
+			}
+			condPerNumero['' + val].push(cond);
+		}
+	}
+	const condotteValide = [];
+	for (const val in condPerNumero) {
+		for (const condotta of condPerNumero[val]) {
+			condotteValide.push(condotta);
+		}
+	}
+	if (condotteValide.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
+		return condotteValide;
+	} else {
+		// intersezione
+		return intersecArray(actualResult, condotteValide);
+	}
+}
+
+/**
+ * CONDOTTA - collegata a una centrale già costruita propria / avversaria
+ * @param {string} min 
+ * @param {string} max 
+ * @param {string} automa 
+ * @returns risultati
+ */
+export function getCO_J(min, max, automa) {
+	const centraliProprie = [];
+	const centraliAvversarie = [];
+	for (const centrale of centraliFree.concat(centraliPay)) {
+		if (getProprietarioCentrale(centrale)) {
+			if (getProprietarioCentrale(centrale) == automa) {
+				centraliProprie.push(centrale);
+			} else {
+				centraliAvversarie.push(centrale);
+			}
+		}
+	}
+	const condotteProprie = [];
+	const condotteAvversarie = [];
+	for (const centrale of centraliProprie) {
+		const condotte = centraliCondotte[centrale];
+		for (const condotta of condotte) {
+			if (isCondottaCostruibile(condotta, min, max)) {
+				condotteProprie.push(condotta);
+			} else {
+				continue;
+			}
+		}
+	}
+	for (const centrale of centraliAvversarie) {
+		const condotte = centraliCondotte[centrale];
+		for (const condotta of condotte) {
+			if (isCondottaCostruibile(condotta, min, max)) {
+				condotteAvversarie.push(condotta);
+			} else {
+				continue;
+			}
+		}
+	}
+	// Per ogni valore devo prendere quelle di priorità maggiore
+	// (tipo se per il valore 3 ci sono 2 cond proprie e 1 avversaria, ritorno le 2 proprie e basta)
+	const condPerNumero = [];
+	let valoriOccupati = [];
+	for (const cond of condotteProprie) {
+		const val = condotteVal[cond];
+		if (!condPerNumero['' + val]) {
+			condPerNumero['' + val] = [];
+			valoriOccupati.push('' + val);
+		}
+		condPerNumero['' + val].push(cond);
+	}
+	for (const cond of condotteAvversarie) {
+		const val = condotteVal[cond];
+		if (!valoriOccupati.includes('' + val)) {
+			if (!condPerNumero['' + val]) {
+				condPerNumero['' + val] = [];
+			}
+			condPerNumero['' + val].push(cond);
+		}
+	}
+	const condotteValide = [];
+	for (const val in condPerNumero) {
+		for (const condotta of condPerNumero[val]) {
+			condotteValide.push(condotta);
+		}
+	}
+	if (condotteValide.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
+		return condotteValide;
+	} else {
+		// intersezione
+		return intersecArray(actualResult, condotteValide);
+	}
+}
+
+/**
+ * CONDOTTA - collegata a una diga già costruita avversaria / neutrale / propria
+ * @param {string} min 
+ * @param {string} max 
+ * @param {string} automa 
+ * @returns risultati
+ */
+export function getCO_K(min, max, automa) {
+	const digheProprie = [];
+	const digheNaturali = [];
+	const digheAvversarie = [];
+	for (const diga of digheFree.concat(dighePay)) {
+		if (getProprietarioDiga(diga)) {
+			if (getProprietarioDiga(diga) == automa) {
+				digheProprie.push(diga);
+			} else if (getProprietarioDiga(diga) == 'N') {
+				digheNaturali.push(diga);
+			} else {
+				digheAvversarie.push(diga);
+			}
+		}
+	}
+	const condotteProprie = [];
+	const condotteNaturali = [];
+	const condotteAvversarie = [];
+	for (const diga of digheProprie) {
+		const condotte = digheCondotte[diga];
+		for (const condotta of condotte) {
+			if (isCondottaCostruibile(condotta, min, max)) {
+				condotteProprie.push(condotta);
+			} else {
+				continue;
+			}
+		}
+	}
+	for (const diga of digheNaturali) {
+		const condotte = digheCondotte[diga];
+		for (const condotta of condotte) {
+			if (isCondottaCostruibile(condotta, min, max)) {
+				condotteNaturali.push(condotta);
+			} else {
+				continue;
+			}
+		}
+	}
+	for (const diga of digheAvversarie) {
+		const condotte = digheCondotte[diga];
+		for (const condotta of condotte) {
+			if (isCondottaCostruibile(condotta, min, max)) {
+				condotteAvversarie.push(condotta);
+			} else {
+				continue;
+			}
+		}
+	}
+	// Per ogni valore devo prendere quelle di priorità maggiore
+	// (tipo se per il valore 3 ci sono 0 cond proprie, 2 naturali e 1 avversaria, ritorno l'avvesaria e basta)
+	const condPerNumero = [];
+	let valoriOccupati = [];
+	for (const cond of condotteAvversarie) {
+		const val = condotteVal[cond];
+		if (!condPerNumero['' + val]) {
+			condPerNumero['' + val] = [];
+			valoriOccupati.push('' + val);
+		}
+		condPerNumero['' + val].push(cond);
+	}
+	let altriValori = [];
+	for (const cond of condotteNaturali) {
+		const val = condotteVal[cond];
+		if (!valoriOccupati.includes('' + val)) {
+			if (!condPerNumero['' + val]) {
+				condPerNumero['' + val] = [];
+				altriValori.push(cond);
+			}
+			condPerNumero['' + val].push(cond);
+		}
+	}
+	valoriOccupati = valoriOccupati.concat(altriValori);
+	for (const cond of condotteProprie) {
+		const val = condotteVal[cond];
+		if (!valoriOccupati.includes('' + val)) {
+			if (!condPerNumero['' + val]) {
+				condPerNumero['' + val] = [];
+			}
+			condPerNumero['' + val].push(cond);
+		}
+	}
+	const condotteValide = [];
+	for (const val in condPerNumero) {
+		for (const condotta of condPerNumero[val]) {
+			condotteValide.push(condotta);
+		}
+	}
+	if (condotteValide.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
+		return condotteValide;
+	} else {
+		// intersezione
+		return intersecArray(actualResult, condotteValide);
+	}
+}
+
+/**
+ * CONDOTTA - collegata a una centrale già costruita avversaria / propria
+ * @param {string} min 
+ * @param {string} max 
+ * @param {string} automa 
+ * @returns risultati
+ */
+export function getCO_L(min, max, automa) {
+	const centraliProprie = [];
+	const centraliAvversarie = [];
+	for (const centrale of centraliFree.concat(centraliPay)) {
+		if (getProprietarioCentrale(centrale)) {
+			if (getProprietarioCentrale(centrale) == automa) {
+				centraliProprie.push(centrale);
+			} else {
+				centraliAvversarie.push(centrale);
+			}
+		}
+	}
+	const condotteProprie = [];
+	const condotteAvversarie = [];
+	for (const centrale of centraliProprie) {
+		const condotte = centraliCondotte[centrale];
+		for (const condotta of condotte) {
+			if (isCondottaCostruibile(condotta, min, max)) {
+				condotteProprie.push(condotta);
+			} else {
+				continue;
+			}
+		}
+	}
+	for (const centrale of centraliAvversarie) {
+		const condotte = centraliCondotte[centrale];
+		for (const condotta of condotte) {
+			if (isCondottaCostruibile(condotta, min, max)) {
+				condotteAvversarie.push(condotta);
+			} else {
+				continue;
+			}
+		}
+	}
+	// Per ogni valore devo prendere quelle di priorità maggiore
+	// (tipo se per il valore 3 ci sono 2 cond proprie e 1 avversaria, ritorno quella avversaria e basta)
+	const condPerNumero = [];
+	let valoriOccupati = [];
+	for (const cond of condotteAvversarie) {
+		const val = condotteVal[cond];
+		if (!condPerNumero['' + val]) {
+			condPerNumero['' + val] = [];
+			valoriOccupati.push('' + val);
+		}
+		condPerNumero['' + val].push(cond);
+	}
+	for (const cond of condotteProprie) {
+		const val = condotteVal[cond];
+		if (!valoriOccupati.includes('' + val)) {
+			if (!condPerNumero['' + val]) {
+				condPerNumero['' + val] = [];
+			}
+			condPerNumero['' + val].push(cond);
+		}
+	}
+	const condotteValide = [];
+	for (const val in condPerNumero) {
+		for (const condotta of condPerNumero[val]) {
+			condotteValide.push(condotta);
+		}
+	}
+	if (condotteValide.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
+		return condotteValide;
+	} else {
+		// intersezione
+		return intersecArray(actualResult, condotteValide);
+	}
+}
+
+
+export function getCE_0_SistemaCompleto(automa) {
+	const dighe = [];
+	for (const diga of digheFree.concat(dighePay)) {
+		if (getProprietarioDiga(diga)) {
+			if (getProprietarioDiga(diga) == automa || getProprietarioDiga(diga) == 'N') {
+				dighe.push(diga);
+			}
+		}
+	}
+	const condotte = [];
+	for (const diga of dighe) {
+		const conds = digheCondotte[diga];
+		for (const condotta of conds) {
+			if (getProprietarioCondotta(condotta)) {
+				condotte.push(condotta);
+			}
+		}
+	}
+	const centraliValide = [];
+	for (const condotta of condotte) {
+		const centrali = condotteCentrali[condotta];
+		for (const centrale of centrali) {
+			if (!getProprietarioCentrale(centrale)) {
+				centraliValide.push(centrale);
+			}
+		}
+	}
+	if (centraliValide.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
+		return centraliValide;
+	} else {
+		// intersezione
+		return intersecArray(actualResult, centraliValide);
+	}
+}
+
+export function getCE_Numero(_tipo, numero, automa) {
+	if (!actualResult || actualResult.length == 0) {
+		// Non ho trovato niente di valido finora. Considero tutte come valide
+		actualResult = [];
+		for (const centrale of centraliFree.concat(centraliPay)) {
+			if (!getProprietarioCentrale(centrale)) {
+				actualResult.push(centrale);
+			}
+		}
+	}
+	let counter = 0;
+	let actual = +numero;
+	while (counter < 12) {
+		actual = actual + counter;
+		if (actual > 12) {
+			actual = 5;
+		}
+		if (centraliFree.includes('CF_' + actual)) {
+			let centrale = 'CF_' + actual;
+			if (actualResult.includes(centrale)) {
+				return [centrale];
+			}
+		} else if (centraliFree.includes('CF_' + actual + 'A')) {
+			let centrale = 'CF_' + actual + 'A';
+			if (actualResult.includes(centrale)) {
+				return [centrale];
+			}
+		} else if (centraliFree.includes('CF_' + actual + 'B')) {
+			let centrale = 'CF_' + actual + 'B';
+			if (actualResult.includes(centrale)) {
+				return [centrale];
+			}
+		} else if (centraliPay.includes('CP_' + actual)) {
+			let centrale = 'CF_' + actual;
+			if (actualResult.includes(centrale)) {
+				return [centrale];
+			}
+		} else if (centraliPay.includes('CP_' + actual + 'A')) {
+			let centrale = 'CF_' + actual + 'A';
+			if (actualResult.includes(centrale)) {
+				return [centrale];
+			}
+		} else if (centraliPay.includes('CP_' + actual + 'B')) {
+			let centrale = 'CF_' + actual + 'B';
+			if (actualResult.includes(centrale)) {
+				return [centrale];
+			}
+		} else if (centraliPay.includes('CP_' + actual + 'C')) {
+			let centrale = 'CF_' + actual + 'C';
+			if (actualResult.includes(centrale)) {
+				return [centrale];
+			}
+		}
+		counter++;
+	}
 	return [];
 }
 
-export function getCO_H(_min, _max, _automa) {
-	// TODO
-	alert('Non ancora implementato getCO_H');
-	return [];
+/**
+ * CENTRALI: collegate alla condotta più potente già costruita
+ * @param {string} automa 
+ */
+export function getCE_M(automa) {
+	const conds = [];
+	for (const condotta of condotte) {
+		if (getProprietarioCondotta(condotta)) {
+			const centrs = condotteCentrali[condotta];
+			for (const centrale of centrs) {
+				if (!getProprietarioCentrale(centrale)) {
+					conds.push(condotta);
+					break;
+				}
+			}
+		}
+	}
+	conds.sort((a, b) => {
+		return condotteVal[b] - condotteVal[a]
+	});
+	const condotteMax = [];
+	let maxVal = -1;
+	for (const condotta of conds) {
+		if (maxVal == -1 || maxVal == condotteVal[condotta]) {
+			maxVal = condotteVal[condotta];
+			condotteMax.push(condotta);
+		} else {
+			break;
+		}
+	}
+	const centraliValide = [];
+	for (const condotta of condotteMax) {
+		if (getProprietarioCondotta(condotta) == automa) {
+			const centrs = condotteCentrali[condotta];
+			for (const centrale of centrs) {
+				if (!getProprietarioCentrale(centrale)) {
+					centraliValide.push(condotta);
+				}
+			}
+		}
+	}
+	if (centraliValide.length == 0) {
+		for (const condotta of condotteMax) {
+			const centrs = condotteCentrali[condotta];
+			for (const centrale of centrs) {
+				if (!getProprietarioCentrale(centrale)) {
+					centraliValide.push(condotta);
+				}
+
+			}
+		}
+	}
+	if (centraliValide.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
+		return centraliValide;
+	} else {
+		// intersezione
+		return intersecArray(actualResult, centraliValide);
+	}
 }
 
-export function getCO_I(_min, _max, _automa) {
-	// TODO
-	alert('Non ancora implementato getCO_I');
-	return [];
+/**
+ * CENTRALI: collegate a una DIGA PROPRIA
+ * @param {string} automa 
+ * @returns rislutati
+ */
+export function getCE_N(automa) {
+	const dighe = getDigheDiProprieta(automa);
+	const conds = [];
+	for (const diga of dighe) {
+		const condottes = digheCondotte[diga];
+		for (const condotta of condottes) {
+			conds.push(condotta);
+		}
+	}
+	const centraliValide = [];
+	for (const condotta of conds) {
+		const centrali = condotteCentrali[condotta];
+		for (const centrale of centrali) {
+			if (!getProprietarioCentrale(centrale)) {
+				centraliValide.push(centrale);
+			}
+		}
+	}
+	if (centraliValide.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
+		return centraliValide;
+	} else {
+		// intersezione
+		return intersecArray(actualResult, centraliValide);
+	}
 }
 
-export function getCO_J(_min, _max, _automa) {
-	// TODO
-	alert('Non ancora implementato getCO_J');
-	return [];
-}
-
-export function getCO_K(_min, _max, _automa) {
-	// TODO
-	alert('Non ancora implementato getCO_K');
-	return [];
-}
-
-export function getCO_L(_min, _max, _automa) {
-	// TODO
-	alert('Non ancora implementato getCO_L');
-	return [];
-}
-
-export function getCE_0_SistemaCompleto(_automa) {
-	// TODO
-	alert('Non ancora implementato getCE_0_SistemaCompleto');
-	return [];
-}
-
-export function getCE_Numero(_tipo, _numero, _automa) {
-	// TODO
-	alert('Non ancora implementato getCE_Numero');
-	return [];
-}
-
-export function getCE_M(_automa) {
-	// TODO
-	alert('Non ancora implementato getCE_M');
-	return [];
-}
-
-export function getCE_N(_automa) {
-	// TODO
-	alert('Non ancora implementato getCE_N');
-	return [];
-}
-
-export function getCE_OP(_automa) {
+/**
+ * CENTRALI: una centrale in pianura
+ * @param {*} automa 
+ * @returns 
+ */
+export function getCE_OP(automa) {
 	// TODO
 	alert('Non ancora implementato getCE_OP');
 	return [];
