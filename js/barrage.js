@@ -16,6 +16,7 @@ import {
     percorsiDi,
 } from './mappa.js';
 import {
+    areEquals,
     getCapienzaDiga,
     getCentraliDiProprieta,
     getCondotteCheScaricanoInArea,
@@ -27,6 +28,7 @@ import {
     getProprietarioCentrale,
     getProprietarioCondotta,
     getProprietarioDiga,
+    getZonaCentrale,
     getZonaCondotta,
     getZonaDiga,
     intersecArray,
@@ -193,7 +195,6 @@ export function costruisci(tipo, zona, minCondotta, maxCondotta, automa) {
 			alert('Non si può costruire una base in quella zona');
 			return;
 		} else if (actualResult.length == 1) {
-			actualResult = actualResult;
 			mostraRisultati();
 			return;
 		}
@@ -210,7 +211,13 @@ export function costruisci(tipo, zona, minCondotta, maxCondotta, automa) {
 		// Nessun sistema completo, continuiamo
 		eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa);
 	} else if (actualResult.length > 0) {
-		// Ci sono dei risultati, se di sicuro devo filtrare ancora, filtro, altrimenti mostro
+		// Ci sono dei risultati, se 1, lo mostro e mi fermo qua
+		if (actualResult.length == 1) {
+			mostraRisultati();
+			resetAzioni();
+			return;
+		}
+		// se di sicuro devo filtrare ancora, filtro, altrimenti mostro
 		if (devoSicuramenteFiltrare(tipo)) {
 			return eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa);
 		} else {
@@ -232,7 +239,8 @@ export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa) {
 		} else if (tipo == 'CE') {
 			position += 8;
 		}
-		let lettera = criteri[position];
+		const lettera = criteri[position];
+		const prevResult = [...actualResult];
 		if (criterioPasso == 4) {
 			actualResult = window['get' + prefix + '_Numero'](tipo, lettera, automa);
 		} else {
@@ -245,19 +253,24 @@ export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa) {
 					actualResult = window['getCE_' + lettera](automa);
 				} else {
 					if (lettera == 'OP') {
-						actualResult = getCE_OP(automa);
+						actualResult = getCE_OP();
 					} else {
 						let numero = lettera.substr(1, 1);
-						actualResult = getCE_P(numero, automa);
+						actualResult = getCE_P(numero);
 					}
 				}
 			}
 		}
 		if (!actualResult || actualResult.length == 0) {
-			// Nessun sistema completo, continuiamo
+			// Nessun risultato, continuiamo
 		} else if (actualResult.length > 0) {
+			if (actualResult.length == 1) {
+				mostraRisultati();
+				resetAzioni();
+				return;
+			}
 			// Ci sono dei risultati, se di sicuro devo filtrare ancora, filtro, altrimenti mostro
-			if (devoSicuramenteFiltrare(tipo)) {
+			if (areEquals(prevResult, actualResult) || devoSicuramenteFiltrare(tipo)) {
 				// Devo sicuramente ancora filtrare, continuiamo
 			} else {
 				mostraRisultati();
@@ -755,7 +768,9 @@ export function getBE_F(tipo, automa, _ordine) {
 	for (let i = 0; i < condotteValide.length; i++) {
 		let currDighe = condotteDighe[condotteValide[i]];
 		for (let j = 0; j < currDighe.length; j++) {
-			dighe.push(currDighe[j]);
+			if (!dighe.includes(currDighe[j])) {
+				dighe.push(currDighe[j]);
+			}
 		}
 	}
 	let digheValide = [];
@@ -1685,31 +1700,253 @@ export function getCE_N(automa) {
 
 /**
  * CENTRALI: una centrale in pianura
- * @param {*} automa 
- * @returns 
+ * @returns risultati
  */
-export function getCE_OP(automa) {
-	// TODO
-	alert('Non ancora implementato getCE_OP');
-	return [];
+export function getCE_OP() {
+	const centraliValide = centraliFree.concat(centraliPay).filter(c => getZonaCentrale(c) == 'P' && !getProprietarioCentrale(c));
+	if (centraliValide.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
+		return centraliValide;
+	} else {
+		// intersezione
+		return intersecArray(actualResult, centraliValide);
+	}
 }
 
-export function getCE_P(_numero, _automa) {
-	// TODO
-	alert('Non ancora implementato getCE_P');
-	return [];
+/**
+ * CENTRALI: una centrale in pianura
+ * @param {string} numero
+ * @returns risultati
+ */
+export function getCE_P(numero) {
+	const centraliValide = centraliFree.concat(centraliPay).filter(c => c.substr(3, 1) == numero && !getProprietarioCentrale(c));
+	if (centraliValide.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
+		return centraliValide;
+	} else {
+		// intersezione
+		return intersecArray(actualResult, centraliValide);
+	}
 }
 
-export function getCE_Q(_automa) {
-	// TODO
-	alert('Non ancora implementato getCE_Q');
-	return [];
+/**
+ * CENTRALI: una centrale che scarica acqua in una propria diga O non scarica in una diga avversaria
+ * @param {string} automa 
+ * @returns risultati
+ */
+export function getCE_Q(automa) {
+	let centrali = centraliFree.concat(centraliPay).filter(c => {
+		let numero = c.substr(3, 1);
+		if (+numero >= 5 && +numero < 10) {
+			return true;
+		}
+		numero = c.substr(3, 2);
+		return numero == '10' || numero == '11' || numero == '12';
+	});
+	centrali = centrali.filter(c => !getProprietarioCentrale(c));
+	const secondoNumero = [];
+	secondoNumero['5'] = '9';
+	secondoNumero['6'] = '10';
+	secondoNumero['7'] = '10';
+	const centraliValide = [];
+	// centrale che scarica in una propria diga:
+	// deve essere dal 5 al 10
+	for (const centrale of centrali) {
+		const numero = getNumeroCentrale(centrale);
+		if (numero == '11' || numero == '12') {
+			continue;
+		}
+		let proprietario = getProprietarioDiga('DP_' + numero);
+		if (proprietario && proprietario == automa) {
+			centraliValide.push(centrale);
+			continue;
+		}
+		if (!proprietario) {
+			proprietario = getProprietarioDiga('DF_' + numero);
+			if (proprietario && proprietario == automa) {
+				centraliValide.push(centrale);
+				continue;
+			}
+		}
+		if (!proprietario) {
+			const secondoN = secondoNumero[numero];
+			if (secondoN) {
+				proprietario = getProprietarioDiga('DP_' + secondoN);
+				if (proprietario && proprietario == automa) {
+					centraliValide.push(centrale);
+					continue;
+				}
+				if (!proprietario) {
+					proprietario = getProprietarioDiga('DF_' + secondoN);
+					if (proprietario && proprietario == automa) {
+						centraliValide.push(centrale);
+					}
+				}
+			}
+		}
+	}
+	if (centraliValide.length == 0) {
+		// centrale che non scarica in una diga avversaria:
+		// rifaccio tutto dal 5 al 12. Proprietario deve essere N o vuoto
+		for (const centrale of centrali) {
+			const numero = getNumeroCentrale(centrale);
+			if (numero == '11' || numero == '12') {
+				centraliValide.push(centrale);
+				continue;
+			}
+			let proprietario = getProprietarioDiga('DP_' + numero);
+			if (proprietario && proprietario == 'N') {
+				centraliValide.push(centrale);
+				continue;
+			}
+			if (!proprietario) {
+				proprietario = getProprietarioDiga('DF_' + numero);
+				if (proprietario && proprietario == 'N') {
+					centraliValide.push(centrale);
+					continue;
+				}
+			}
+			if (!proprietario) {
+				const secondoN = secondoNumero[numero];
+				if (secondoN) {
+					proprietario = getProprietarioDiga('DP_' + secondoN);
+					if (proprietario && proprietario == 'N') {
+						centraliValide.push(centrale);
+						continue;
+					}
+					if (!proprietario) {
+						proprietario = getProprietarioDiga('DF_' + secondoN);
+						if (proprietario && proprietario == 'N') {
+							centraliValide.push(centrale);
+							continue;
+						}
+					}
+					if (!proprietario) {
+						centraliValide.push(centrale);
+					}
+				}
+			}
+		}
+	}
+	if (centraliValide.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
+		return centraliValide;
+	} else {
+		// intersezione
+		return intersecArray(actualResult, centraliValide);
+	}
 }
 
-export function getCE_R(_automa) {
-	// TODO
-	alert('Non ancora implementato getCE_R');
-	return [];
+/**
+ * CENTRALI: una centrale che non scarica acqua in una diga avversaria O scarica acqua in una propria diga
+ * @param {string} automa 
+ * @returns risultati
+ */
+export function getCE_R(automa) {
+	let centrali = centraliFree.concat(centraliPay).filter(c => {
+		let numero = c.substr(3, 1);
+		if (+numero >= 5 && +numero < 10) {
+			return true;
+		}
+		numero = c.substr(3, 2);
+		return numero == '10' || numero == '11' || numero == '12';
+	});
+	centrali = centrali.filter(c => !getProprietarioCentrale(c));
+	const secondoNumero = [];
+	secondoNumero['5'] = '9';
+	secondoNumero['6'] = '10';
+	secondoNumero['7'] = '10';
+	const centraliValide = [];
+	// centrale che non scarica in una diga avversaria:
+	// numeri validi dal 5 al 12. Se 11 o 12 va già bene. Proprietario deve essere N o vuoto
+	for (const centrale of centrali) {
+		const numero = getNumeroCentrale(centrale);
+		if (numero == '11' || numero == '12') {
+			centraliValide.push(centrale);
+			continue;
+		}
+		let proprietario = getProprietarioDiga('DP_' + numero);
+		if (proprietario && proprietario == 'N') {
+			centraliValide.push(centrale);
+			continue;
+		}
+		if (!proprietario) {
+			proprietario = getProprietarioDiga('DF_' + numero);
+			if (proprietario && proprietario == 'N') {
+				centraliValide.push(centrale);
+				continue;
+			}
+		}
+		if (!proprietario) {
+			const secondoN = secondoNumero[numero];
+			if (secondoN) {
+				proprietario = getProprietarioDiga('DP_' + secondoN);
+				if (proprietario && proprietario == 'N') {
+					centraliValide.push(centrale);
+					continue;
+				}
+				if (!proprietario) {
+					proprietario = getProprietarioDiga('DF_' + secondoN);
+					if (proprietario && proprietario == 'N') {
+						centraliValide.push(centrale);
+						continue;
+					}
+				}
+				if (!proprietario) {
+					centraliValide.push(centrale);
+				}
+			}
+		}
+	}
+	if (centraliValide.length == 0) {
+		// centrale che scarica in una propria diga:
+		// deve essere dal 5 al 10
+		for (const centrale of centrali) {
+			const numero = getNumeroCentrale(centrale);
+			if (numero == '11' || numero == '12') {
+				continue;
+			}
+			let proprietario = getProprietarioDiga('DP_' + numero);
+			if (proprietario && proprietario == automa) {
+				centraliValide.push(centrale);
+				continue;
+			}
+			if (!proprietario) {
+				proprietario = getProprietarioDiga('DF_' + numero);
+				if (proprietario && proprietario == automa) {
+					centraliValide.push(centrale);
+					continue;
+				}
+			}
+			if (!proprietario) {
+				const secondoN = secondoNumero[numero];
+				if (secondoN) {
+					proprietario = getProprietarioDiga('DP_' + secondoN);
+					if (proprietario && proprietario == automa) {
+						centraliValide.push(centrale);
+						continue;
+					}
+					if (!proprietario) {
+						proprietario = getProprietarioDiga('DF_' + secondoN);
+						if (proprietario && proprietario == automa) {
+							centraliValide.push(centrale);
+						}
+					}
+				}
+			}
+		}
+	}
+	if (centraliValide.length == 0) {
+		return actualResult ? actualResult : [];
+	} if (!actualResult || actualResult.length == 0) {
+		return centraliValide;
+	} else {
+		// intersezione
+		return intersecArray(actualResult, centraliValide);
+	}
 }
 
 /////////////// METODI CHIAMATI DA PULSANTI

@@ -40,6 +40,19 @@ export function getZonaDiga(diga) {
 }
 
 /**
+ * Ritorna C(ollina), P(ianura) in base alla centr4ale
+ * @param {string} centrale
+ */
+export function getZonaCentrale(centrale) {
+    let numero = centrale.substring(3, centrale.length);
+    if (numero.startsWith('12') || numero.startsWith('11') || numero.startsWith('10') || numero.startsWith('9') || numero.startsWith('8')) {
+        return 'P';
+    } else {
+        return 'C';
+    }
+}
+
+/**
  * Ritorna di chi è la condotta
  * @param {string} condotta
  */
@@ -138,6 +151,7 @@ export function getCentraliDiProprieta(chi) {
 /**
  * Ritorna il numero della centrale
  * @param {string} centrale
+ * @returns {string} num
  */
 export function getNumeroCentrale(centrale) {
     let num = centrale.substring(3, centrale.length);
@@ -228,7 +242,30 @@ export function intersecArray(array1, array2) {
     let filtered = array2.filter(function (n) {
         return array1.indexOf(n) != -1;
     });
+    if (filtered.length == 0 && array1.length != 0) {
+        // Il secondo array ha risultati che non c'entrano una cippa. Ritorno il primo
+        return array1;
+    }
     return filtered;
+}
+
+export function areEquals(array1, array2) {
+    if (!array1) {
+        return !array2;
+    } else if (!array2) {
+        return false;
+    }
+    if (array1.length != array2.length) {
+        return false;
+    }
+    array1.sort();
+    array2.sort();
+    for (let i = 0; i < array1.length; i++) {
+        if (array1[i] != array2[i]) {
+            return false;
+        }
+    }
+    return true;
 }
 
 export function printArray(array) {
