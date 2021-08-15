@@ -6,7 +6,7 @@ import {
     addGocciaDiga,
     addGocciaSorgente,
     azioneCostruisci,
-    azioneCostruisciContinua,
+    continuaCostruisci,
     getBE_0_SistemaCompleto,
     getBE_A,
     getBE_B,
@@ -58,7 +58,6 @@ window.initPage = initPage;
 window.initPageTest = initPageTest;
 
 export const azioniPrincipali = [];
-export const azioniContinua = [];
 
 export function initPage() {
 	resetInputs();
@@ -140,9 +139,6 @@ export function addHandlers() {
 		azioniPrincipali[azione] = function () {
 			azioneCostruisci(azione);
 		};
-		azioniContinua[azione] = function () {
-			azioneCostruisciContinua(azione);
-		};
 		document.getElementById('azione_' + azione).addEventListener('click', azioniPrincipali[azione], false);
 	}
 	//sorgenti:
@@ -192,11 +188,13 @@ export function addHandlers() {
 		const numEscavatori = +(document.getElementById('numEscavatori').value);
 		setNumEscavatori(numEscavatori);
 		chiudiEscavatori();
+		continuaCostruisci();
 	}, false);
 	document.getElementById('confermaBetoniere').addEventListener('click', function () {
 		const numBetoniere = +(document.getElementById('numBetoniere').value);
 		setNumBetoniere(numBetoniere);
 		chiudiBetoniere();
+		continuaCostruisci();
 	}, false);
 	// TESTS
 
@@ -207,20 +205,6 @@ export function addHandlers() {
 	// document.getElementById('testBE_CentraleNaturale1').addEventListener('click', testBE_CentraleNaturale1);
 	// document.getElementById('testBE_CentraleNaturale2').addEventListener('click', testBE_CentraleNaturale2);
 	// document.getElementById('testCostruisciInizio').addEventListener('click', testCostruisciInizio);
-}
-
-export function resetAzioni() {
-	for (const azione of azioni) {
-		document.getElementById('azione_' + azione).removeEventListener('click', azioniContinua[azione], false);
-		document.getElementById('azione_' + azione).removeEventListener('click', azioniPrincipali[azione], false);
-		document.getElementById('azione_' + azione).addEventListener('click', azioniPrincipali[azione], false);
-	}
-}
-
-export function setAzioneContinua(azione) {
-	document.getElementById('azione_' + azione).removeEventListener('click', azioniContinua[azione], false);
-	document.getElementById('azione_' + azione).removeEventListener('click', azioniPrincipali[azione], false);
-	document.getElementById('azione_' + azione).addEventListener('click', azioniContinua[azione], false);
 }
 
 export function initPlayers() {

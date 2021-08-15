@@ -1,6 +1,5 @@
 // @ts-check
 import { carteCriteri, curCartaCriteri, resetMazzo } from './deck.js';
-import { resetAzioni } from './init.js';
 import {
     centraliCondotte,
     centraliFree,
@@ -21,6 +20,7 @@ import {
     getCentraliDiProprieta,
     getCondotteCheScaricanoInArea,
     getDigheDiProprieta,
+    getDigheElevabili,
     getGocceInSorgente,
     getLivelloDiga,
     getNumeroCentrale,
@@ -31,6 +31,8 @@ import {
     getZonaCentrale,
     getZonaCondotta,
     getZonaDiga,
+    getZoneBasePerEscavatori,
+    getZoneElevazioniPerBetoniere,
     intersecArray,
 } from './provider.js';
 import { chiediBetoniere, chiediEscavatori, mostraRisultati, resetRisultati } from './view.js';
@@ -88,6 +90,7 @@ export function setNumBetoniere(num) {
 /////////////// BL CRITERI
 
 export function azioneCostruisci(azione) {
+	let automa;
 	let automaCount = 0;
 	actualResult = [];
 	for (const player in playerMap) {
@@ -99,14 +102,17 @@ export function azioneCostruisci(azione) {
 		if (!playerSelected || !playerSelected.startsWith('A')) {
 			alert('Bisogna selezionare l\'automa che vuole costruire');
 			return;
+		} else {
+			automa = playerSelected;
 		}
+	} else {
+		automa = 'A';
 	}
 	if (!curCartaCriteri) {
 		alert('Bisogna pescare una carta criteri affinché l\'automa possa costruire')
 		return;
 	}
 	resetRisultati();
-	resetAzioni();
 	actualAzione = azione;
 	// faccio i check:
 	// - se Diga controllo zona e chiedo escavatori
@@ -118,7 +124,7 @@ export function azioneCostruisci(azione) {
 	let zona;
 	let minCondotta;
 	if (cosa.startsWith('D')) {
-		tipo = 'B';
+		// BASE
 		if (cosa.length == 2) {
 			zona = cosa.substr(1, 1);
 		}
@@ -136,20 +142,38 @@ export function azioneCostruisci(azione) {
 		chiediEscavatori();
 		return;
 	} else if (cosa.startsWith('E')) {
-		tipo = 'E';
-		// TODO Controllo che ci siano dighe proprietarie. Se non ci sono alert, altrimenti chiedo betoniere
-		chiediBetoniere();
-		return;
+		// ELEVAZIONE
+		// Controllo che ci siano dighe proprietarie. Se non ci sono alert, altrimenti chiedo betoniere
+		const digheValide = getDigheElevabili(automa);
+		if (digheValide.length == 0) {
+			alert('Non ci sono dighe su cui costruire un\'elevazione');
+			return;
+		} else {
+			actualResult = digheValide;
+			chiediBetoniere();
+			return;
+		}
 	} else if (cosa.startsWith('CO')) {
-		tipo = 'CO';
+		// CONDOTTA
 		if (cosa.length == 3) {
 			minCondotta = cosa.substr(2, 1);
 		}
-		// TODO Controllo che ci siano condotte libere di valore >= minCondotta, se ci sono chiedo escavatori, sennò alert
-		// Chiedo escavatori
-		chiediEscavatori();
-		return;
+		let condotteValide = condotte.filter(c => !getProprietarioCondotta(c));
+		let testoDaAggiungere = '';
+		if (minCondotta) {
+			condotteValide = condotteValide.filter(c => condotteVal[c] >= +minCondotta);
+			testoDaAggiungere = 'di questo tipo ';
+		}
+		if (condotteValide.length == 0) {
+			alert('Non ci sono condotte ' + testoDaAggiungere + 'costruibili');
+			return;
+		} else {
+			actualResult = condotteValide;
+			chiediEscavatori();
+			return;
+		}
 	} else if (cosa.startsWith('CE')) {
+		actualResult = centraliFree.concat(centraliPay).filter(c => !getProprietarioCentrale(c));
 		continuaCostruisci();
 	} else if (cosa.startsWith('A')) {
 		tipo = 'A';
@@ -200,56 +224,12 @@ export function continuaCostruisci() {
 	return costruisci(tipo, zona, minCondotta, maxCondotta, automa);
 }
 
-export function azioneCostruisciContinua(azione) {
-	let automa;
-	let automaCount = 0;
-	for (const player in playerMap) {
-		if (player.startsWith('A')) {
-			automaCount++;
-		}
-	}
-	if (automaCount > 1) {
-		if (!playerSelected || !playerSelected.startsWith('A')) {
-			alert('Bisogna selezionare l\'automa che vuole costruire');
-			return;
-		} else {
-			automa = playerSelected;
-		}
-	} else {
-		automa = 'A';
-	}
-	resetRisultati();
-	if (!curCartaCriteri) {
-		alert('Bisogna pescare una carta criteri affinché l\'automa possa costruire')
-		return;
-	}
-	const cosa = azione.substr(1, azione.length - 1);
-	let tipo;
-	let minCondotta;
-	let maxCondotta;
-	if (cosa.startsWith('D')) {
-		tipo = 'B';
-	} else if (cosa.startsWith('E')) {
-		tipo = 'E';
-	} else if (cosa.startsWith('CO')) {
-		tipo = 'CO';
-		if (cosa.length == 3) {
-			minCondotta = cosa.substr(2, 1);
-		}
-	} else if (cosa.startsWith('CE')) {
-		tipo = 'CE';
-	} else if (cosa.startsWith('A')) {
-		tipo = 'A';
-	} else {
-		alert('Azione non valida: ' + azione);
-		return;
-	}
-	return eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa);
-}
 
 /**
  * @param {string} tipo B(ase), E(levazione), CO(ndotta), CE(ntrale)
  * @param {string} zona
+ * @param {string} minCondotta
+ * @param {string} maxCondotta
  * @param {string} automa
  */
 export function costruisci(tipo, zona, minCondotta, maxCondotta, automa) {
@@ -259,20 +239,23 @@ export function costruisci(tipo, zona, minCondotta, maxCondotta, automa) {
 		alert('Non ancora implementata la gestione delle abitazioni');
 		return;
 	}
-	if (tipo == 'B' && zona) {
-		actualResult = getB_Zona(zona);
-		if (actualResult.length == 0) {
-			// ci fermiamo qua alert o qualcosa del genere
-			alert('Non si può costruire una base in quella zona');
-			return;
-		} else if (actualResult.length == 1) {
-			mostraRisultati();
+	if (tipo == 'B') {
+		const zoneDisponibili = getZoneBasePerEscavatori(actualNumEscavatori);
+		if (zoneDisponibili.length == 0) {
+			alert('Non è possibile costruire una base con quei pochi escavatori');
 			return;
 		}
-	}
-	// Sistema completo
-	if (tipo == 'B') {
+		if (zona) {
+			if (!zoneDisponibili.includes(zona)) {
+				alert('Non è possibile costruire una base in quella zona con quei pochi escavatori');
+				return;
+			}
+		}
+		// TODO Prima di chiamare getBE_0_SistemaCompleto devo filtrare actualResult in base alle zoneDisponibili
 		actualResult = getBE_0_SistemaCompleto(tipo, automa);
+	} else if (tipo == 'E') {
+		const zoneDisponibili = getZoneElevazioniPerBetoniere(actualNumBetoniere);
+		// TODO devo filtrare actualResult in base alle zoneDisponibili
 	} else if (tipo == 'CO') {
 		actualResult = getCO_0_SistemaCompleto(automa);
 	} else if (tipo == 'CE') {
@@ -285,7 +268,6 @@ export function costruisci(tipo, zona, minCondotta, maxCondotta, automa) {
 		// Ci sono dei risultati, se 1, lo mostro e mi fermo qua
 		if (actualResult.length == 1) {
 			mostraRisultati();
-			resetAzioni();
 			return;
 		}
 		// se di sicuro devo filtrare ancora, filtro, altrimenti mostro
@@ -337,7 +319,6 @@ export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa) {
 		} else if (actualResult.length > 0) {
 			if (actualResult.length == 1) {
 				mostraRisultati();
-				resetAzioni();
 				return;
 			}
 			// Ci sono dei risultati, se di sicuro devo filtrare ancora, filtro, altrimenti mostro
@@ -356,7 +337,6 @@ export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa) {
 	// Finiti i criteri, resetto
 	criterioPasso = 0;
 	actualResult = [];
-	resetAzioni();
 	mostraRisultati();
 }
 
@@ -2027,7 +2007,6 @@ export function getCE_R(automa) {
  */
 export function addGocciaSorgente(sorgente) {
 	resetRisultati();
-	resetAzioni();
 	let gocceSorg = undefined;
 	for (let i = 0; i < sorgentiGocce.length; i++) {
 		if (sorgentiGocce[i].sorgente == sorgente) {
@@ -2061,7 +2040,6 @@ export function addGocciaSorgente(sorgente) {
  */
 export function addGocciaDiga(diga) {
 	resetRisultati();
-	resetAzioni();
 	let gocceDig = undefined;
 	for (let i = 0; i < digheGocce.length; i++) {
 		if (digheGocce[i].diga == diga) {
@@ -2095,7 +2073,6 @@ export function addGocciaDiga(diga) {
  */
 export function addDiga(diga) {
 	resetRisultati();
-	resetAzioni();
 	let chi = playerSelected;
 	if (chi == undefined) {
 		return;
@@ -2141,7 +2118,6 @@ export function addDiga(diga) {
  */
 export function addCondotta(condotta) {
 	resetRisultati();
-	resetAzioni();
 	let chi = playerSelected;
 	if (chi == undefined || chi == 'N') {
 		return;
@@ -2177,7 +2153,6 @@ export function addCondotta(condotta) {
  */
 export function addCentrale(centrale) {
 	resetRisultati();
-	resetAzioni();
 	let chi = playerSelected;
 	if (chi == undefined || chi == 'N') {
 		return;

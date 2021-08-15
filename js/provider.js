@@ -1,7 +1,7 @@
 // @ts-check
 /////////////// BL UTILS
 import { centraliCostruite, condotteCostruite, digheGocce, dighePresenti, sorgentiGocce } from './barrage.js';
-import { condotteCentrali } from './mappa.js';
+import { condotteCentrali, digheFree, dighePay } from './mappa.js';
 
 
 /**
@@ -171,6 +171,16 @@ export function getNumeroDiga(diga) {
     return num;
 }
 
+export function getDigheElevabili(automa) {
+    const digheValide = [];
+    for (const diga of digheFree.concat(dighePay)) {
+        if (getProprietarioDiga(diga) && getProprietarioDiga(diga) == automa && getLivelloDiga(diga) < 3) {
+            digheValide.push(diga);
+        }
+    }
+    return digheValide;
+}
+
 /**
  * @param {string} areaNum
  */
@@ -231,6 +241,40 @@ export function getCapienzaDiga(diga) {
         goc = 0;
     }
     return liv - goc;
+}
+
+export function getZoneBasePerEscavatori(numEscavatori) {
+    const zoneDisponibili = [];
+    if (numEscavatori < 3) {
+        return zoneDisponibili;
+    }
+    if (numEscavatori >= 3) {
+        zoneDisponibili.push('P');
+    }
+    if (numEscavatori >= 4) {
+        zoneDisponibili.push('C');
+    }
+    if (numEscavatori >= 5) {
+        zoneDisponibili.push('M');
+    }
+    return zoneDisponibili;
+}
+
+export function getZoneElevazioniPerBetoniere(numBetoniere) {
+    const zoneDisponibili = [];
+    if (numBetoniere < 2) {
+        return zoneDisponibili;
+    }
+    if (numBetoniere >= 2) {
+        zoneDisponibili.push('P');
+    }
+    if (numBetoniere >= 3) {
+        zoneDisponibili.push('C');
+    }
+    if (numBetoniere >= 4) {
+        zoneDisponibili.push('M');
+    }
+    return zoneDisponibili;
 }
 
 /**
