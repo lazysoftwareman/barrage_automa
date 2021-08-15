@@ -7,7 +7,6 @@ import {
     addGocciaSorgente,
     azioneCostruisci,
     azioneCostruisciContinua,
-    changePlayerSelected,
     getBE_0_SistemaCompleto,
     getBE_A,
     getBE_B,
@@ -34,11 +33,24 @@ import {
     playerColor,
     playerMap,
     resetInputs,
+    setNumBetoniere,
+    setNumEscavatori,
 } from './barrage.js';
 import { azioni, initMazzo, pesca } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay, sorgenti } from './mappa.js';
 import { colors } from './playersPage.js';
-import { chiudiInfo, hideMappa, initDiminesions, mostraInfo, mostraPlayers, mostraTutto, showMappa } from './view.js';
+import {
+    changePlayerSelected,
+    chiudiBetoniere,
+    chiudiEscavatori,
+    chiudiInfo,
+    hideMappa,
+    initDiminesions,
+    mostraInfo,
+    mostraPlayers,
+    mostraTutto,
+    showMappa,
+} from './view.js';
 
 // @ts-ignore
 window.initPage = initPage;
@@ -56,6 +68,8 @@ export function initPage() {
 	addGlobalVariables();
 	initDiminesions();
 	chiudiInfo();
+	chiudiBetoniere();
+	chiudiEscavatori();
 	hideMappa();
 	preloadImages();
 	mostraTutto();
@@ -173,6 +187,17 @@ export function addHandlers() {
 		changePlayerSelected(player);
 	}, false);
 	document.getElementById('P0_Selector').addEventListener('click', function () { changePlayerSelected('N'); }, false);
+	// Richieste
+	document.getElementById('confermaEscavatori').addEventListener('click', function () {
+		const numEscavatori = +(document.getElementById('numEscavatori').value);
+		setNumEscavatori(numEscavatori);
+		chiudiEscavatori();
+	}, false);
+	document.getElementById('confermaBetoniere').addEventListener('click', function () {
+		const numBetoniere = +(document.getElementById('numBetoniere').value);
+		setNumBetoniere(numBetoniere);
+		chiudiBetoniere();
+	}, false);
 	// TESTS
 
 	// document.getElementById('testBE_Condotta1').addEventListener('click', testBE_Condotta1);

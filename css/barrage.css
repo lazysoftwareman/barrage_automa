@@ -11,6 +11,7 @@
 	--blackPlayer: #3a3a3a;
 	--whitePlayer: #e6e7e8;
 	--nullPlayer: #9d734a;
+	--sfondoColor: #e8dcc8;
 	/* Dimensions */
 	--vh: 1vh;
 	--mh: 1vh;
@@ -822,6 +823,38 @@ body {
 	font-weight: bold;
 
 }
+.richiesta {	
+	position: absolute;
+    top: 5vh;
+    left: 35vw;
+    height: 25vh;
+    width: 30vw;
+    font-size: 12pt;
+    border: solid 1px var(--blackColor);
+    border-radius: 4px;
+    min-width: 250px;
+    text-align: center;
+    background-color: var(--sfondoColor);
+	padding: 2vh;
+	overflow: auto;
+	z-index: 1;
+}
+.confermaRichiesta {	
+	width: 10vh;
+	height: 2.5vh;
+    vertical-align: middle;
+    text-align: center;
+	line-height: 2.5vh;
+	font-weight: bold;
+	color: var(--blackColor);
+	border: solid 1px var(--blackColor);
+	border-radius: 5px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 2vh;
+	background-color: var(--selectionColor);
+	cursor: pointer;
+}
 
 #playersPageContainer {
 	margin-left: auto;
@@ -981,5 +1014,16 @@ body {
 	}
 	#infoSottotitolo {
 		font-size: 14pt;
+	}
+	.richiesta {	
+		top: 5vh;
+		left: 12.5vw;
+		height: 20vh;
+		width: 50vw;
+	}
+	.confermaRichiesta {
+		width: 18vw;
+		height: 5.5vw;	
+		margin-top: 5vw;	
 	}
 }

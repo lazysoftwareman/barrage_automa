@@ -1,6 +1,6 @@
 // @ts-check
 import { carteCriteri, curCartaCriteri, resetMazzo } from './deck.js';
-import { resetAzioni, setAzioneContinua } from './init.js';
+import { resetAzioni } from './init.js';
 import {
     centraliCondotte,
     centraliFree,
@@ -33,7 +33,7 @@ import {
     getZonaDiga,
     intersecArray,
 } from './provider.js';
-import { mostraRisultati, resetRisultati } from './view.js';
+import { chiediBetoniere, chiediEscavatori, mostraRisultati, resetRisultati } from './view.js';
 
 
 /////////////// INPUT
@@ -64,6 +64,9 @@ export let playerColor = [];
 export let criterioPasso = 0;
 export let actualResult = [];
 export let playerSelected = undefined;
+export let actualNumEscavatori = 0;
+export let actualNumBetoniere = 0;
+export let actualAzione = undefined;
 
 export function resetInputs() {
 	centraliCostruite = [];
@@ -74,11 +77,19 @@ export function resetInputs() {
 	resetMazzo();
 }
 
+export function setNumEscavatori(num) {
+	actualNumEscavatori = num;
+}
+
+export function setNumBetoniere(num) {
+	actualNumBetoniere = num;
+}
+
 /////////////// BL CRITERI
 
 export function azioneCostruisci(azione) {
-	let automa;
 	let automaCount = 0;
+	actualResult = [];
 	for (const player in playerMap) {
 		if (player.startsWith('A')) {
 			automaCount++;
@@ -88,19 +99,79 @@ export function azioneCostruisci(azione) {
 		if (!playerSelected || !playerSelected.startsWith('A')) {
 			alert('Bisogna selezionare l\'automa che vuole costruire');
 			return;
-		} else {
-			automa = playerSelected;
 		}
-	} else {
-		automa = 'A';
 	}
-	resetRisultati();
-	resetAzioni();
-	setAzioneContinua(azione);
 	if (!curCartaCriteri) {
 		alert('Bisogna pescare una carta criteri affinché l\'automa possa costruire')
 		return;
 	}
+	resetRisultati();
+	resetAzioni();
+	actualAzione = azione;
+	// faccio i check:
+	// - se Diga controllo zona e chiedo escavatori
+	// - se elevazione controllo zona e vedo se ci sono basi, se ci sono chiedo betoniere
+	// - se condotta controllo min e max e chiedo escavatori
+	// - se centrale non ci sono controlli a questo livello
+	const cosa = azione.substr(1, azione.length - 1);
+	let tipo;
+	let zona;
+	let minCondotta;
+	if (cosa.startsWith('D')) {
+		tipo = 'B';
+		if (cosa.length == 2) {
+			zona = cosa.substr(1, 1);
+		}
+		// Controllo che in zona ci siano dighe costruibili. Se si o se !zona, chiedo escavatori
+		if (zona) {
+			let digheValide = getB_Zona(zona);
+			if (digheValide.length == 0) {
+				const zonaTesto = zona == 'M' ? 'montagna' : zona == 'C' ? 'collina' : 'pianura';
+				alert('Non è possibile costruire una diga in ' + zonaTesto);
+				return;
+			} else {
+				actualResult = digheValide;
+			}
+		}
+		chiediEscavatori();
+		return;
+	} else if (cosa.startsWith('E')) {
+		tipo = 'E';
+		// TODO Controllo che ci siano dighe proprietarie. Se non ci sono alert, altrimenti chiedo betoniere
+		chiediBetoniere();
+		return;
+	} else if (cosa.startsWith('CO')) {
+		tipo = 'CO';
+		if (cosa.length == 3) {
+			minCondotta = cosa.substr(2, 1);
+		}
+		// TODO Controllo che ci siano condotte libere di valore >= minCondotta, se ci sono chiedo escavatori, sennò alert
+		// Chiedo escavatori
+		chiediEscavatori();
+		return;
+	} else if (cosa.startsWith('CE')) {
+		continuaCostruisci();
+	} else if (cosa.startsWith('A')) {
+		tipo = 'A';
+		alert('Non ancora implementata la gestione delle abitazioni');
+		return;
+	} else {
+		alert('Azione non valida: ' + azione);
+		return;
+	}
+}
+
+export function continuaCostruisci() {
+	let automa;
+	let automaCount = 0;
+	for (const player in playerMap) {
+		if (player.startsWith('A')) {
+			automaCount++;
+		}
+	}
+	automa = automaCount > 1 ? playerSelected : 'A';
+	const azione = actualAzione;
+
 	const cosa = azione.substr(1, azione.length - 1);
 	let tipo;
 	let zona;
@@ -2133,22 +2204,5 @@ export function addCentrale(centrale) {
 		// @ts-ignore
 		document.getElementById('area' + centrale + 'Img').src = 'img/CE_' + playerColor[chi] + '.png';
 		document.getElementById('area' + centrale + 'Content').style.display = 'block';
-	}
-}
-
-export function changePlayerSelected(player) {
-	playerSelected = playerSelected == player ? undefined : player;
-	for (let player in playerMap) {
-		let p = playerMap[player];
-		document.getElementById(p + '_Selector').style.borderColor = 'var(--borderColor)';
-		document.getElementById(p + '_Selector').style.borderWidth = '1px';
-	}
-	if (playerSelected) {
-		let p = playerMap[playerSelected];
-		document.getElementById(p + '_Selector').style.borderColor = 'var(--selectionColor)';
-		document.getElementById(p + '_Selector').style.borderWidth = '3px';
-		document.getElementById('giocatoreText').innerHTML = playerSelected;
-	} else {
-		document.getElementById('giocatoreText').innerHTML = '';
 	}
 }

@@ -105,6 +105,23 @@ export function mostraPlayers() {
     }
 }
 
+export function changePlayerSelected(player) {
+    playerSelected = playerSelected == player ? undefined : player;
+    for (let player in playerMap) {
+        let p = playerMap[player];
+        document.getElementById(p + '_Selector').style.borderColor = 'var(--borderColor)';
+        document.getElementById(p + '_Selector').style.borderWidth = '1px';
+    }
+    if (playerSelected) {
+        let p = playerMap[playerSelected];
+        document.getElementById(p + '_Selector').style.borderColor = 'var(--selectionColor)';
+        document.getElementById(p + '_Selector').style.borderWidth = '3px';
+        document.getElementById('giocatoreText').innerHTML = playerSelected;
+    } else {
+        document.getElementById('giocatoreText').innerHTML = '';
+    }
+}
+
 export function mostraAzioni() {
     let currentAzioni = carteAzioni[curCartaAzioni];
     let azioniInCarta = currentAzioni ? currentAzioni.split('_').filter((az) => az.startsWith('C')) : [];
@@ -184,4 +201,20 @@ export async function mostraTutto() {
     document.getElementById('splash').className = ('animated fadeOut');
     await sleep(1000);
     document.getElementById('splash').style.display = 'none';
+}
+
+export function chiediEscavatori() {
+    document.getElementById('quantiEscavatori').className = ('richiesta animated slideInDown');
+}
+
+export function chiediBetoniere() {
+    document.getElementById('quanteBetoniere').className = ('richiesta animated slideInDown');
+}
+
+export function chiudiEscavatori() {
+    document.getElementById('quantiEscavatori').className = ('richiesta animated slideOutUp');
+}
+
+export function chiudiBetoniere() {
+    document.getElementById('quanteBetoniere').className = ('richiesta animated slideOutUp');
 }
