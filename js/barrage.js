@@ -29,7 +29,6 @@ import {
     getProprietarioDiga,
     getValoreCondottePerEscavatori,
     getZonaCentrale,
-    getZonaCondotta,
     getZonaDiga,
     getZoneBasePerEscavatori,
     getZoneElevazioniPerBetoniere,
@@ -189,19 +188,28 @@ export function azioneCostruisci(azione) {
 	// - se condotta controllo min e max e chiedo escavatori
 	// - se centrale non ci sono controlli a questo livello
 	const cosa = azione.substr(1, azione.length - 1);
-	let zona;
+	let zone;
 	let minCondotta;
+	let maxCondotta;
 	if (cosa.startsWith('D')) {
 		// BASE
 		if (cosa.length == 2) {
-			zona = cosa.substr(1, 1);
+			zone = [cosa.substr(1, 1)];
+		} else if (cosa.length == 3) {
+			zone = [cosa.substr(1, 1), cosa.substr(2, 1)];
 		}
 		// Controllo che in zona ci siano dighe costruibili. Se si o se !zona, chiedo escavatori
 		actualResult = digheFree.concat(dighePay).filter(diga => !getProprietarioDiga(diga));
-		if (zona) {
-			let digheValide = getB_Zona(zona);
+		if (zone) {
+			let digheValide = getB_Zona(zone[0]);
+			if (zone.length == 2) {
+				digheValide = digheValide.concat(getB_Zona(zone[1]));
+			}
 			if (digheValide.length == 0) {
-				const zonaTesto = zona == 'M' ? 'montagna' : zona == 'C' ? 'collina' : 'pianura';
+				let zonaTesto = zone[0] == 'M' ? 'montagna' : zone[0] == 'C' ? 'collina' : 'pianura';
+				if (zone[1]) {
+					zonaTesto = zonaTesto + 'e ' + zone[1] == 'M' ? 'montagna' : zone[1] == 'C' ? 'collina' : 'pianura';
+				}
 				alert('Non è possibile costruire una diga in ' + zonaTesto);
 				return;
 			} else {
@@ -224,13 +232,21 @@ export function azioneCostruisci(azione) {
 		}
 	} else if (cosa.startsWith('CO')) {
 		// CONDOTTA
-		if (cosa.length == 3) {
-			minCondotta = cosa.substr(2, 1);
+		if (cosa.length == 4) {
+			const piumeno = cosa.substr(3, 1);
+			if (piumeno == 'P') {
+				minCondotta = cosa.substr(2, 1);
+			} else {
+				maxCondotta = cosa.substr(2, 1);
+			}
 		}
 		let condotteValide = condotte.filter(c => !getProprietarioCondotta(c));
 		let testoDaAggiungere = '';
 		if (minCondotta) {
 			condotteValide = condotteValide.filter(c => condotteVal[c] >= +minCondotta);
+			testoDaAggiungere = 'di questo tipo ';
+		} else if (maxCondotta) {
+			condotteValide = condotteValide.filter(c => condotteVal[c] <= +maxCondotta);
 			testoDaAggiungere = 'di questo tipo ';
 		}
 		if (condotteValide.length == 0) {
@@ -436,6 +452,8 @@ export function getB_Zona(zona) {
 		dighe = ['DP_1', 'DF_1', 'DP_2', 'DF_2', 'DP_3', 'DF_3', 'DP_4', 'DF_4'];
 	} else if (zona == 'C') {
 		dighe = ['DP_5', 'DF_5', 'DP_6', 'DF_6', 'DP_7', 'DF_7'];
+	} else if (zona == 'P') {
+		dighe = ['DP_8', 'DF_8', 'DP_9', 'DF_9', 'DP_10', 'DF_10'];
 	}
 	let digheValide = [];
 	for (let i = 0; i < dighe.length; i++) {
@@ -513,71 +531,32 @@ export function getBE_A(tipo, automa, _ordine) {
 			}
 		}
 	});
-	let maxValue = []
-	maxValue['M'] = -1;
-	maxValue['C'] = -1;
-	maxValue['P'] = -1;
-	let actualChi = [];
-	actualChi['M'] = '';
-	actualChi['C'] = '';
-	actualChi['P'] = '';
-	let condotteFiltered = [];
-	for (let i = 0; i < condotteCostruite.length; i++) {
-		let condCos = condotteCostruite[i];
-		let actualValue = condotteVal[condCos.condotta];
-		let zona = getZonaCondotta(condCos.condotta);
-		let first = false;
-		if (maxValue[zona] < 0) {
-			maxValue[zona] = actualValue;
-			first = true;
-		}
-		if (actualChi[zona] == '') {
-			actualChi[zona] = condCos.chi;
-			first = true;
-		}
-		if (first) {
-			condotteFiltered.push(condCos.condotta);
-			continue;
-		}
-		// logica
-		if (actualValue < maxValue[zona]) {
-			// finito perchè non è la massima della zona, passo al successivo
-			continue;
-		} else {
-			if (actualChi[zona] == automa && condCos.chi == automa) {
-				condotteFiltered.push(condCos.condotta);
-				continue;
-			} else if (actualChi[zona] == automa && condCos.chi != automa) {
-				// finito perchè precedenza all'automa
-				continue;
-			} else {
-				// l'actualChi massimo è un utente o un altro automa, questo di sicuro va bene
-				condotteFiltered.push(condCos.condotta);
-				continue;
-			}
-		}
-	}
 	// Ora condotteFiltered contiene le condotte valide filtrate. In base al tipo (se B o E) troviamo le zone valide
 	let digheValide = [];
-	for (let i = 0; i < condotteFiltered.length; i++) {
-		let collegate = condotteDighe[condotteFiltered[i]];
-		if (tipo == 'B') {
-			let d1 = collegate[0];
-			if (!getProprietarioDiga(d1)) {
-				digheValide.push(d1);
+	let maxValue = -1;
+	let actualChi = undefined;
+	for (const condotta of condotteCostruite) {
+		const collegate = condotteDighe[condotta.condotta];
+		if (actualResult.includes(collegate[0])) {
+			if (maxValue < 0) {
+				maxValue = condotteVal[condotta.condotta];
+				actualChi = condotta.chi;
+				digheValide.push(collegate[0]);
+			} else if (maxValue > condotteVal[condotta.condotta] || actualChi != condotta.chi) {
+				break;
+			} else {
+				digheValide.push(collegate[0]);
 			}
-			let d2 = collegate[1];
-			if (!getProprietarioDiga(d2)) {
-				digheValide.push(d2);
-			}
-		} else {
-			let d1 = collegate[0];
-			if (getProprietarioDiga(d1) && getProprietarioDiga(d1) == automa && getLivelloDiga(d1) < 3) {
-				digheValide.push(d1);
-			}
-			let d2 = collegate[1];
-			if (getProprietarioDiga(d2) && getProprietarioDiga(d2) == automa && getLivelloDiga(d2) < 3) {
-				digheValide.push(d2);
+		}
+		if (actualResult.includes(collegate[1])) {
+			if (maxValue < 0) {
+				maxValue = condotteVal[condotta.condotta];
+				actualChi = condotta.chi;
+				digheValide.push(collegate[1]);
+			} else if (maxValue > condotteVal[condotta.condotta] || actualChi != condotta.chi) {
+				break;
+			} else {
+				digheValide.push(collegate[1]);
 			}
 		}
 	}
@@ -614,22 +593,11 @@ export function getBE_B(tipo, automa, _ordine) {
 			condotte.push(currCondotte[j]);
 		}
 	}
-	let dighe = [];
+	let digheValide = [];
 	for (let i = 0; i < condotte.length; i++) {
 		let currDighe = condotteDighe[condotte[i]];
-		for (let j = 0; j < currDighe.length; j++) {
-			dighe.push(currDighe[j]);
-		}
-	}
-	let digheValide = [];
-	for (let i = 0; i < dighe.length; i++) {
-		let diga = dighe[i];
-		if (tipo == 'B') {
-			if (!getProprietarioDiga(diga)) {
-				digheValide.push(diga);
-			}
-		} else {
-			if (getProprietarioDiga(diga) && getProprietarioDiga(diga) == automa && getLivelloDiga(diga) < 3) {
+		for (const diga of currDighe) {
+			if (actualResult.includes(diga)) {
 				digheValide.push(diga);
 			}
 		}
@@ -650,21 +618,15 @@ export function getBE_B(tipo, automa, _ordine) {
  * prevFilter: filtro precedente (se presente)
  * automa: l'automa da usare
  * @param {string} tipo
- * @param {string} automa
+ * @param {string} _automa
 **/
-export function getBE_D(tipo, automa, _ordine) {
+export function getBE_D(tipo, _automa, _ordine) {
 	let dighe = dighePay;
 	let digheValide = [];
 	for (let i = 0; i < dighe.length; i++) {
 		let diga = dighe[i];
-		if (tipo == 'B') {
-			if (!getProprietarioDiga(diga)) {
-				digheValide.push(diga);
-			}
-		} else {
-			if (getProprietarioDiga(diga) && getProprietarioDiga(diga) == automa && getLivelloDiga(diga) < 3) {
-				digheValide.push(diga);
-			}
+		if (actualResult.includes(diga)) {
+			digheValide.push(diga);
 		}
 	}
 	if (digheValide.length == 0) {
@@ -829,25 +791,12 @@ export function getBE_F(tipo, automa, _ordine) {
 	}
 
 	// ora ho le condotte valide
-	let dighe = [];
+	let digheValide = [];
 	for (let i = 0; i < condotteValide.length; i++) {
 		let currDighe = condotteDighe[condotteValide[i]];
 		for (let j = 0; j < currDighe.length; j++) {
-			if (!dighe.includes(currDighe[j])) {
-				dighe.push(currDighe[j]);
-			}
-		}
-	}
-	let digheValide = [];
-	for (let i = 0; i < dighe.length; i++) {
-		let diga = dighe[i];
-		if (tipo == 'B') {
-			if (!getProprietarioDiga(diga)) {
-				digheValide.push(diga);
-			}
-		} else {
-			if (getProprietarioDiga(diga) && getProprietarioDiga(diga) == automa && getLivelloDiga(diga) < 3) {
-				digheValide.push(diga);
+			if (!digheValide.includes(currDighe[j]) && actualResult.includes(currDighe[j])) {
+				digheValide.push(currDighe[j]);
 			}
 		}
 	}
@@ -862,7 +811,7 @@ export function getBE_F(tipo, automa, _ordine) {
 }
 
 /**
- * BASE O ELEVAZIONE, diga collegabile naturalmente a centrale
+ * BASE O ELEVAZIONE, diga in grado di ricevere il maggior numero di gocce
  * tipo: 'B' o 'E' per Base o Elevazione
  * prevFilter: filtro precedente (se presente)
  * automa: l'automa da usare
@@ -878,15 +827,19 @@ export function getBE_C(tipo, automa, ordine) {
 			sorgentiPiene.push(sorg.sorgente);
 		}
 	}
-	let dighe = [];
+	let digheValide = [];
 	if (sorgentiPiene.length == 0) {
 		// tutto vuoto, devo andare per ordine
 		let sorgenteValida = ordine.substr(0, 1);
 		let percorso = percorsi[sorgenteValida];
 		for (let i = 1; i < percorso.length - 1; i++) {
 			let areaNumero = percorso[i];
-			dighe.push('DP_' + areaNumero);
-			dighe.push('DF_' + areaNumero);
+			if (actualResult.includes('DP_' + areaNumero)) {
+				digheValide.push('DP_' + areaNumero);
+			}
+			if (actualResult.includes('DF_' + areaNumero)) {
+				digheValide.push('DF_' + areaNumero);
+			}
 		}
 	} else {
 		let digheGoccePot = [];
@@ -920,16 +873,19 @@ export function getBE_C(tipo, automa, ordine) {
 		let maxGocce = -1;
 		for (let i = 0; i < digheGoccePot.length; i++) {
 			let digaGoc = digheGoccePot[i];
-			if (digaGoc.gocce < maxGocce) {
-				break;
-			} else {
-				digheMaxGocce.push(digaGoc.diga);
-				maxGocce = digaGoc.gocce;
+			if (actualResult.includes(digaGoc.diga)) {
+				if (digaGoc.gocce < maxGocce) {
+					break;
+				} else {
+					digheMaxGocce.push(digaGoc.diga);
+					maxGocce = digaGoc.gocce;
+				}
 			}
 		}
+
 		if (digheMaxGocce.length > 0) {
 			if (digheMaxGocce.length == 1) {
-				dighe.push(digheMaxGocce[0]);
+				digheValide.push(digheMaxGocce[0]);
 			} else {
 				for (let j = 0; j < ordine.length; j++) {
 					let sorgente = ordine.substr(j, 1);
@@ -938,26 +894,13 @@ export function getBE_C(tipo, automa, ordine) {
 						let numero = getNumeroDiga(diga);
 						let percorso = percorsiDi[numero][0];
 						if (percorso == sorgente) {
-							dighe.push(diga);
+							digheValide.push(diga);
 						}
 					}
-					if (dighe.length > 0) {
+					if (digheValide.length > 0) {
 						break;
 					}
 				}
-			}
-		}
-	}
-	let digheValide = [];
-	for (let i = 0; i < dighe.length; i++) {
-		let diga = dighe[i];
-		if (tipo == 'B') {
-			if (!getProprietarioDiga(diga)) {
-				digheValide.push(diga);
-			}
-		} else {
-			if (getProprietarioDiga(diga) && getProprietarioDiga(diga) == automa && getLivelloDiga(diga) < 3) {
-				digheValide.push(diga);
 			}
 		}
 	}
@@ -978,22 +921,7 @@ export function getBE_C(tipo, automa, ordine) {
  * automa: l'automa da usare
  * @param {string} numero primo numero da cui partire
  */
-export function getBE_Numero(tipo, numero, automa) {
-	if (!actualResult || actualResult.length == 0) {
-		// Non ho trovato niente di valido finora. Considero tutte come valide
-		actualResult = [];
-		for (const diga of digheFree.concat(dighePay)) {
-			if (tipo == 'B') {
-				if (!getProprietarioDiga(diga)) {
-					actualResult.push(diga);
-				}
-			} else {
-				if (getProprietarioDiga(diga) && getProprietarioDiga(diga) == automa && getLivelloDiga(diga) < 3) {
-					actualResult.push(diga);
-				}
-			}
-		}
-	}
+export function getBE_Numero(_tipo, numero, _automa) {
 	let counter = 0;
 	let actual = +numero;
 	while (counter < 10) {
@@ -1059,15 +987,6 @@ export function getCO_0_SistemaCompleto(automa) {
  * @param {string} numeroLettera primo numero da cui partire (tipo 7B)
  */
 export function getCO_Numero(_tipo, numeroLettera, _automa) {
-	if (!actualResult || actualResult.length == 0) {
-		// Non ho trovato niente di valido finora. Considero tutte come valide
-		actualResult = [];
-		for (const condotta of condotte) {
-			if (!getProprietarioCondotta(condotta)) {
-				actualResult.push(condotta);
-			}
-		}
-	}
 	let counter = 0;
 	let numero = numeroLettera.substring(0, numeroLettera.length - 1);
 	let lettera = numeroLettera.substr(numeroLettera.length - 1, 1);
@@ -1126,6 +1045,7 @@ function isCondottaCostruibile(condotta, min, max) {
  * @returns 
  */
 export function getCO_G(min, max, automa) {
+	// FIXME Sbagliato: bisogna prendere il massimo tra le actualResult;
 	const condotteDisp = [];
 	for (const condotta of condotte) {
 		if (isCondottaCostruibile(condotta, min, max)) {
@@ -1168,6 +1088,7 @@ export function getCO_G(min, max, automa) {
  * @returns 
  */
 export function getCO_H(min, max, automa) {
+	// FIXME Sbagliato: bisogna prendere il quasi massimo tra le actualResult;
 	const condotteDisp = [];
 	for (const condotta of condotte) {
 		if (isCondottaCostruibile(condotta, min, max)) {
@@ -1216,6 +1137,7 @@ export function getCO_H(min, max, automa) {
  * @returns risultati
  */
 export function getCO_I(min, max, automa) {
+	// FIXME Sbagliato: partire da actualResult
 	const digheProprie = [];
 	const digheNaturali = [];
 	const digheAvversarie = [];
@@ -1320,6 +1242,7 @@ export function getCO_I(min, max, automa) {
  * @returns risultati
  */
 export function getCO_J(min, max, automa) {
+	// FIXME Sbagliato: partire da actualResult
 	const centraliProprie = [];
 	const centraliAvversarie = [];
 	for (const centrale of centraliFree.concat(centraliPay)) {
@@ -1398,6 +1321,7 @@ export function getCO_J(min, max, automa) {
  * @returns risultati
  */
 export function getCO_K(min, max, automa) {
+	// FIXME Sbagliato: partire da actualResult
 	const digheProprie = [];
 	const digheNaturali = [];
 	const digheAvversarie = [];
@@ -1502,6 +1426,7 @@ export function getCO_K(min, max, automa) {
  * @returns risultati
  */
 export function getCO_L(min, max, automa) {
+	// FIXME Sbagliato: partire da actualResult
 	const centraliProprie = [];
 	const centraliAvversarie = [];
 	for (const centrale of centraliFree.concat(centraliPay)) {
@@ -1574,7 +1499,6 @@ export function getCO_L(min, max, automa) {
 
 
 export function getCE_0_SistemaCompleto(automa) {
-	// FIXME occhio che qua fixato 
 	const dighe = [];
 	for (const diga of digheFree.concat(dighePay)) {
 		if (getProprietarioDiga(diga)) {
@@ -1614,15 +1538,6 @@ export function getCE_0_SistemaCompleto(automa) {
 }
 
 export function getCE_Numero(_tipo, numero, _automa) {
-	if (!actualResult || actualResult.length == 0) {
-		// Non ho trovato niente di valido finora. Considero tutte come valide
-		actualResult = [];
-		for (const centrale of centraliFree.concat(centraliPay)) {
-			if (!getProprietarioCentrale(centrale)) {
-				actualResult.push(centrale);
-			}
-		}
-	}
 	let counter = 0;
 	let actual = +numero;
 	while (counter < 12) {
@@ -1676,6 +1591,7 @@ export function getCE_Numero(_tipo, numero, _automa) {
  * @param {string} automa 
  */
 export function getCE_M(automa) {
+	// FIXME Sbagliato: partire da actualResult
 	const conds = [];
 	for (const condotta of condotte) {
 		if (getProprietarioCondotta(condotta)) {
@@ -1739,6 +1655,7 @@ export function getCE_M(automa) {
  * @returns rislutati
  */
 export function getCE_N(automa) {
+	// TODO Meglio partire dalle actualResult
 	const dighe = getDigheDiProprieta(automa);
 	const conds = [];
 	for (const diga of dighe) {
@@ -1783,7 +1700,7 @@ export function getCE_OP() {
 }
 
 /**
- * CENTRALI: una centrale in pianura
+ * CENTRALI: una centrale ina zona
  * @param {string} numero
  * @returns risultati
  */
@@ -1805,6 +1722,7 @@ export function getCE_P(numero) {
  * @returns risultati
  */
 export function getCE_Q(automa) {
+	// TODO Meglio partire da actualResult
 	let centrali = centraliFree.concat(centraliPay).filter(c => {
 		let numero = c.substr(3, 1);
 		if (+numero >= 5 && +numero < 10) {
@@ -1914,6 +1832,7 @@ export function getCE_Q(automa) {
  * @returns risultati
  */
 export function getCE_R(automa) {
+	// TODO meglio partire da actualResult
 	let centrali = centraliFree.concat(centraliPay).filter(c => {
 		let numero = c.substr(3, 1);
 		if (+numero >= 5 && +numero < 10) {
