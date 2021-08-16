@@ -605,62 +605,73 @@
 		</div>
 		<div id="valoreContratti" class="richiesta">
 			<p>
+				Ci sono modificatori da applicare all'azione di produzione?
+			</p>
+			<select id="modificatoreProduzione">
+				<option value="0">No, solo tessera azione</option>
+				<option value="1">+1 per la seconda centrale</option>
+				<option value="3">+3 per la quarta centrale</option>
+				<option value="2abs">+2 per tessera tecnologia</option>
+				<option value="oberst">seconda produzione di Oberst</option>
+			</select>
+			<p>
 				Qual è il valore minimo dei contratti <span id="coloreContratti"></span>?
 			</p>
 			<select id="valContratti">
 			</select>
-			<div id="confermaBetoniere" class="confermaRichiesta">OK</div>
+			<div id="confermaProduzione" class="confermaRichiesta">OK</div>
 		</div>
-		<div id="info" class="info">
-			<span id="infoTitolo">Come utilizzare l'automaiuto</span>
-			<p>
-				Tocca la tessera azioni (la prima in alto) per pescare e visualizzare anche
-				la tessera criteri.<br>
-				Toccando il pulsante &quot;Mappa &lt;-&quot; si accede alla mappa </p>
-			<span id="infoSottotitolo">La mappa</span>
-			<p>
-				La mappa presenta 3 sezioni principali:<br>
-				- La mappa stessa da mantenere aggiornata con la vera mappa di gioco<br>
-				- La toolbar in alto con i pulsanti per costruire le strutture<br>
-				- I selettori del giocatore in basso a sinistra<br>
-			</p>
-			<p>
-				Toccando i vari elementi della mappa (bacini, dighe, condotte, centrali) viene costruita
-				la struttura relativa del giocatore selezionato (infatti bisogna prima selezionare un giocatore,
-				o N per costruire una diga naturale). Toccando ancora lo stesso elemento, la struttura si
-				elimina.
-				Toccando i bacini si aumentano le gocce presenti (per le sorgenti, si arriva a un massimo di
-				10).
-				Le dighe invece di mostrare anche le elevazioni, mostrano un numero a fianco per indicare quante
-				elevazioni ci sono (1 = nessuna elevazione, 3 = 2 elevazioni).<br>
-				Per selezionare un giocatore, toccare il relativo pulsante. Questo verrà evidenziato con un
-				bordo
-				giallo<br>
-				La toolbar in alto mostra tutte le possibili costruzioni che può fare l'automa. Per prime
-				verranno
-				mostrate (evidenziate anche con un bordo giallo) le costruzioni presenti sull'attuale carta
-				azioni.<br>
-				Toccando una costruzione (e avendo selezionato l'automa, se ce ne sono più di uno), verranno
-				mostrate
-				evidenziate in giallo le posizioni di dov'è possibile costruire, in base alla tessera dei
-				criteri.
-				Toccando ancora lo stesso pulsante il filtraggio viene raffinato, finché non evidenzierà una
-				sola
-				posizione valida. Allora toccando la posizione si costruisce la struttura. Automaiuto mostra
-				anche
-				più di una sola posizione perchè magari l'automa potrebbe avere solo le risorse per costruirne
-				una.
-				In tal caso, anche se sono evidenziate più posizioni, toccandone una si costruisce comunque la
-				struttura.
-			</p>
-			<p>
-				Toccando il pulsante &quot;Mazzo &lt;-&quot; si accede al mazzo per pescare la prossima tessera
-				automa
-			</p>
-			<p>
-				Versione 1.0
-			</p>
-		</div>
+	</div>
+	<div id="info" class="info">
+		<span id="infoTitolo">Come utilizzare l'automaiuto</span>
+		<p>
+			Tocca la tessera azioni (la prima in alto) per pescare e visualizzare anche
+			la tessera criteri.<br>
+			Toccando il pulsante &quot;Mappa &lt;-&quot; si accede alla mappa </p>
+		<span id="infoSottotitolo">La mappa</span>
+		<p>
+			La mappa presenta 3 sezioni principali:<br>
+			- La mappa stessa da mantenere aggiornata con la vera mappa di gioco<br>
+			- La toolbar in alto con i pulsanti per costruire le strutture<br>
+			- I selettori del giocatore in basso a sinistra<br>
+		</p>
+		<p>
+			Toccando i vari elementi della mappa (bacini, dighe, condotte, centrali) viene costruita
+			la struttura relativa del giocatore selezionato (infatti bisogna prima selezionare un giocatore,
+			o N per costruire una diga naturale). Toccando ancora lo stesso elemento, la struttura si
+			elimina.
+			Toccando i bacini si aumentano le gocce presenti (per le sorgenti, si arriva a un massimo di
+			10).
+			Le dighe invece di mostrare anche le elevazioni, mostrano un numero a fianco per indicare quante
+			elevazioni ci sono (1 = nessuna elevazione, 3 = 2 elevazioni).<br>
+			Per selezionare un giocatore, toccare il relativo pulsante. Questo verrà evidenziato con un
+			bordo
+			giallo<br>
+			La toolbar in alto mostra tutte le possibili costruzioni che può fare l'automa. Per prime
+			verranno
+			mostrate (evidenziate anche con un bordo giallo) le costruzioni presenti sull'attuale carta
+			azioni.<br>
+			Toccando una costruzione (e avendo selezionato l'automa, se ce ne sono più di uno), verranno
+			mostrate
+			evidenziate in giallo le posizioni di dov'è possibile costruire, in base alla tessera dei
+			criteri.
+			Toccando ancora lo stesso pulsante il filtraggio viene raffinato, finché non evidenzierà una
+			sola
+			posizione valida. Allora toccando la posizione si costruisce la struttura. Automaiuto mostra
+			anche
+			più di una sola posizione perchè magari l'automa potrebbe avere solo le risorse per costruirne
+			una.
+			In tal caso, anche se sono evidenziate più posizioni, toccandone una si costruisce comunque la
+			struttura.
+		</p>
+		<p>
+			Toccando il pulsante &quot;Mazzo &lt;-&quot; si accede al mazzo per pescare la prossima tessera
+			automa
+		</p>
+		<p>
+			Versione 1.0
+		</p>
+	</div>
 	</div>
 </body>
 

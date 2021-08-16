@@ -1042,6 +1042,9 @@ body {
 		height: 20vh;
 		width: 50vw;
 	}
+	#valoreContratti {
+		height: 30vh;
+	}
 	.confermaRichiesta {
 		width: 18vw;
 		height: 5.5vw;	

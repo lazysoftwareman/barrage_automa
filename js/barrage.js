@@ -71,6 +71,14 @@ export let playerMap = [];
 export let playerColor = [];
 
 export let actualColoreContratti = undefined;
+/**
+ * @type {number}
+ */
+export let actualValoreContratti = undefined;
+/**
+ * @type {string}
+ */
+export let actualModificatoreProduzione = undefined;
 export let actualResult = [];
 export let playerSelected = undefined;
 export let actualNumEscavatori = 0;
@@ -92,6 +100,16 @@ export function setNumEscavatori(num) {
 
 export function setNumBetoniere(num) {
 	actualNumBetoniere = num;
+}
+
+/**
+ * Setta i valori per la produzione
+ * @param {string} modificatore 
+ * @param {number} contratti 
+ */
+export function setValoriProduzione(modificatore, contratti) {
+	actualModificatoreProduzione = modificatore;
+	actualValoreContratti = contratti;
 }
 
 export function azioneProduci() {
@@ -119,9 +137,17 @@ export function azioneProduci() {
 	}
 	resetRisultati();
 	const produzione = carteAzioni[curCartaAzioni].split("_")[0];
-	const modificatore = + (produzione.substr(1, 2));
+	// const modificatore = + (produzione.substr(1, 2));
 	actualColoreContratti = produzione.substr(3, 1);
 	chiediContratti();
+}
+
+export function piazzamentoProduzione() {
+	// TODO Faccio i controlli che ci sia almeno un sistema, se no mostro alert.
+	// di quelli che ci sono calcolo valori con i modificatori.
+	// se sono modificatori normali controllo la validità con i contratti, sennò no.
+	// se è la seconda produzione devo scegliere la seconda centrale disponibile, se c'è
+	// se è tutto ok mostro il sistema
 }
 
 /////////////// BL CRITERI

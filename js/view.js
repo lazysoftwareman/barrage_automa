@@ -135,7 +135,10 @@ export function mostraAzioni() {
         document.getElementById('azione_' + az).style.borderColor = 'var(--borderColor)';
     }
     for (const az of azioniInCarta) {
-        document.getElementById('azione_' + az).style.borderColor = 'var(--selectionColor)';
+        const element = document.getElementById('azione_' + az);
+        if (element) {
+            document.getElementById('azione_' + az).style.borderColor = 'var(--selectionColor)';
+        }
     }
     //Riordino
     const divs = [];
@@ -144,7 +147,9 @@ export function mostraAzioni() {
     }
     document.getElementById('mappaToolbar').innerHTML = '';
     for (const az of azioniInCarta) {
-        document.getElementById('mappaToolbar').appendChild(divs[az]);
+        if (divs[az]) {
+            document.getElementById('mappaToolbar').appendChild(divs[az]);
+        }
     }
     for (const az of azioni) {
         if (!azioniInCarta.includes(az)) {

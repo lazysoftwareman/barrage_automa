@@ -37,6 +37,7 @@ import {
     resetInputs,
     setNumBetoniere,
     setNumEscavatori,
+    setValoriProduzione,
 } from './barrage.js';
 import { azioni, initMazzo, pesca } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay, sorgenti } from './mappa.js';
@@ -205,6 +206,14 @@ export function addHandlers() {
 		chiudiBetoniere();
 		piazzamentoStruttura();
 	}, false);
+	document.getElementById('confermaProduzione').addEventListener('click', function () {
+		const modificatore = document.getElementById('modificatoreProduzione').value;
+		const contratti = +(document.getElementById('valContratti').value);
+		setValoriProduzione(modificatore, contratti);
+		chiudiContratti();
+		piazzamentoProduzione();
+	}, false);
+
 	// TESTS
 
 	// document.getElementById('testBE_Condotta1').addEventListener('click', testBE_Condotta1);
