@@ -31,6 +31,7 @@ import {
     getCO_K,
     getCO_L,
     getCO_Numero,
+    piazzamentoProduzione,
     piazzamentoStruttura,
     playerColor,
     playerMap,
