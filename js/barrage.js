@@ -1,5 +1,5 @@
 // @ts-check
-import { carteCriteri, curCartaCriteri, resetMazzo } from './deck.js';
+import { carteAzioni, carteCriteri, curCartaAzioni, curCartaCriteri, resetMazzo } from './deck.js';
 import {
     centraliCondotte,
     centraliFree,
@@ -35,7 +35,14 @@ import {
     getZoneElevazioniPerBetoniere,
     intersecArray,
 } from './provider.js';
-import { chiediBetoniere, chiediEscavatori, mostraPlayerSelected, mostraRisultati, resetRisultati } from './view.js';
+import {
+    chiediBetoniere,
+    chiediContratti,
+    chiediEscavatori,
+    mostraPlayerSelected,
+    mostraRisultati,
+    resetRisultati,
+} from './view.js';
 
 
 /////////////// INPUT
@@ -63,6 +70,7 @@ export let sorgentiGocce = [];
 export let playerMap = [];
 export let playerColor = [];
 
+export let actualColoreContratti = undefined;
 export let actualResult = [];
 export let playerSelected = undefined;
 export let actualNumEscavatori = 0;
@@ -84,6 +92,36 @@ export function setNumEscavatori(num) {
 
 export function setNumBetoniere(num) {
 	actualNumBetoniere = num;
+}
+
+export function azioneProduci() {
+	let automa;
+	let automaCount = 0;
+	actualResult = [];
+	for (const player in playerMap) {
+		if (player.startsWith('A')) {
+			automaCount++;
+		}
+	}
+	if (automaCount > 1) {
+		if (!playerSelected || !playerSelected.startsWith('A')) {
+			alert('Bisogna selezionare l\'automa che vuole produrre');
+			return;
+		} else {
+			automa = playerSelected;
+		}
+	} else {
+		automa = 'A';
+	}
+	if (!curCartaAzioni) {
+		alert('Bisogna pescare una carta azione affinché l\'automa possa produrre')
+		return;
+	}
+	resetRisultati();
+	const produzione = carteAzioni[curCartaAzioni].split("_")[0];
+	const modificatore = + (produzione.substr(1, 2));
+	actualColoreContratti = produzione.substr(3, 1);
+	chiediContratti();
 }
 
 /////////////// BL CRITERI
@@ -218,8 +256,16 @@ function estraiParametriCostruisci() {
 		tipo = 'E';
 	} else if (cosa.startsWith('CO')) {
 		tipo = 'CO';
-		if (cosa.length == 3) {
-			minCondotta = cosa.substr(2, 1);
+		if (cosa.length == 4) {
+			const numero = cosa.substr(2, 1);
+			const piumeno = cosa.substr(3, 1);
+			if (piumeno == 'P') {
+				minCondotta = numero;
+				maxCondotta = undefined;
+			} else {
+				maxCondotta = numero;
+				minCondotta = undefined;
+			}
 		}
 	} else if (cosa.startsWith('CE')) {
 		tipo = 'CE';

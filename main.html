@@ -11,16 +11,6 @@
 </head>
 
 <body onload='initPage();'>
-	<!-- <div class="titolo">
-		<span>Barrage Automa</span>
-		<input type="button" value="testBE_Condotta1" id="testBE_Condotta1" />
-		<input type="button" value="testBE_Condotta2" id="testBE_Condotta2" />
-		<input type="button" value="testBE_CentraleMia1" id="testBE_CentraleMia1" />
-		<input type="button" value="testBE_CentraleMia2" id="testBE_CentraleMia2" />
-		<input type="button" value="testBE_CentraleNaturale1" id="testBE_CentraleNaturale1" />
-		<input type="button" value="testBE_CentraleNaturale2" id="testBE_CentraleNaturale2" />
-		<input type="button" value="testCostruisciInizio" id="testCostruisciInizio" />
-	</div> -->
 	<div id="splash"></div>
 	<div id="mainContainer">
 		<div id="deckContainer" class="deck" style="display: none;">
@@ -48,13 +38,10 @@
 		</div>
 		<div id="mappaContainer" class="mappaContainer" style="display: block;">
 			<div id="mappaToolbar" class="mappaToolbar">
+				<div id="azione_PROD" class="azioneButton">
+					<div></div>
+				</div>
 				<div id="azione_CD" class="azioneButton">
-					<div></div>
-				</div>
-				<div id="azione_CDM" class="azioneButton">
-					<div></div>
-				</div>
-				<div id="azione_CDC" class="azioneButton">
 					<div></div>
 				</div>
 				<div id="azione_CE" class="azioneButton">
@@ -63,21 +50,45 @@
 				<div id="azione_CCO" class="azioneButton">
 					<div></div>
 				</div>
-				<div id="azione_CCO3" class="azioneButton">
-					<div></div>
-				</div>
-				<div id="azione_CCO4" class="azioneButton">
-					<div></div>
-				</div>
 				<div id="azione_CCE" class="azioneButton">
 					<div></div>
 				</div>
-				<div id="azione_CAP" class="azioneButton">
+				<div id="azione_CCO3P" class="azioneButton">
+					<div></div>
+				</div>
+				<div id="azione_CCO4P" class="azioneButton">
+					<div></div>
+				</div>
+				<div id="azione_CCO2M" class="azioneButton">
+					<div></div>
+				</div>
+				<div id="azione_CCO3M" class="azioneButton">
+					<div></div>
+				</div>
+				<div id="azione_CCO4M" class="azioneButton">
+					<div></div>
+				</div>
+				<div id="azione_CCO5M" class="azioneButton">
+					<div></div>
+				</div>
+				<div id="azione_CDM" class="azioneButton">
+					<div></div>
+				</div>
+				<div id="azione_CDC" class="azioneButton">
+					<div></div>
+				</div>
+				<div id="azione_CDP" class="azioneButton">
+					<div></div>
+				</div>
+				<div id="azione_CDPC" class="azioneButton">
+					<div></div>
+				</div>
+				<!-- <div id="azione_CAP" class="azioneButton">
 					<div></div>
 				</div>
 				<div id="azione_CAM" class="azioneButton">
 					<div></div>
-				</div>
+				</div> -->
 			</div>
 			<div id="mappa">
 				<div id="rigaS" class=rigaArea>
@@ -589,6 +600,14 @@
 				<option value="3">3</option>
 				<option value="4 o più">4</option>
 				<option value="100">Costruzione gratis</option>
+			</select>
+			<div id="confermaBetoniere" class="confermaRichiesta">OK</div>
+		</div>
+		<div id="valoreContratti" class="richiesta">
+			<p>
+				Qual è il valore minimo dei contratti <span id="coloreContratti"></span>?
+			</p>
+			<select id="valContratti">
 			</select>
 			<div id="confermaBetoniere" class="confermaRichiesta">OK</div>
 		</div>

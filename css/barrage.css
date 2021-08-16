@@ -121,6 +121,9 @@ body {
 	background-position: center;
 	background-size: contain;
 }
+#azione_PROD div{
+	background-image: url('../img/PROD.png');
+}
 #azione_CD div{
 	background-image: url('../img/CD.png');
 }
@@ -130,17 +133,35 @@ body {
 #azione_CDC div{
 	background-image: url('../img/CDC.png');
 }
+#azione_CDP div{
+	background-image: url('../img/CDP.png');
+}
+#azione_CDPC div{
+	background-image: url('../img/CDPC.png');
+}
 #azione_CE div{
 	background-image: url('../img/CE.png');
 }
 #azione_CCO div{
 	background-image: url('../img/CCO.png');
 }
-#azione_CCO3 div{
-	background-image: url('../img/CCO3.png');
+#azione_CCO3P div{
+	background-image: url('../img/CCO3P.png');
 }
-#azione_CCO4 div{
-	background-image: url('../img/CCO4.png');
+#azione_CCO4P div{
+	background-image: url('../img/CCO4P.png');
+}
+#azione_CCO3M div{
+	background-image: url('../img/CCO3M.png');
+}
+#azione_CCO4M div{
+	background-image: url('../img/CCO4M.png');
+}
+#azione_CCO2M div{
+	background-image: url('../img/CCO2M.png');
+}
+#azione_CCO5M div{
+	background-image: url('../img/CCO5M.png');
 }
 #azione_CCE div{
 	background-image: url('../img/CCE.png');
@@ -224,7 +245,7 @@ body {
 .areaDiga {
 	width: 7%;
 	height: 100%;
-	border: solid 1px var(--whiteBorder);
+	border: solid 0px var(--whiteBorder);
 	border-radius: 5px;
 }
 .areaDiga div {
@@ -244,7 +265,7 @@ body {
 .areaCondotta {
 	width: 6%;
 	height: 90%;
-	border: solid 1px var(--whiteBorder);
+	border: solid 0px var(--whiteBorder);
 	border-radius: calc(var(--mw)*4);
 }
 .areaCondotta div {
@@ -258,7 +279,7 @@ body {
 .areaCentrale {
 	width: 7%;
 	height: 100%;
-	border: solid 1px var(--whiteBorder);
+	border: solid 0px var(--whiteBorder);
 	border-radius: 5px;
 }
 .areaCentrale div {

@@ -1,16 +1,15 @@
-import { actualResult, playerColor, playerMap, playerSelected } from './barrage.js';
+// @ts-check
+import { actualColoreContratti, actualResult, playerColor, playerMap, playerSelected } from './barrage.js';
 import { azioni, carteAzioni, curCartaAzioni, curCartaCriteri, deckSize, indice } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay } from './mappa.js';
 import { sleep } from './provider.js';
 
 const coloriText = [];
-coloriText['R'] = 'rosso';
-coloriText['W'] = 'bianco';
-coloriText['B'] = 'nero';
-coloriText['G'] = 'verde';
+coloriText['R'] = ' rosso';
+coloriText['W'] = ' bianco';
+coloriText['B'] = ' nero';
+coloriText['G'] = ' verde';
 
-
-// @ts-check
 export function initDiminesions() {
     let vh = window.innerHeight * 0.01;
     // Then we set the value in the --vh custom property to the root of the document
@@ -131,6 +130,7 @@ export function mostraPlayerSelected(player) {
 export function mostraAzioni() {
     let currentAzioni = carteAzioni[curCartaAzioni];
     let azioniInCarta = currentAzioni ? currentAzioni.split('_').filter((az) => az.startsWith('C')) : [];
+    azioniInCarta = ['PROD', ...azioniInCarta];
     for (const az of azioni) {
         document.getElementById('azione_' + az).style.borderColor = 'var(--borderColor)';
     }
@@ -155,7 +155,6 @@ export function mostraAzioni() {
 
 /**
  * Mostra i risultati del filtraggio
- * @param {string[]} output 
  */
 export function mostraRisultati() {
     for (const output of actualResult) {
@@ -179,7 +178,7 @@ export function resetRisultati() {
         const element = document.getElementById('area' + elem);
         if (element) {
             element.style.borderColor = 'var(--whiteBorder)';
-            element.style.borderWidth = '1px';
+            element.style.borderWidth = '0px';
             element.style.backgroundColor = 'transparent';
             if (element.className.includes(' animated flash')) {
                 element.className = element.className.replace(' animated flash', '');
@@ -229,6 +228,24 @@ function mostraColoreAutoma() {
     }
 }
 
+function mostraColoreEValoreContratti() {
+    if (!actualColoreContratti) {
+        return;
+    }
+    const span = document.getElementById('coloreContratti');
+    const colorText = actualColoreContratti == 'R' ? ' rossi' : actualColoreContratti == 'G' ? ' gialli' : ' verdi';
+    span.innerHTML = colorText;
+    const select = document.getElementById('valContratti');
+    select.innerHtml = '';
+    const numDaAggiungere = actualColoreContratti == 'R' ? 6 : actualColoreContratti == 'G' ? 3 : 0;
+    for (let i = -1; i < 5; i++) {
+        const option = document.createElement('option');
+        option.value = '' + (i + numDaAggiungere);
+        option.text = '' + (i + numDaAggiungere)
+        select.appendChild(option);
+    }
+}
+
 export function chiediEscavatori() {
     mostraColoreAutoma();
     document.getElementById('quantiEscavatori').className = ('richiesta animated slideInDown');
@@ -239,10 +256,19 @@ export function chiediBetoniere() {
     document.getElementById('quanteBetoniere').className = ('richiesta animated slideInDown');
 }
 
+export function chiediContratti() {
+    mostraColoreEValoreContratti();
+    document.getElementById('valoreContratti').className = ('richiesta animated slideInDown');
+}
+
 export function chiudiEscavatori() {
     document.getElementById('quantiEscavatori').className = ('richiesta animated slideOutUp');
 }
 
 export function chiudiBetoniere() {
     document.getElementById('quanteBetoniere').className = ('richiesta animated slideOutUp');
+}
+
+export function chiudiContratti() {
+    document.getElementById('valoreContratti').className = ('richiesta animated slideOutUp');
 }

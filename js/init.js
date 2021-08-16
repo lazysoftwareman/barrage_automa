@@ -6,6 +6,7 @@ import {
     addGocciaDiga,
     addGocciaSorgente,
     azioneCostruisci,
+    azioneProduci,
     changePlayerSelected,
     getB_0_SistemaCompleto,
     getBE_A,
@@ -42,6 +43,7 @@ import { centraliFree, centraliPay, condotte, digheFree, dighePay, sorgenti } fr
 import { colors } from './playersPage.js';
 import {
     chiudiBetoniere,
+    chiudiContratti,
     chiudiEscavatori,
     chiudiInfo,
     hideMappa,
@@ -69,6 +71,7 @@ export function initPage() {
 	chiudiInfo();
 	chiudiBetoniere();
 	chiudiEscavatori();
+	chiudiContratti();
 	hideMappa();
 	preloadImages();
 	mostraTutto();
@@ -136,9 +139,15 @@ export function addHandlers() {
 	document.getElementById('info').addEventListener('click', chiudiInfo);
 	//Azioni:
 	for (const azione of azioni) {
-		azioniPrincipali[azione] = function () {
-			azioneCostruisci(azione);
-		};
+		if (azione == 'PROD') {
+			azioniPrincipali[azione] = function () {
+				azioneProduci();
+			};
+		} else {
+			azioniPrincipali[azione] = function () {
+				azioneCostruisci(azione);
+			};
+		}
 		document.getElementById('azione_' + azione).addEventListener('click', azioniPrincipali[azione], false);
 	}
 	//sorgenti:

@@ -32,28 +32,28 @@ carteCriteri['20'] = 'F_B_A_4_I_J_G_6B_M_N_Q_10_DAB';
  * @type {string[]}
  */
 export const carteAzioni = [];
-carteAzioni['1'] = 'X_X_CD_CE_X_X_X_X';
-carteAzioni['2'] = 'X_CCO_CAP_X_X_X_X';
-carteAzioni['3'] = 'X_X_CCO_CCE_X_X_X_X';
-carteAzioni['4'] = 'X_X_CD_CAM_X_X_X_X';
-carteAzioni['5'] = 'X_CDM_X_X_X_X';
-carteAzioni['6'] = 'X_X_CE_CCO_X_X_X_X';
-carteAzioni['7'] = 'X_X_CCO3_CE_X_X_X_X';
-carteAzioni['8'] = 'X_X_CE_CCE_X_X_X_X';
-carteAzioni['9'] = 'X_X_CD_CAM_X_X_X_X';
-carteAzioni['10'] = 'X_X_CE_CD_X_X_X_X';
-carteAzioni['11'] = 'X_X_CE_CCE_X_X_X_X';
-carteAzioni['12'] = 'X_X_CD_CCO_X_X_X_X';
-carteAzioni['13'] = 'X_X_CCE_CD_X_X_X_X';
-carteAzioni['14'] = 'X_CD_X_X_X_X';
-carteAzioni['15'] = 'X_X_CDC_CCE_X_X_X_X';
-carteAzioni['16'] = 'X_X_CCO_X_X_X_X';
-carteAzioni['17'] = 'X_X_CD_X_X_X_X';
-carteAzioni['18'] = 'X_X_CCE_X_X_X_X';
-carteAzioni['19'] = 'X_CCE_CAP_X_X_X_X';
-carteAzioni['20'] = 'X_X_CCO4_X_X_X_X';
+carteAzioni['1'] = 'P-2V_X_CD_CE_X_X_X_X';
+carteAzioni['2'] = 'P+2G_CCO_CAP_X_X_X_X';
+carteAzioni['3'] = 'P+0V_X_CCO_CCE_X_X_X_X';
+carteAzioni['4'] = 'P+2V_X_CD_CAM_X_X_X_X';
+carteAzioni['5'] = 'P-1V_CDM_X_X_X_X';
+carteAzioni['6'] = 'P+0V_X_CE_CCO_X_X_X_X';
+carteAzioni['7'] = 'P+0V_X_CCO3P_CE_X_X_X_X';
+carteAzioni['8'] = 'P+0G_X_CE_CCE_X_X_X_X';
+carteAzioni['9'] = 'P+2G_X_CD_CAM_X_X_X_X';
+carteAzioni['10'] = 'P+0V_X_CE_CD_X_X_X_X';
+carteAzioni['11'] = 'P+0G_X_CE_CCE_X_X_X_X';
+carteAzioni['12'] = 'P+1G_X_CD_CCO_X_X_X_X';
+carteAzioni['13'] = 'P+1G_X_CCE_CD_X_X_X_X';
+carteAzioni['14'] = 'P+1V_CD_X_X_X_X';
+carteAzioni['15'] = 'P-2V_X_CDC_CCE_X_X_X_X';
+carteAzioni['16'] = 'P+1V_X_CCO_X_X_X_X';
+carteAzioni['17'] = 'P-1V_X_CD_X_X_X_X';
+carteAzioni['18'] = 'P+0R_X_CCE_X_X_X_X';
+carteAzioni['19'] = 'P+2V_CCE_CAP_X_X_X_X';
+carteAzioni['20'] = 'P+0R_X_CCO4P_X_X_X_X';
 
-export const azioni = ['CD', 'CDM', 'CDC', 'CE', 'CCO', 'CCO3', 'CCO4', 'CCE', 'CAP', 'CAM'];
+export const azioni = ['PROD', 'CD', 'CE', 'CCO', 'CCE', 'CCO3P', 'CCO4P', 'CCO2M', 'CCO3M', 'CCO4M', 'CCO5M', 'CDM', 'CDC', 'CDP', 'CDPC' /*, 'CAP', 'CAM'*/];
 
 export const deckSize = 20;
 /**
