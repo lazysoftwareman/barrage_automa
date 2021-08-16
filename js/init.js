@@ -6,8 +6,8 @@ import {
     addGocciaDiga,
     addGocciaSorgente,
     azioneCostruisci,
-    continuaCostruisci,
-    getBE_0_SistemaCompleto,
+    changePlayerSelected,
+    getB_0_SistemaCompleto,
     getBE_A,
     getBE_B,
     getBE_C,
@@ -30,6 +30,7 @@ import {
     getCO_K,
     getCO_L,
     getCO_Numero,
+    piazzamentoStruttura,
     playerColor,
     playerMap,
     resetInputs,
@@ -40,7 +41,6 @@ import { azioni, initMazzo, pesca } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay, sorgenti } from './mappa.js';
 import { colors } from './playersPage.js';
 import {
-    changePlayerSelected,
     chiudiBetoniere,
     chiudiEscavatori,
     chiudiInfo,
@@ -76,7 +76,7 @@ export function initPage() {
 
 function addGlobalVariables() {
 	// @ts-ignore
-	window.getBE_0_SistemaCompleto = getBE_0_SistemaCompleto;
+	window.getBE_0_SistemaCompleto = getB_0_SistemaCompleto;
 	// @ts-ignore
 	window.getBE_Numero = getBE_Numero;
 	// @ts-ignore
@@ -188,13 +188,13 @@ export function addHandlers() {
 		const numEscavatori = +(document.getElementById('numEscavatori').value);
 		setNumEscavatori(numEscavatori);
 		chiudiEscavatori();
-		continuaCostruisci();
+		piazzamentoStruttura();
 	}, false);
 	document.getElementById('confermaBetoniere').addEventListener('click', function () {
 		const numBetoniere = +(document.getElementById('numBetoniere').value);
 		setNumBetoniere(numBetoniere);
 		chiudiBetoniere();
-		continuaCostruisci();
+		piazzamentoStruttura();
 	}, false);
 	// TESTS
 

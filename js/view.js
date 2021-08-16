@@ -1,7 +1,14 @@
-import { actualResult, playerColor, playerMap } from './barrage.js';
+import { actualResult, playerColor, playerMap, playerSelected } from './barrage.js';
 import { azioni, carteAzioni, curCartaAzioni, curCartaCriteri, deckSize, indice } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay } from './mappa.js';
 import { sleep } from './provider.js';
+
+const coloriText = [];
+coloriText['R'] = 'rosso';
+coloriText['W'] = 'bianco';
+coloriText['B'] = 'nero';
+coloriText['G'] = 'verde';
+
 
 // @ts-check
 export function initDiminesions() {
@@ -105,8 +112,7 @@ export function mostraPlayers() {
     }
 }
 
-export function changePlayerSelected(player) {
-    playerSelected = playerSelected == player ? undefined : player;
+export function mostraPlayerSelected(player) {
     for (let player in playerMap) {
         let p = playerMap[player];
         document.getElementById(p + '_Selector').style.borderColor = 'var(--borderColor)';
@@ -203,11 +209,33 @@ export async function mostraTutto() {
     document.getElementById('splash').style.display = 'none';
 }
 
+function mostraColoreAutoma() {
+    let automa;
+    if (!playerSelected || !playerSelected.startsWith('A')) {
+        return;
+    } else {
+        automa = playerSelected;
+    }
+    const color = playerColor[automa];
+    if (color) {
+        const colorText = coloriText[color];
+        if (!colorText) {
+            return;
+        }
+        const spans = document.getElementsByClassName('coloreAutoma');
+        for (const span of spans) {
+            span.innerHTML = colorText;
+        }
+    }
+}
+
 export function chiediEscavatori() {
+    mostraColoreAutoma();
     document.getElementById('quantiEscavatori').className = ('richiesta animated slideInDown');
 }
 
 export function chiediBetoniere() {
+    mostraColoreAutoma();
     document.getElementById('quanteBetoniere').className = ('richiesta animated slideInDown');
 }
 

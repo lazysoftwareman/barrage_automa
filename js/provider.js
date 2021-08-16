@@ -277,18 +277,24 @@ export function getZoneElevazioniPerBetoniere(numBetoniere) {
     return zoneDisponibili;
 }
 
+export function getValoreCondottePerEscavatori(numBetoniere) {
+    if (numBetoniere < 2) {
+        return 0;
+    }
+    let result = Math.floor(numBetoniere / 2);
+    return result > 10 ? 10 : result;
+}
+
 /**
- * @param {string[]} array1
- * @param {string[]} array2
+ * @param {string[]} arrayPrincipale
+ * @param {string[]} arrayNuoviValori
  */
-export function intersecArray(array1, array2) {
+export function intersecArray(arrayPrincipale, arrayNuoviValori) {
     // intersezione
-    let filtered = array2.filter(function (n) {
-        return array1.indexOf(n) != -1;
-    });
-    if (filtered.length == 0 && array1.length != 0) {
+    let filtered = arrayPrincipale.filter(n => arrayNuoviValori.includes(n));
+    if (filtered.length == 0 && arrayPrincipale.length != 0) {
         // Il secondo array ha risultati che non c'entrano una cippa. Ritorno il primo
-        return array1;
+        return arrayPrincipale;
     }
     return filtered;
 }

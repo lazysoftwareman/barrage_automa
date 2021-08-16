@@ -15,7 +15,6 @@ import {
     percorsiDi,
 } from './mappa.js';
 import {
-    areEquals,
     getCapienzaDiga,
     getCentraliDiProprieta,
     getCondotteCheScaricanoInArea,
@@ -28,6 +27,7 @@ import {
     getProprietarioCentrale,
     getProprietarioCondotta,
     getProprietarioDiga,
+    getValoreCondottePerEscavatori,
     getZonaCentrale,
     getZonaCondotta,
     getZonaDiga,
@@ -35,7 +35,7 @@ import {
     getZoneElevazioniPerBetoniere,
     intersecArray,
 } from './provider.js';
-import { chiediBetoniere, chiediEscavatori, mostraRisultati, resetRisultati } from './view.js';
+import { chiediBetoniere, chiediEscavatori, mostraPlayerSelected, mostraRisultati, resetRisultati } from './view.js';
 
 
 /////////////// INPUT
@@ -63,7 +63,6 @@ export let sorgentiGocce = [];
 export let playerMap = [];
 export let playerColor = [];
 
-export let criterioPasso = 0;
 export let actualResult = [];
 export let playerSelected = undefined;
 export let actualNumEscavatori = 0;
@@ -89,6 +88,12 @@ export function setNumBetoniere(num) {
 
 /////////////// BL CRITERI
 
+/**
+ * Esegue i primi check settando i primi filtri (cioè tutte le strutture disponibili) su actualResult.
+ * Se non ce ne sono mostra un alert di avvertimento, altrimenti chiama il popup per richiedere le risorse.
+ * Nel caso di una centrale invece chiama direttamente il metodo continuaCostruisci
+ * @param {*} azione l'azione da svolgere
+ */
 export function azioneCostruisci(azione) {
 	let automa;
 	let automaCount = 0;
@@ -120,7 +125,6 @@ export function azioneCostruisci(azione) {
 	// - se condotta controllo min e max e chiedo escavatori
 	// - se centrale non ci sono controlli a questo livello
 	const cosa = azione.substr(1, azione.length - 1);
-	let tipo;
 	let zona;
 	let minCondotta;
 	if (cosa.startsWith('D')) {
@@ -129,6 +133,7 @@ export function azioneCostruisci(azione) {
 			zona = cosa.substr(1, 1);
 		}
 		// Controllo che in zona ci siano dighe costruibili. Se si o se !zona, chiedo escavatori
+		actualResult = digheFree.concat(dighePay).filter(diga => !getProprietarioDiga(diga));
 		if (zona) {
 			let digheValide = getB_Zona(zona);
 			if (digheValide.length == 0) {
@@ -136,7 +141,7 @@ export function azioneCostruisci(azione) {
 				alert('Non è possibile costruire una diga in ' + zonaTesto);
 				return;
 			} else {
-				actualResult = digheValide;
+				actualResult = intersecArray(actualResult, digheValide);
 			}
 		}
 		chiediEscavatori();
@@ -174,9 +179,8 @@ export function azioneCostruisci(azione) {
 		}
 	} else if (cosa.startsWith('CE')) {
 		actualResult = centraliFree.concat(centraliPay).filter(c => !getProprietarioCentrale(c));
-		continuaCostruisci();
+		piazzamentoStruttura();
 	} else if (cosa.startsWith('A')) {
-		tipo = 'A';
 		alert('Non ancora implementata la gestione delle abitazioni');
 		return;
 	} else {
@@ -185,7 +189,11 @@ export function azioneCostruisci(azione) {
 	}
 }
 
-export function continuaCostruisci() {
+/**
+ * Estrae i parametri per piazzamentoStruttura
+ * @returns i parametri
+ */
+function estraiParametriCostruisci() {
 	let automa;
 	let automaCount = 0;
 	for (const player in playerMap) {
@@ -219,22 +227,25 @@ export function continuaCostruisci() {
 		tipo = 'A';
 	} else {
 		alert('Azione non valida: ' + azione);
-		return;
+		return undefined;
 	}
-	return costruisci(tipo, zona, minCondotta, maxCondotta, automa);
+	return { tipo: tipo, zona: zona, minCondotta: minCondotta, maxCondotta: maxCondotta, automa: automa };
 }
 
 
 /**
- * @param {string} tipo B(ase), E(levazione), CO(ndotta), CE(ntrale)
- * @param {string} zona
- * @param {string} minCondotta
- * @param {string} maxCondotta
- * @param {string} automa
+ * Effettua effettivamente l'azione di piazzamento struttura da costruire
  */
-export function costruisci(tipo, zona, minCondotta, maxCondotta, automa) {
-	criterioPasso = 0;
-	actualResult = [];
+export function piazzamentoStruttura() {
+	const parametri = estraiParametriCostruisci();
+	if (!parametri) {
+		return;
+	}
+	const tipo = parametri.tipo;
+	const zona = parametri.zona;
+	const minCondotta = parametri.minCondotta;
+	const maxCondotta = parametri.maxCondotta;
+	const automa = parametri.automa;
 	if (tipo == 'A') {
 		alert('Non ancora implementata la gestione delle abitazioni');
 		return;
@@ -251,36 +262,41 @@ export function costruisci(tipo, zona, minCondotta, maxCondotta, automa) {
 				return;
 			}
 		}
-		// TODO Prima di chiamare getBE_0_SistemaCompleto devo filtrare actualResult in base alle zoneDisponibili
-		actualResult = getBE_0_SistemaCompleto(tipo, automa);
+		//Prima di chiamare getB_0_SistemaCompleto devo filtrare actualResult in base alle zoneDisponibili
+		actualResult = actualResult.filter(diga => zoneDisponibili.includes(getZonaDiga(diga)));
+		actualResult = getB_0_SistemaCompleto(automa);
 	} else if (tipo == 'E') {
 		const zoneDisponibili = getZoneElevazioniPerBetoniere(actualNumBetoniere);
-		// TODO devo filtrare actualResult in base alle zoneDisponibili
+		// devo filtrare actualResult in base alle zoneDisponibili
+		actualResult = actualResult.filter(diga => zoneDisponibili.includes(getZonaDiga(diga)));
 	} else if (tipo == 'CO') {
+		// devo filtrare actualResult in base ai valori disponibili
+		const valoreDisponibile = getValoreCondottePerEscavatori(actualNumEscavatori);
+		actualResult = actualResult.filter(condotta => condotteVal[condotta] <= valoreDisponibile);
 		actualResult = getCO_0_SistemaCompleto(automa);
 	} else if (tipo == 'CE') {
+		// ho già filtrato in base alle disponibili
 		actualResult = getCE_0_SistemaCompleto(automa);
 	}
-	if (!actualResult || actualResult.length == 0) {
-		// Nessun sistema completo, continuiamo
-		eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa);
+	if (actualResult.length == 0) {
+		// Nessun risultato. Poco probabile, ma possibile. Mostro l'alert e mi fermo
+		alert('Non è possibile costruire questa struttura');
+		return;
 	} else if (actualResult.length > 0) {
 		// Ci sono dei risultati, se 1, lo mostro e mi fermo qua
 		if (actualResult.length == 1) {
 			mostraRisultati();
 			return;
 		}
-		// se di sicuro devo filtrare ancora, filtro, altrimenti mostro
-		if (devoSicuramenteFiltrare(tipo)) {
-			return eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa);
-		} else {
-			mostraRisultati();
-			return;
+		else {
+			// ho più di 2 risultati. Continuo filtraggio
+			eseguiCriteri(tipo, minCondotta, maxCondotta, automa);
 		}
 	}
 }
 
-export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa) {
+export function eseguiCriteri(tipo, minCondotta, maxCondotta, automa) {
+	let criterioPasso = 0;
 	const criteri = carteCriteri[curCartaCriteri].split("_");
 	const ordine = criteri[criteri.length - 1];
 	const prefix = tipo == 'B' || tipo == 'E' ? 'BE' : tipo;
@@ -293,7 +309,6 @@ export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa) {
 			position += 8;
 		}
 		const lettera = criteri[position];
-		const prevResult = [...actualResult];
 		if (criterioPasso == 4) {
 			actualResult = window['get' + prefix + '_Numero'](tipo, lettera, automa);
 		} else {
@@ -315,95 +330,26 @@ export function eseguiCriterioPasso(tipo, minCondotta, maxCondotta, automa) {
 			}
 		}
 		if (!actualResult || actualResult.length == 0) {
-			// Nessun risultato, continuiamo
+			// Nessun risultato. Poco probabile, ma possibile. Mostro l'alert e mi fermo
+			alert('Non è possibile costruire questa struttura');
+			return;
 		} else if (actualResult.length > 0) {
 			if (actualResult.length == 1) {
 				mostraRisultati();
 				return;
-			}
-			// Ci sono dei risultati, se di sicuro devo filtrare ancora, filtro, altrimenti mostro
-			if (areEquals(prevResult, actualResult) || devoSicuramenteFiltrare(tipo)) {
-				// Devo sicuramente ancora filtrare, continuiamo
 			} else {
-				mostraRisultati();
-				return;
+				// Ci sono dei risultati multipli. Continuo a filtrare
+				continue;
 			}
 		}
 	}
-	// Se finiti i criteri non ho risultati, mostro alert
+	// Se finiti i criteri non ho risultati (poco probabile), mostro alert
 	if (!actualResult || actualResult.length == 0) {
 		alert('Non è possibile costruire la struttura selezionata')
 	}
 	// Finiti i criteri, resetto
-	criterioPasso = 0;
 	actualResult = [];
 	mostraRisultati();
-}
-
-export function devoSicuramenteFiltrare(tipo) {
-	if (tipo == 'B' || tipo == 'E') {
-		// se ci sono più di 1 risultato in pianura (se c'è), o se non c'è in collina
-		// o se non c'è in montagna, significa che devo necessariamente filtrare ancora
-		let resultP = 0;
-		let resultC = 0;
-		let resultM = 0;
-		for (const res of actualResult) {
-			const zona = getZonaDiga(res);
-			if (zona == 'M') {
-				resultM++;
-			} else if (zona == 'C') {
-				resultC++;
-			} else {
-				resultP++;
-			}
-		}
-		if (resultP > 1) {
-			return true;
-		} else if (resultP == 0) {
-			if (resultC > 1) {
-				return true;
-			} else if (resultC == 0) {
-				if (resultM > 1) {
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	} else if (tipo == 'CO') {
-		let result = [];
-		for (let i = 0; i < 5; i++) {
-			result['' + (i + 1)] = 0;
-		}
-		for (const res of actualResult) {
-			const valore = condotteVal[res];
-			result['' + valore]++;
-		}
-		for (let i = 0; i < 5; i++) {
-			let res = result['' + (i + 1)];
-			if (res == 0) {
-				continue;
-			}
-			if (res > 1) {
-				// quelle di valore più basso sono più di una, devo sicuramente filtrare ancora
-				return true;
-			} else {
-				return false;
-			}
-		}
-		return false;
-	} else if (tipo == 'CE') {
-		// per le centrali le mostro sempre
-		return false;
-	} else {
-		// per le abitazioni per ora non le gestisco
-		alert('Non ancora implementata la gestione delle abitazioni');
-		return false;
-	}
 }
 
 /**
@@ -431,16 +377,12 @@ export function getB_Zona(zona) {
 /**
  * BASE O ELEVAZIONE, completamento sistema, solo per BASE.
  * Da applicare come primo criterio, a parte quello della zona se c'è
- * @param {string} tipo se 'E' ritorna array vuoto
  * @param {string} automa
 **/
-export function getBE_0_SistemaCompleto(tipo, automa) {
-	if (tipo != 'B') {
-		return [];
-	}
+export function getB_0_SistemaCompleto(automa) {
 	let centraliProprie = getCentraliDiProprieta(automa);
 	if (centraliProprie.length == 0) {
-		return [];
+		return actualResult ? actualResult : [];
 	}
 	let condotte = [];
 	for (let i = 0; i < centraliProprie.length; i++) {
@@ -1008,7 +950,7 @@ export function getBE_Numero(tipo, numero, automa) {
 export function getCO_0_SistemaCompleto(automa) {
 	let centraliProprie = getCentraliDiProprieta(automa);
 	if (centraliProprie.length == 0) {
-		return [];
+		return actualResult ? actualResult : [];
 	}
 	let condotte = [];
 	for (let i = 0; i < centraliProprie.length; i++) {
@@ -1560,6 +1502,7 @@ export function getCO_L(min, max, automa) {
 
 
 export function getCE_0_SistemaCompleto(automa) {
+	// FIXME occhio che qua fixato 
 	const dighe = [];
 	for (const diga of digheFree.concat(dighePay)) {
 		if (getProprietarioDiga(diga)) {
@@ -1577,11 +1520,13 @@ export function getCE_0_SistemaCompleto(automa) {
 			}
 		}
 	}
+	const centraliProprieNumero = getCentraliDiProprieta(automa).map(centrale => getNumeroCentrale(centrale));
 	const centraliValide = [];
 	for (const condotta of condotte) {
 		const centrali = condotteCentrali[condotta];
 		for (const centrale of centrali) {
-			if (!getProprietarioCentrale(centrale)) {
+			// Se l'automa ha già una centrale in un gruppo, non si conta
+			if (!getProprietarioCentrale(centrale) && !centraliProprieNumero.includes(getNumeroCentrale(centrale))) {
 				centraliValide.push(centrale);
 			}
 		}
@@ -1596,7 +1541,7 @@ export function getCE_0_SistemaCompleto(automa) {
 	}
 }
 
-export function getCE_Numero(_tipo, numero, automa) {
+export function getCE_Numero(_tipo, numero, _automa) {
 	if (!actualResult || actualResult.length == 0) {
 		// Non ho trovato niente di valido finora. Considero tutte come valide
 		actualResult = [];
@@ -1629,22 +1574,22 @@ export function getCE_Numero(_tipo, numero, automa) {
 				return [centrale];
 			}
 		} else if (centraliPay.includes('CP_' + actual)) {
-			let centrale = 'CF_' + actual;
+			let centrale = 'CP_' + actual;
 			if (actualResult.includes(centrale)) {
 				return [centrale];
 			}
 		} else if (centraliPay.includes('CP_' + actual + 'A')) {
-			let centrale = 'CF_' + actual + 'A';
+			let centrale = 'CP_' + actual + 'A';
 			if (actualResult.includes(centrale)) {
 				return [centrale];
 			}
 		} else if (centraliPay.includes('CP_' + actual + 'B')) {
-			let centrale = 'CF_' + actual + 'B';
+			let centrale = 'CP_' + actual + 'B';
 			if (actualResult.includes(centrale)) {
 				return [centrale];
 			}
 		} else if (centraliPay.includes('CP_' + actual + 'C')) {
-			let centrale = 'CF_' + actual + 'C';
+			let centrale = 'CP_' + actual + 'C';
 			if (actualResult.includes(centrale)) {
 				return [centrale];
 			}
@@ -2180,4 +2125,9 @@ export function addCentrale(centrale) {
 		document.getElementById('area' + centrale + 'Img').src = 'img/CE_' + playerColor[chi] + '.png';
 		document.getElementById('area' + centrale + 'Content').style.display = 'block';
 	}
+}
+
+export function changePlayerSelected(player) {
+	playerSelected = playerSelected == player ? undefined : player;
+	mostraPlayerSelected();
 }
