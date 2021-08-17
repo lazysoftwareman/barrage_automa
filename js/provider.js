@@ -1,8 +1,54 @@
 // @ts-check
 /////////////// BL UTILS
 import { centraliCostruite, condotteCostruite, digheGocce, dighePresenti, sorgentiGocce } from './barrage.js';
-import { condotteCentrali, digheFree, dighePay } from './mappa.js';
+import { centraliCondotte, condotteCentrali, condotteDighe, condotteVal, digheFree, dighePay } from './mappa.js';
 
+/**
+ * Ottiene i sistemi completi dell'automa
+ * @param {string} automa 
+ * @returns i sistemi completi dell'automa
+ */
+export function getSistemiCompleti(automa) {
+    const centrali = getCentraliDiProprieta(automa);
+    if (centrali.length == 0) {
+        return [];
+    }
+    const centraliForseValide = [];
+    for (const centrale of centrali) {
+        const condottes = centraliCondotte[centrale];
+        for (const condotta of condottes) {
+            if (getProprietarioCondotta(condotta)) {
+                if (!centraliForseValide[centrale]) {
+                    centraliForseValide[centrale] = [];
+                }
+                centraliForseValide[centrale].push(condotta);
+            }
+        }
+    }
+    const sistemi = [];
+    for (const centrale in centraliForseValide) {
+        const condottes = centraliForseValide[centrale];
+        for (const condotta of condottes) {
+            const dighe = condotteDighe[condotta];
+            for (const diga of dighe) {
+                if (getProprietarioDiga(diga) && (getProprietarioDiga(diga) == 'N' || getProprietarioDiga(diga) == automa)) {
+                    // Trovato sistema completo. Ora vediamo se ha acqua
+                    const gocce = getGocceInDiga(diga);
+                    if (gocce > 0) {
+                        //Trovato!
+                        const bacino = diga + 'G';
+                        const strutture = [centrale, condotta, diga, bacino];
+                        const valore = condotteVal[condotta] * gocce;
+                        const sistema = { strutture: strutture, gocce: gocce, valore: valore };
+                        sistemi.push(sistema);
+                    }
+                }
+            }
+        }
+    }
+    sistemi.sort((s1, s2) => s2.valore - s1.valore);
+    return sistemi;
+}
 
 /**
  * Ritorna M(ontagna), C(ollina), P(ianura) in base alla condotta

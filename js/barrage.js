@@ -27,6 +27,7 @@ import {
     getProprietarioCentrale,
     getProprietarioCondotta,
     getProprietarioDiga,
+    getSistemiCompleti,
     getValoreCondottePerEscavatori,
     getZonaCentrale,
     getZonaDiga,
@@ -40,6 +41,7 @@ import {
     chiediEscavatori,
     mostraPlayerSelected,
     mostraRisultati,
+    mostraSistema,
     resetRisultati,
 } from './view.js';
 
@@ -135,6 +137,12 @@ export function azioneProduci() {
 		return;
 	}
 	resetRisultati();
+	// Faccio i controlli che ci sia almeno un sistema, se no mostro alert.
+	actualResult = getSistemiCompleti(automa);
+	if (actualResult.length == 0) {
+		alert('Non ci sono sistemi completi pronti per una produzione');
+		return;
+	}
 	const produzione = carteAzioni[curCartaAzioni].split("_")[0];
 	// const modificatore = + (produzione.substr(1, 2));
 	actualColoreContratti = produzione.substr(3, 1);
@@ -142,11 +150,36 @@ export function azioneProduci() {
 }
 
 export function piazzamentoProduzione() {
-	// TODO Faccio i controlli che ci sia almeno un sistema, se no mostro alert.
-	// di quelli che ci sono calcolo valori con i modificatori.
+	// Di ActualResult calcolo valori con i modificatori.
 	// se sono modificatori normali controllo la validità con i contratti, sennò no.
 	// se è la seconda produzione devo scegliere la seconda centrale disponibile, se c'è
 	// se è tutto ok mostro il sistema
+	const produzione = carteAzioni[curCartaAzioni].split("_")[0];
+	const primo = actualResult[0];
+	const secondo = actualResult[1];
+	const valore = primo.valore;
+	const modificatoreCarta = + (produzione.substr(1, 2));
+	const altriModificatori = actualModificatoreProduzione;
+	if (altriModificatori == 'oberst') {
+		// seconda produzione, nessun modificatore, nessun check di contratti. Solo se produzione disponibile
+		if (!secondo) {
+			alert('Non c\'è un secondo sistema completo di produzione');
+			return;
+		} else {
+			mostraSistema(secondo.strutture);
+		}
+	} else if (altriModificatori == '2abs') {
+		//solo modificatore di 2 per la tessera, nessun check di contratti
+		mostraSistema(primo.strutture);
+	} else {
+		const totValore = valore + modificatoreCarta + (+altriModificatori);
+		if (totValore < actualValoreContratti) {
+			alert('Il valore di energia prodotto non è sufficiente a soddisfare i contratti');
+			return;
+		} else {
+			mostraSistema(primo.strutture);
+		}
+	}
 }
 
 /////////////// BL CRITERI
@@ -287,8 +320,6 @@ function estraiParametriCostruisci() {
 	const cosa = azione.substr(1, azione.length - 1);
 	let tipo;
 	let zona;
-	let minCondotta;
-	let maxCondotta;
 	if (cosa.startsWith('D')) {
 		tipo = 'B';
 		if (cosa.length == 2) {
@@ -298,17 +329,6 @@ function estraiParametriCostruisci() {
 		tipo = 'E';
 	} else if (cosa.startsWith('CO')) {
 		tipo = 'CO';
-		if (cosa.length == 4) {
-			const numero = cosa.substr(2, 1);
-			const piumeno = cosa.substr(3, 1);
-			if (piumeno == 'P') {
-				minCondotta = numero;
-				maxCondotta = undefined;
-			} else {
-				maxCondotta = numero;
-				minCondotta = undefined;
-			}
-		}
 	} else if (cosa.startsWith('CE')) {
 		tipo = 'CE';
 	} else if (cosa.startsWith('A')) {
@@ -317,7 +337,7 @@ function estraiParametriCostruisci() {
 		alert('Azione non valida: ' + azione);
 		return undefined;
 	}
-	return { tipo: tipo, zona: zona, minCondotta: minCondotta, maxCondotta: maxCondotta, automa: automa };
+	return { tipo: tipo, zona: zona, automa: automa };
 }
 
 
@@ -331,8 +351,6 @@ export function piazzamentoStruttura() {
 	}
 	const tipo = parametri.tipo;
 	const zona = parametri.zona;
-	const minCondotta = parametri.minCondotta;
-	const maxCondotta = parametri.maxCondotta;
 	const automa = parametri.automa;
 	if (tipo == 'A') {
 		alert('Non ancora implementata la gestione delle abitazioni');
@@ -378,12 +396,12 @@ export function piazzamentoStruttura() {
 		}
 		else {
 			// ho più di 2 risultati. Continuo filtraggio
-			eseguiCriteri(tipo, minCondotta, maxCondotta, automa);
+			eseguiCriteri(tipo, automa);
 		}
 	}
 }
 
-export function eseguiCriteri(tipo, minCondotta, maxCondotta, automa) {
+export function eseguiCriteri(tipo, automa) {
 	let criterioPasso = 0;
 	const criteri = carteCriteri[curCartaCriteri].split("_");
 	const ordine = criteri[criteri.length - 1];
@@ -403,7 +421,7 @@ export function eseguiCriteri(tipo, minCondotta, maxCondotta, automa) {
 			if (prefix == 'BE') {
 				actualResult = window['getBE_' + lettera](tipo, automa, ordine);
 			} else if (prefix == 'CO') {
-				actualResult = window['getCO_' + lettera](minCondotta, maxCondotta, automa);
+				actualResult = window['getCO_' + lettera](automa);
 			} else {
 				if (lettera.length == 1) {
 					actualResult = window['getCE_' + lettera](automa);
@@ -928,6 +946,7 @@ export function getBE_Numero(_tipo, numero, _automa) {
 		actual = actual + counter;
 		if (actual > 10) {
 			actual = 1;
+			counter = 0;
 		}
 		let digaF = 'DF_' + actual;
 		if (actualResult.includes(digaF)) {
@@ -995,6 +1014,7 @@ export function getCO_Numero(_tipo, numeroLettera, _automa) {
 		actual = actual + counter;
 		if (actual > 10) {
 			actual = 1;
+			counter = 0;
 		}
 		if (lettera == 'A') {
 			let condottaA = 'C_' + actual + 'A';
@@ -1018,45 +1038,13 @@ export function getCO_Numero(_tipo, numeroLettera, _automa) {
 	return [];
 }
 
-function isCondottaCostruibile(condotta, min, max) {
-	if (!getProprietarioCondotta(condotta)) {
-		if (min) {
-			if (condotteVal[condotta] < +min) {
-				// Non valida
-				return false;
-			}
-		}
-		if (max) {
-			if (condotteVal[condotta] > +max) {
-				// Non valida
-				return false;
-			}
-		}
-		return true;;
-	}
-	return false;
-}
-
 /**
  * CONDOTTA: massimo valore disponibile
- * @param {string} min valore minimo condotta
- * @param {string} max valore massimo condotta
  * @param {string} automa automa
  * @returns 
  */
-export function getCO_G(min, max, automa) {
-	// FIXME Sbagliato: bisogna prendere il massimo tra le actualResult;
-	const condotteDisp = [];
-	for (const condotta of condotte) {
-		if (isCondottaCostruibile(condotta, min, max)) {
-			condotteDisp.push(condotta);
-		} else {
-			continue;
-		}
-	}
-	if (condotteDisp.length == 0) {
-		return actualResult ? actualResult : [];
-	}
+export function getCO_G(automa) {
+	const condotteDisp = actualResult;
 	condotteDisp.sort((a, b) => {
 		return condotteVal[b] - condotteVal[a]
 	});
@@ -1082,24 +1070,11 @@ export function getCO_G(min, max, automa) {
 
 /**
  * CONDOTTA: quasi massimo valore disponibile. Se non presente, massimo
- * @param {string} min valore minimo condotta
- * @param {string} max valore massimo condotta
- * @param {string} automa automa
+ * @param {string} _automa automa
  * @returns 
  */
-export function getCO_H(min, max, automa) {
-	// FIXME Sbagliato: bisogna prendere il quasi massimo tra le actualResult;
-	const condotteDisp = [];
-	for (const condotta of condotte) {
-		if (isCondottaCostruibile(condotta, min, max)) {
-			condotteDisp.push(condotta);
-		} else {
-			continue;
-		}
-	}
-	if (condotteDisp.length == 0) {
-		return actualResult ? actualResult : [];
-	}
+export function getCO_H(_automa) {
+	const condotteDisp = actualResult;
 	condotteDisp.sort((a, b) => {
 		return condotteVal[b] - condotteVal[a]
 	});
@@ -1131,13 +1106,10 @@ export function getCO_H(min, max, automa) {
 
 /**
  * CONDOTTA - collegata a una diga già costruita propria / neutrale / avversaria
- * @param {string} min 
- * @param {string} max 
  * @param {string} automa 
  * @returns risultati
  */
-export function getCO_I(min, max, automa) {
-	// FIXME Sbagliato: partire da actualResult
+export function getCO_I(automa) {
 	const digheProprie = [];
 	const digheNaturali = [];
 	const digheAvversarie = [];
@@ -1158,7 +1130,7 @@ export function getCO_I(min, max, automa) {
 	for (const diga of digheProprie) {
 		const condotte = digheCondotte[diga];
 		for (const condotta of condotte) {
-			if (isCondottaCostruibile(condotta, min, max)) {
+			if (actualResult.includes(condotta)) {
 				condotteProprie.push(condotta);
 			} else {
 				continue;
@@ -1168,7 +1140,7 @@ export function getCO_I(min, max, automa) {
 	for (const diga of digheNaturali) {
 		const condotte = digheCondotte[diga];
 		for (const condotta of condotte) {
-			if (isCondottaCostruibile(condotta, min, max)) {
+			if (actualResult.includes(condotta)) {
 				condotteNaturali.push(condotta);
 			} else {
 				continue;
@@ -1178,52 +1150,14 @@ export function getCO_I(min, max, automa) {
 	for (const diga of digheAvversarie) {
 		const condotte = digheCondotte[diga];
 		for (const condotta of condotte) {
-			if (isCondottaCostruibile(condotta, min, max)) {
+			if (actualResult.includes(condotta)) {
 				condotteAvversarie.push(condotta);
 			} else {
 				continue;
 			}
 		}
 	}
-	// Per ogni valore devo prendere quelle di priorità maggiore
-	// (tipo se per il valore 3 ci sono 0 cond proprie, 2 naturali e 1 avversaria, ritorno le 2 naturali e basta)
-	const condPerNumero = [];
-	let valoriOccupati = [];
-	for (const cond of condotteProprie) {
-		const val = condotteVal[cond];
-		if (!condPerNumero['' + val]) {
-			condPerNumero['' + val] = [];
-			valoriOccupati.push('' + val);
-		}
-		condPerNumero['' + val].push(cond);
-	}
-	let altriValori = [];
-	for (const cond of condotteNaturali) {
-		const val = condotteVal[cond];
-		if (!valoriOccupati.includes('' + val)) {
-			if (!condPerNumero['' + val]) {
-				condPerNumero['' + val] = [];
-				altriValori.push(cond);
-			}
-			condPerNumero['' + val].push(cond);
-		}
-	}
-	valoriOccupati = valoriOccupati.concat(altriValori);
-	for (const cond of condotteAvversarie) {
-		const val = condotteVal[cond];
-		if (!valoriOccupati.includes('' + val)) {
-			if (!condPerNumero['' + val]) {
-				condPerNumero['' + val] = [];
-			}
-			condPerNumero['' + val].push(cond);
-		}
-	}
-	const condotteValide = [];
-	for (const val in condPerNumero) {
-		for (const condotta of condPerNumero[val]) {
-			condotteValide.push(condotta);
-		}
-	}
+	const condotteValide = [...condotteProprie, ...condotteNaturali, ...condotteAvversarie];
 	if (condotteValide.length == 0) {
 		return actualResult ? actualResult : [];
 	} if (!actualResult || actualResult.length == 0) {
@@ -1236,13 +1170,10 @@ export function getCO_I(min, max, automa) {
 
 /**
  * CONDOTTA - collegata a una centrale già costruita propria / avversaria
- * @param {string} min 
- * @param {string} max 
  * @param {string} automa 
  * @returns risultati
  */
-export function getCO_J(min, max, automa) {
-	// FIXME Sbagliato: partire da actualResult
+export function getCO_J(automa) {
 	const centraliProprie = [];
 	const centraliAvversarie = [];
 	for (const centrale of centraliFree.concat(centraliPay)) {
@@ -1259,7 +1190,7 @@ export function getCO_J(min, max, automa) {
 	for (const centrale of centraliProprie) {
 		const condotte = centraliCondotte[centrale];
 		for (const condotta of condotte) {
-			if (isCondottaCostruibile(condotta, min, max)) {
+			if (actualResult.includes(condotta)) {
 				condotteProprie.push(condotta);
 			} else {
 				continue;
@@ -1269,40 +1200,14 @@ export function getCO_J(min, max, automa) {
 	for (const centrale of centraliAvversarie) {
 		const condotte = centraliCondotte[centrale];
 		for (const condotta of condotte) {
-			if (isCondottaCostruibile(condotta, min, max)) {
+			if (actualResult.includes(condotta)) {
 				condotteAvversarie.push(condotta);
 			} else {
 				continue;
 			}
 		}
 	}
-	// Per ogni valore devo prendere quelle di priorità maggiore
-	// (tipo se per il valore 3 ci sono 2 cond proprie e 1 avversaria, ritorno le 2 proprie e basta)
-	const condPerNumero = [];
-	let valoriOccupati = [];
-	for (const cond of condotteProprie) {
-		const val = condotteVal[cond];
-		if (!condPerNumero['' + val]) {
-			condPerNumero['' + val] = [];
-			valoriOccupati.push('' + val);
-		}
-		condPerNumero['' + val].push(cond);
-	}
-	for (const cond of condotteAvversarie) {
-		const val = condotteVal[cond];
-		if (!valoriOccupati.includes('' + val)) {
-			if (!condPerNumero['' + val]) {
-				condPerNumero['' + val] = [];
-			}
-			condPerNumero['' + val].push(cond);
-		}
-	}
-	const condotteValide = [];
-	for (const val in condPerNumero) {
-		for (const condotta of condPerNumero[val]) {
-			condotteValide.push(condotta);
-		}
-	}
+	const condotteValide = [...condotteProprie, ...condotteAvversarie];
 	if (condotteValide.length == 0) {
 		return actualResult ? actualResult : [];
 	} if (!actualResult || actualResult.length == 0) {
@@ -1315,13 +1220,10 @@ export function getCO_J(min, max, automa) {
 
 /**
  * CONDOTTA - collegata a una diga già costruita avversaria / neutrale / propria
- * @param {string} min 
- * @param {string} max 
  * @param {string} automa 
  * @returns risultati
  */
-export function getCO_K(min, max, automa) {
-	// FIXME Sbagliato: partire da actualResult
+export function getCO_K(automa) {
 	const digheProprie = [];
 	const digheNaturali = [];
 	const digheAvversarie = [];
@@ -1342,7 +1244,7 @@ export function getCO_K(min, max, automa) {
 	for (const diga of digheProprie) {
 		const condotte = digheCondotte[diga];
 		for (const condotta of condotte) {
-			if (isCondottaCostruibile(condotta, min, max)) {
+			if (actualResult.includes(condotta)) {
 				condotteProprie.push(condotta);
 			} else {
 				continue;
@@ -1352,7 +1254,7 @@ export function getCO_K(min, max, automa) {
 	for (const diga of digheNaturali) {
 		const condotte = digheCondotte[diga];
 		for (const condotta of condotte) {
-			if (isCondottaCostruibile(condotta, min, max)) {
+			if (actualResult.includes(condotta)) {
 				condotteNaturali.push(condotta);
 			} else {
 				continue;
@@ -1362,52 +1264,14 @@ export function getCO_K(min, max, automa) {
 	for (const diga of digheAvversarie) {
 		const condotte = digheCondotte[diga];
 		for (const condotta of condotte) {
-			if (isCondottaCostruibile(condotta, min, max)) {
+			if (actualResult.includes(condotta)) {
 				condotteAvversarie.push(condotta);
 			} else {
 				continue;
 			}
 		}
 	}
-	// Per ogni valore devo prendere quelle di priorità maggiore
-	// (tipo se per il valore 3 ci sono 0 cond proprie, 2 naturali e 1 avversaria, ritorno l'avvesaria e basta)
-	const condPerNumero = [];
-	let valoriOccupati = [];
-	for (const cond of condotteAvversarie) {
-		const val = condotteVal[cond];
-		if (!condPerNumero['' + val]) {
-			condPerNumero['' + val] = [];
-			valoriOccupati.push('' + val);
-		}
-		condPerNumero['' + val].push(cond);
-	}
-	let altriValori = [];
-	for (const cond of condotteNaturali) {
-		const val = condotteVal[cond];
-		if (!valoriOccupati.includes('' + val)) {
-			if (!condPerNumero['' + val]) {
-				condPerNumero['' + val] = [];
-				altriValori.push(cond);
-			}
-			condPerNumero['' + val].push(cond);
-		}
-	}
-	valoriOccupati = valoriOccupati.concat(altriValori);
-	for (const cond of condotteProprie) {
-		const val = condotteVal[cond];
-		if (!valoriOccupati.includes('' + val)) {
-			if (!condPerNumero['' + val]) {
-				condPerNumero['' + val] = [];
-			}
-			condPerNumero['' + val].push(cond);
-		}
-	}
-	const condotteValide = [];
-	for (const val in condPerNumero) {
-		for (const condotta of condPerNumero[val]) {
-			condotteValide.push(condotta);
-		}
-	}
+	const condotteValide = [...condotteAvversarie, ...condotteNaturali, ...condotteProprie];
 	if (condotteValide.length == 0) {
 		return actualResult ? actualResult : [];
 	} if (!actualResult || actualResult.length == 0) {
@@ -1420,13 +1284,10 @@ export function getCO_K(min, max, automa) {
 
 /**
  * CONDOTTA - collegata a una centrale già costruita avversaria / propria
- * @param {string} min 
- * @param {string} max 
  * @param {string} automa 
  * @returns risultati
  */
-export function getCO_L(min, max, automa) {
-	// FIXME Sbagliato: partire da actualResult
+export function getCO_L(automa) {
 	const centraliProprie = [];
 	const centraliAvversarie = [];
 	for (const centrale of centraliFree.concat(centraliPay)) {
@@ -1443,7 +1304,7 @@ export function getCO_L(min, max, automa) {
 	for (const centrale of centraliProprie) {
 		const condotte = centraliCondotte[centrale];
 		for (const condotta of condotte) {
-			if (isCondottaCostruibile(condotta, min, max)) {
+			if (actualResult.includes(condotta)) {
 				condotteProprie.push(condotta);
 			} else {
 				continue;
@@ -1453,40 +1314,14 @@ export function getCO_L(min, max, automa) {
 	for (const centrale of centraliAvversarie) {
 		const condotte = centraliCondotte[centrale];
 		for (const condotta of condotte) {
-			if (isCondottaCostruibile(condotta, min, max)) {
+			if (actualResult.includes(condotta)) {
 				condotteAvversarie.push(condotta);
 			} else {
 				continue;
 			}
 		}
 	}
-	// Per ogni valore devo prendere quelle di priorità maggiore
-	// (tipo se per il valore 3 ci sono 2 cond proprie e 1 avversaria, ritorno quella avversaria e basta)
-	const condPerNumero = [];
-	let valoriOccupati = [];
-	for (const cond of condotteAvversarie) {
-		const val = condotteVal[cond];
-		if (!condPerNumero['' + val]) {
-			condPerNumero['' + val] = [];
-			valoriOccupati.push('' + val);
-		}
-		condPerNumero['' + val].push(cond);
-	}
-	for (const cond of condotteProprie) {
-		const val = condotteVal[cond];
-		if (!valoriOccupati.includes('' + val)) {
-			if (!condPerNumero['' + val]) {
-				condPerNumero['' + val] = [];
-			}
-			condPerNumero['' + val].push(cond);
-		}
-	}
-	const condotteValide = [];
-	for (const val in condPerNumero) {
-		for (const condotta of condPerNumero[val]) {
-			condotteValide.push(condotta);
-		}
-	}
+	const condotteValide = [...condotteAvversarie, ...condotteProprie];
 	if (condotteValide.length == 0) {
 		return actualResult ? actualResult : [];
 	} if (!actualResult || actualResult.length == 0) {
@@ -1544,6 +1379,7 @@ export function getCE_Numero(_tipo, numero, _automa) {
 		actual = actual + counter;
 		if (actual > 12) {
 			actual = 5;
+			counter = 0;
 		}
 		if (centraliFree.includes('CF_' + actual)) {
 			let centrale = 'CF_' + actual;
@@ -1591,13 +1427,12 @@ export function getCE_Numero(_tipo, numero, _automa) {
  * @param {string} automa 
  */
 export function getCE_M(automa) {
-	// FIXME Sbagliato: partire da actualResult
 	const conds = [];
 	for (const condotta of condotte) {
 		if (getProprietarioCondotta(condotta)) {
 			const centrs = condotteCentrali[condotta];
 			for (const centrale of centrs) {
-				if (!getProprietarioCentrale(centrale)) {
+				if (actualResult.includes(centrale)) {
 					conds.push(condotta);
 					break;
 				}
@@ -1605,8 +1440,23 @@ export function getCE_M(automa) {
 		}
 	}
 	conds.sort((a, b) => {
-		return condotteVal[b] - condotteVal[a]
+		if (condotteVal[b] != condotteVal[a]) {
+			return condotteVal[b] - condotteVal[a]
+		} else {
+			const chiA = getProprietarioCondotta(a);
+			const chiB = getProprietarioCondotta(b);
+			if (chiA == automa) {
+				return -1;
+			} else {
+				if (chiB == automa) {
+					return 1;
+				} else {
+					return 0;
+				}
+			}
+		}
 	});
+
 	const condotteMax = [];
 	let maxVal = -1;
 	for (const condotta of conds) {
@@ -1618,24 +1468,11 @@ export function getCE_M(automa) {
 		}
 	}
 	const centraliValide = [];
-	for (const condotta of condotteMax) {
-		if (getProprietarioCondotta(condotta) == automa) {
-			const centrs = condotteCentrali[condotta];
-			for (const centrale of centrs) {
-				if (!getProprietarioCentrale(centrale)) {
-					centraliValide.push(condotta);
-				}
-			}
-		}
-	}
-	if (centraliValide.length == 0) {
-		for (const condotta of condotteMax) {
-			const centrs = condotteCentrali[condotta];
-			for (const centrale of centrs) {
-				if (!getProprietarioCentrale(centrale)) {
-					centraliValide.push(condotta);
-				}
-
+	for (const condotta of conds) {
+		const centrs = condotteCentrali[condotta];
+		for (const centrale of centrs) {
+			if (actualResult.includes(centrale)) {
+				centraliValide.push(condotta);
 			}
 		}
 	}
@@ -1655,7 +1492,6 @@ export function getCE_M(automa) {
  * @returns rislutati
  */
 export function getCE_N(automa) {
-	// TODO Meglio partire dalle actualResult
 	const dighe = getDigheDiProprieta(automa);
 	const conds = [];
 	for (const diga of dighe) {
@@ -1668,7 +1504,7 @@ export function getCE_N(automa) {
 	for (const condotta of conds) {
 		const centrali = condotteCentrali[condotta];
 		for (const centrale of centrali) {
-			if (!getProprietarioCentrale(centrale)) {
+			if (actualResult.includes(centrale)) {
 				centraliValide.push(centrale);
 			}
 		}
@@ -1700,7 +1536,7 @@ export function getCE_OP() {
 }
 
 /**
- * CENTRALI: una centrale ina zona
+ * CENTRALI: una centrale in una zona di un numero
  * @param {string} numero
  * @returns risultati
  */
@@ -1722,8 +1558,7 @@ export function getCE_P(numero) {
  * @returns risultati
  */
 export function getCE_Q(automa) {
-	// TODO Meglio partire da actualResult
-	let centrali = centraliFree.concat(centraliPay).filter(c => {
+	let centrali = actualResult.filter(c => {
 		let numero = c.substr(3, 1);
 		if (+numero >= 5 && +numero < 10) {
 			return true;
@@ -1731,7 +1566,6 @@ export function getCE_Q(automa) {
 		numero = c.substr(3, 2);
 		return numero == '10' || numero == '11' || numero == '12';
 	});
-	centrali = centrali.filter(c => !getProprietarioCentrale(c));
 	const secondoNumero = [];
 	secondoNumero['5'] = '9';
 	secondoNumero['6'] = '10';
@@ -1832,8 +1666,7 @@ export function getCE_Q(automa) {
  * @returns risultati
  */
 export function getCE_R(automa) {
-	// TODO meglio partire da actualResult
-	let centrali = centraliFree.concat(centraliPay).filter(c => {
+	let centrali = actualResult.filter(c => {
 		let numero = c.substr(3, 1);
 		if (+numero >= 5 && +numero < 10) {
 			return true;
@@ -1985,7 +1818,7 @@ export function addGocciaDiga(diga) {
 	}
 	if (gocceDig) {
 		let quante = gocceDig.gocce;
-		if (quante < 3) {
+		if (quante < 4) {
 			quante++;
 		} else {
 			quante = 0;

@@ -161,29 +161,45 @@ export function mostraAzioni() {
 /**
  * Mostra i risultati del filtraggio
  */
+export function mostraSistema(elementi) {
+    for (const elemento of elementi) {
+        illuminaElemento(elemento);
+    }
+}
+
+/**
+ * Mostra i risultati del filtraggio
+ */
 export function mostraRisultati() {
     for (const output of actualResult) {
-        const element = document.getElementById('area' + output);
-        if (element) {
-            element.style.borderColor = 'var(--selectionColor)';
-            element.style.borderWidth = '3px';
-            element.style.backgroundColor = 'rgba(227, 175, 84, 0.5)';
-            if (element.className.includes(' animated flash')) {
-                element.className = element.className.replace(' animated flash', '');
-            }
-            element.className = element.className + ' animated flash';
-        }
+        illuminaElemento(output);
     }
-    // alert(printArray(actualResult));
+}
+
+function illuminaElemento(elemento) {
+    const element = document.getElementById('area' + elemento);
+    if (element) {
+        element.style.borderColor = 'var(--selectionColor)';
+        element.style.borderWidth = '3px';
+        element.style.backgroundColor = 'rgba(227, 175, 84, 0.5)';
+        if (element.className.includes(' animated flash')) {
+            element.className = element.className.replace(' animated flash', '');
+        }
+        element.className = element.className + ' animated flash';
+    }
 }
 
 export function resetRisultati() {
-    const elems = [...dighePay, ...digheFree, ...condotte, ...centraliPay, ...centraliFree];
+    const bacini = [];
+    for (const diga of digheFree.concat(dighePay)) {
+        bacini.push(diga + 'G');
+    }
+    const elems = [...dighePay, ...digheFree, ...condotte, ...centraliPay, ...centraliFree, ...bacini];
     for (const elem of elems) {
         const element = document.getElementById('area' + elem);
         if (element) {
             element.style.borderColor = 'var(--whiteBorder)';
-            element.style.borderWidth = '0px';
+            element.style.borderWidth = elem.endsWith('G') ? '1px' : '0px';
             element.style.backgroundColor = 'transparent';
             if (element.className.includes(' animated flash')) {
                 element.className = element.className.replace(' animated flash', '');
