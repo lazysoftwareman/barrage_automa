@@ -954,11 +954,20 @@ body {
 .descrizione {
 	text-align: justify;
 }
+.errore {
+	margin-top: 2.5vh;
+	color: darkred;
+	text-align: center;
+	visibility: hidden;
+}
 
 
 
 
 @media only screen and (orientation: portrait) {
+	#playersContainer {
+		margin-top: 9vh;
+	}
 	#playersPageContainer {
 		width: 96%;
 	}

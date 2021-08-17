@@ -39,14 +39,22 @@ export function changeColor(num) {
         idx = 0;
     }
     const newColor = colors[idx];
-    let oldIdx = colorChosen.indexOf(newColor);
-    if (oldIdx >= 0) {
-        colorChosen[oldIdx] = actualColor;
-        document.getElementById('colorP' + (oldIdx + 1)).style.backgroundColor = colorsCss[actualColor];
-    }
+    // let oldIdx = colorChosen.indexOf(newColor);
+    // if (oldIdx >= 0) {
+    //     colorChosen[oldIdx] = actualColor;
+    //     document.getElementById('colorP' + (oldIdx + 1)).style.backgroundColor = colorsCss[actualColor];
+    // }
     colorChosen[num - 1] = newColor;
     document.getElementById('colorP' + num).style.backgroundColor = colorsCss[newColor];
-    aggiornaParametri();
+    // Controllo duplicati
+    if (new Set(colorChosen).size != colorChosen.length) {
+        document.getElementById('errColore').style.visibility = 'visible';
+        document.getElementById('aMain').href = 'javascript: void(0)';
+    } else {
+        document.getElementById('errColore').style.visibility = 'hidden';
+        aggiornaParametri();
+    }
+
 }
 
 export function changePlayer(num) {
@@ -120,7 +128,14 @@ export function changePlayer(num) {
             document.getElementById('playerP' + num).innerHTML = '&nbsp;';
         }
     }
-    aggiornaParametri();
+    // Controllo duplicati
+    if (new Set(colorChosen).size != colorChosen.length) {
+        document.getElementById('errColore').style.visibility = 'visible';
+        document.getElementById('aMain').href = 'javascript: void(0)';
+    } else {
+        document.getElementById('errColore').style.visibility = 'hidden';
+        aggiornaParametri();
+    }
 }
 
 export function aggiornaParametri() {
@@ -131,6 +146,5 @@ export function aggiornaParametri() {
         }
         href += playersChosen[i] + '=' + colorChosen[i];
     }
-    // @ts-ignore
     document.getElementById('aMain').href = href;
 }
