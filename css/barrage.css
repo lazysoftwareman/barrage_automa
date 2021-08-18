@@ -674,23 +674,23 @@ body {
 	cursor: pointer;
 }
 #P1_Selector {
-	bottom: calc(10% + var(--mw)*1.6);
+	bottom: calc(10% + var(--mw)*7.7);
 	left: calc(var(--mw)*1.6);
 	background-color: var(--greenPlayer);
 }
 #P2_Selector {
-	bottom: calc(10% + var(--mw)*7.7);
+	bottom: calc(10% + var(--mw)*1.6);
 	left: calc(var(--mw)*1.6);
 	background-color: var(--redPlayer);
 }
 #P3_Selector {
-	bottom: calc(10% + var(--mw)*1.6);
+	bottom: calc(10% + var(--mw)*7.7);
 	left: calc(var(--mw)*7.7);
 	background-color: var(--whitePlayer);
 	color: var(--blackPlayer);
 }
 #P4_Selector {
-	bottom: calc(10% + var(--mw)*7.7);
+	bottom: calc(10% + var(--mw)*1.6);
 	left: calc(var(--mw)*7.7);
 	background-color: var(--blackPlayer);
 }
