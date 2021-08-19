@@ -942,7 +942,7 @@ export function getBE_C(tipo, automa, ordine) {
 export function getBE_Numero(_tipo, numero, _automa) {
 	let counter = 0;
 	let actual = +numero;
-	while (actual < 10) {
+	while (actual <= 11) {
 		actual = +numero + counter;
 		if (actual > 10) {
 			actual = 1;
@@ -1012,7 +1012,7 @@ export function getCO_Numero(_tipo, numeroLettera, _automa) {
 	let actual = +numero;
 	while (actual < 10) {
 		actual = +numero + counter;
-		if (actual > 10) {
+		if (actual >= 11) {
 			actual = 1;
 			counter = 0;
 		}
@@ -1375,7 +1375,7 @@ export function getCE_0_SistemaCompleto(automa) {
 export function getCE_Numero(_tipo, numero, _automa) {
 	let counter = 0;
 	let actual = +numero;
-	while (actual < 12) {
+	while (actual <= 13) {
 		actual = +numero + counter;
 		if (actual > 12) {
 			actual = 5;
