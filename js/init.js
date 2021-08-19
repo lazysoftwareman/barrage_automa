@@ -8,6 +8,7 @@ import {
     azioneCostruisci,
     azioneProduci,
     changePlayerSelected,
+    esci,
     getB_0_SistemaCompleto,
     getBE_A,
     getBE_B,
@@ -36,11 +37,14 @@ import {
     playerColor,
     playerMap,
     resetInputs,
+    resetLocalStorage,
+    restoreMappa,
+    salvaParametri,
     setNumBetoniere,
     setNumEscavatori,
     setValoriProduzione,
 } from './barrage.js';
-import { azioni, initMazzo, pesca } from './deck.js';
+import { azioni, initMazzo, pesca, restoreMazzo } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay, sorgenti } from './mappa.js';
 import { colors } from './playersPage.js';
 import {
@@ -58,15 +62,17 @@ import {
 
 // @ts-ignore
 window.initPage = initPage;
-// @ts-ignore
-window.initPageTest = initPageTest;
 
 export const azioniPrincipali = [];
+let parametriPrecedenti = undefined;
 
 export function initPage() {
-	resetInputs();
-	initMazzo();
-	initPlayers()
+	const restored = checkVecchiaPartita();
+	if (!restored) {
+		resetInputs();
+		initMazzo();
+		initPlayers();
+	}
 	addHandlers();
 	addGlobalVariables();
 	initDiminesions();
@@ -136,9 +142,10 @@ export function addHandlers() {
 	document.getElementById('flipCard').addEventListener('click', pesca);
 	document.getElementById('mappaSwitch').addEventListener('click', showMappa);
 	document.getElementById('deckSwitch').addEventListener('click', hideMappa);
-	//info:
+	//info e exit:
 	document.getElementById('infoSwitch').addEventListener('click', mostraInfo);
 	document.getElementById('info').addEventListener('click', chiudiInfo);
+	document.getElementById('exitSwitch').addEventListener('click', esci);
 	//Azioni:
 	for (const azione of azioni) {
 		if (azione == 'PROD') {
@@ -241,9 +248,9 @@ export function addHandlers() {
 }
 
 export function initPlayers() {
-	const params = window.location.search;
+	const params = parametriPrecedenti ? parametriPrecedenti : window.location.search.substring(1);
 	if (params) {
-		const entries = params.substring(1).split('&');
+		const entries = params.split('&');
 		const players = [];
 		const colors = [];
 		for (const entry of entries) {
@@ -306,10 +313,44 @@ function preloadImages() {
 	img.src = 'img/B_N.png';
 }
 
-export function initPageTest() {
-	document.getElementById('deckContainer').addEventListener('click', showMappa);
-	document.getElementById('mappaContainer').addEventListener('click', hideMappa);
-	//initDiminesions();
-	hideMappa();
-	//preloadImages();
+export function checkVecchiaPartita() {
+	let restore = false;
+	const params = window.location.search;
+	if (params) {
+		restore = params.includes('restore');
+	}
+	if (restore) {
+		restoreVecchiaPartita();
+	} else {
+		const mappaSaved = localStorage.getItem('automaiuto.mappa');
+		const mazzoSaved = localStorage.getItem('automaiuto.mazzo');
+		let vuoleRestorare = false;
+		if (mappaSaved || mazzoSaved) {
+			vuoleRestorare = confirm('Ho rilevato una partita ancora in corso. Vuoi ripristinare la partita?');
+		}
+		if (vuoleRestorare) {
+			location.replace('https://' + window.location.host + '/barrage/main?restore=1');
+			restore = false; // questo non dovrebbe servire
+		} else {
+			resetLocalStorage();
+			salvaParametri(window.location.search.replace('?', ''));
+		}
+	}
+	return restore;
+}
+
+export function restoreVecchiaPartita() {
+	const mappaSaved = localStorage.getItem('automaiuto.mappa');
+	const mazzoSaved = localStorage.getItem('automaiuto.mazzo');
+	const parametriSaved = localStorage.getItem('automaiuto.parametri');
+	if (parametriSaved) {
+		parametriPrecedenti = parametriSaved;
+		initPlayers();
+	}
+	if (mappaSaved) {
+		restoreMappa(mappaSaved);
+	}
+	if (mazzoSaved) {
+		restoreMazzo(mazzoSaved);
+	}
 }

@@ -817,6 +817,22 @@ body {
 	background-color: transparent;
 	cursor: pointer;
 }
+#exitSwitch {	
+	width: 10vh;
+	height: 2.5vh;
+    vertical-align: middle;
+    text-align: center;
+	line-height: 2.5vh;
+	font-weight: bold;
+	color: var(--whiteBorder);
+	border: solid 1px var(--blackColor);
+	border-radius: 5px;
+	position: absolute;
+	top: -3.75vh;	
+	left: calc(56.7vh - 10vh);
+	background-color: #af2a4b;
+	cursor: pointer;
+}
 #info {	
 	position: absolute;
     top: 5vh;
@@ -1029,6 +1045,9 @@ body {
 	}
 	
 	#infoSwitch {	
+		left: 0;
+	}
+	#exitSwitch {	
 		left: 0;
 	}
 	#info {	

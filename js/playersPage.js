@@ -1,5 +1,6 @@
 // @ts-check
 import { salvaParametri } from './barrage.js';
+import { checkVecchiaPartita } from './init.js';
 import { initDiminesions } from './view.js';
 
 
@@ -17,6 +18,7 @@ colorsCss['B'] = 'var(--blackPlayer)';
 colorsCss['W'] = 'var(--whitePlayer)';
 
 export function initPlayersPage() {
+    checkVecchiaPartita();
     initDiminesions();
     for (let i = 0; i < 4; i++) {
         if (!playersChosen[i]) {

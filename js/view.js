@@ -1,5 +1,16 @@
 // @ts-check
-import { actualColoreContratti, actualResult, playerColor, playerMap, playerSelected } from './barrage.js';
+import {
+    actualColoreContratti,
+    actualResult,
+    centraliCostruite,
+    condotteCostruite,
+    digheGocce,
+    dighePresenti,
+    playerColor,
+    playerMap,
+    playerSelected,
+    sorgentiGocce,
+} from './barrage.js';
 import { azioni, carteAzioni, curCartaAzioni, curCartaCriteri, deckSize, indice } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay } from './mappa.js';
 import { sleep } from './provider.js';
@@ -264,6 +275,44 @@ function mostraColoreEValoreContratti() {
         option.value = '' + (i + numDaAggiungere);
         option.text = '' + (i + numDaAggiungere)
         select.appendChild(option);
+    }
+}
+
+export function mostraTuttaMappa() {
+    // Sorgenti:
+    for (const sorgenteGocce of sorgentiGocce) {
+        document.getElementById('areaS' + sorgenteGocce.sorgente + 'Text').innerHTML = '' + sorgenteGocce.gocce;
+        if (!sorgenteGocce.gocce) {
+            document.getElementById('areaS' + sorgenteGocce.sorgente + 'Content').style.display = 'none';
+        } else {
+            document.getElementById('areaS' + sorgenteGocce.sorgente + 'Content').style.display = 'block';
+        }
+    }
+    // Bacini:
+    for (const digaGocce of digheGocce) {
+        document.getElementById('area' + digaGocce.diga + 'GText').innerHTML = '' + digaGocce.gocce;
+        if (!digaGocce.gocce) {
+            document.getElementById('area' + digaGocce.diga + 'GContent').style.display = 'none';
+        } else {
+            document.getElementById('area' + digaGocce.diga + 'GContent').style.display = 'block';
+        }
+    }
+    // Dighe:
+    for (const digaCostruita of dighePresenti) {
+        document.getElementById('area' + digaCostruita.diga + 'Text').innerHTML = '' + digaCostruita.livello;
+        // @ts-ignore
+        document.getElementById('area' + digaCostruita.diga + 'Img').src = 'img/B_' + playerColor[digaCostruita.chi] + '.png';
+        document.getElementById('area' + digaCostruita.diga + 'Content').style.display = 'block';
+    }
+    // Condotte:
+    for (const condottaCostruita of condotteCostruite) {
+        document.getElementById('area' + condottaCostruita.condotta + 'Img').src = 'img/CO_' + playerColor[condottaCostruita.chi] + '.png';
+        document.getElementById('area' + condottaCostruita.condotta + 'Content').style.display = 'block';
+    }
+    // Centrali:
+    for (const centraleCostruita of centraliCostruite) {
+        document.getElementById('area' + centraleCostruita.centrale + 'Img').src = 'img/CE_' + playerColor[centraleCostruita.chi] + '.png';
+        document.getElementById('area' + centraleCostruita.centrale + 'Content').style.display = 'block';
     }
 }
 

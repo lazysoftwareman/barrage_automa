@@ -108,3 +108,10 @@ export function pesca() {
     mostraAzioni();
     salvaMazzo();
 }
+
+export function restoreMazzo(mazzoSaved) {
+    const mazzoEIndice = JSON.parse(mazzoSaved);
+    mazzo = mazzoEIndice.mazzo;
+    indice = mazzoEIndice.indice;
+    pesca();
+}

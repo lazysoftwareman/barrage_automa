@@ -42,6 +42,7 @@ import {
     mostraPlayerSelected,
     mostraRisultati,
     mostraSistema,
+    mostraTuttaMappa,
     resetRisultati,
 } from './view.js';
 
@@ -1996,4 +1997,35 @@ export function salvaParametri(parametri) {
 		localStorage.removeItem('automaiuto.parametri');
 	}
 	localStorage.setItem('automaiuto.parametri', parametri);
+}
+
+export function esci() {
+	if (confirm('Sei sicuro di abbandonare la partita? Perderai lo stato della mappa del mazzo')) {
+		resetLocalStorage();
+		const url = window.location;
+		const baseUrl = 'https://' + url.host + '/barrage/';
+		location.replace(baseUrl);
+	}
+}
+
+export function resetLocalStorage() {
+	if (localStorage.getItem('automaiuto.parametri')) {
+		localStorage.removeItem('automaiuto.parametri');
+	}
+	if (localStorage.getItem('automaiuto.mazzo')) {
+		localStorage.removeItem('automaiuto.mazzo');
+	}
+	if (localStorage.getItem('automaiuto.mappa')) {
+		localStorage.removeItem('automaiuto.mappa');
+	}
+}
+
+export function restoreMappa(mappaSaved) {
+	const mappa = JSON.parse(mappaSaved);
+	sorgentiGocce = mappa.sorgentiGocce;
+	digheGocce = mappa.digheGocce;
+	dighePresenti = mappa.dighePresenti;
+	condotteCostruite = mappa.condotteCostruite;
+	centraliCostruite = mappa.centraliCostruite;
+	mostraTuttaMappa();
 }
