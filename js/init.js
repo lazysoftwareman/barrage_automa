@@ -193,6 +193,20 @@ export function addHandlers() {
 		let player = document.getElementById('P2_Selector').innerHTML;
 		changePlayerSelected(player);
 	}, false);
+	document.getElementById('P3_Selector').addEventListener('click', function () {
+		const selector = document.getElementById('P3_Selector');
+		if (selector && selector.style.display != 'none') {
+			const player = selector.innerHTML;
+			changePlayerSelected(player);
+		}
+	}, false);
+	document.getElementById('P4_Selector').addEventListener('click', function () {
+		const selector = document.getElementById('P4_Selector');
+		if (selector && selector.style.display != 'none') {
+			const player = selector.innerHTML;
+			changePlayerSelected(player);
+		}
+	}, false);
 	document.getElementById('P0_Selector').addEventListener('click', function () { changePlayerSelected('N'); }, false);
 	// Richieste
 	document.getElementById('confermaEscavatori').addEventListener('click', function () {
