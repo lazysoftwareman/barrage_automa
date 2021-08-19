@@ -329,7 +329,13 @@ export function checkVecchiaPartita() {
 			vuoleRestorare = confirm('Ho rilevato una partita ancora in corso. Vuoi ripristinare la partita?');
 		}
 		if (vuoleRestorare) {
-			location.replace('https://' + window.location.host + '/barrage/main?restore=1');
+			let subpath = '';
+			if (window.location.pathname.includes('barrage')) {
+				subpath = '/barrage';
+			}
+			const location = window.location;
+			const url = location.protocol + '//' + location.host + subpath + '/main.html?restore=1';
+			location.assign(url);
 			restore = false; // questo non dovrebbe servire
 		} else {
 			resetLocalStorage();

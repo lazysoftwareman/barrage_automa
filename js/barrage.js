@@ -1011,9 +1011,9 @@ export function getCO_Numero(_tipo, numeroLettera, _automa) {
 	let numero = numeroLettera.substring(0, numeroLettera.length - 1);
 	let lettera = numeroLettera.substr(numeroLettera.length - 1, 1);
 	let actual = +numero;
-	while (actual < 10) {
+	while (actual <= 11) {
 		actual = +numero + counter;
-		if (actual >= 11) {
+		if (actual > 10) {
 			actual = 1;
 			counter = 0;
 		}
@@ -2002,9 +2002,13 @@ export function salvaParametri(parametri) {
 export function esci() {
 	if (confirm('Sei sicuro di abbandonare la partita? Perderai lo stato della mappa del mazzo')) {
 		resetLocalStorage();
-		const url = window.location;
-		const baseUrl = 'https://' + url.host + '/barrage/';
-		location.replace(baseUrl);
+		let subpath = '';
+		if (window.location.pathname.includes('barrage')) {
+			subpath = '/barrage';
+		}
+		const location = window.location;
+		const url = location.protocol + '//' + location.host + subpath + '/';
+		location.assign(url);
 	}
 }
 

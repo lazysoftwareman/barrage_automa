@@ -66,23 +66,30 @@ export function changePlayer(num) {
     }
     let players = [];
     if (num == 3) {
-        if (!playersChosen[3]) {
+        const chosen4 = playersChosen[3];
+        if (!chosen4) {
             players = ['U2', 'A2'];
         } else {
-            const player = playersChosen[3];
-            const num = player.substr(1, 1);
+            const num = chosen4.substr(1, 1);
             if (num == '3') {
                 players = ['U2', 'A2'];
             } else {
-                const lettera = player.substr(0, 1);
+                const lettera = chosen4.substr(0, 1);
                 const altra = lettera == 'A' ? 'U' : 'A';
                 players = [altra + '2', lettera + '3'];
             }
         }
     } else {
+        // quarto posto
         const chosen3 = playersChosen[2];
-        const other = chosen3 == 'U2' ? 'A2' : 'U2';
-        players = [other, 'U3', 'A3'];
+        const num = chosen3.substr(1, 1);
+        const lettera = chosen3.substr(0, 1);
+        const altra = lettera == 'A' ? 'U' : 'A';
+        if (num == '2') {
+            players = [altra + '2', lettera + '3'];
+        } else {
+            players = ['U2', 'A2'];
+        }
     }
     let actualPlayer = playersChosen[num - 1];
     if (!actualPlayer) {
