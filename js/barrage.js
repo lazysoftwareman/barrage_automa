@@ -1,5 +1,5 @@
 // @ts-check
-import { carteAzioni, carteCriteri, curCartaAzioni, curCartaCriteri, resetMazzo } from './deck.js';
+import { carteAzioni, carteCriteri, curCartaAzioni, curCartaCriteri, indice, mazzo, resetMazzo } from './deck.js';
 import {
     centraliCondotte,
     centraliFree,
@@ -1801,6 +1801,7 @@ export function addGocciaSorgente(sorgente) {
 	} else {
 		document.getElementById('areaS' + sorgente + 'Content').style.display = 'block';
 	}
+	salvaMappa();
 }
 
 /**
@@ -1834,6 +1835,7 @@ export function addGocciaDiga(diga) {
 	} else {
 		document.getElementById('area' + diga + 'GContent').style.display = 'block';
 	}
+	salvaMappa();
 }
 
 /**
@@ -1879,6 +1881,7 @@ export function addDiga(diga) {
 		document.getElementById('area' + diga + 'Img').src = 'img/B_' + playerColor[chi] + '.png';
 		document.getElementById('area' + diga + 'Content').style.display = 'block';
 	}
+	salvaMappa();
 }
 
 /**
@@ -1914,6 +1917,7 @@ export function addCondotta(condotta) {
 		document.getElementById('area' + condotta + 'Img').src = 'img/CO_' + playerColor[chi] + '.png';
 		document.getElementById('area' + condotta + 'Content').style.display = 'block';
 	}
+	salvaMappa();
 }
 
 /**
@@ -1949,9 +1953,47 @@ export function addCentrale(centrale) {
 		document.getElementById('area' + centrale + 'Img').src = 'img/CE_' + playerColor[chi] + '.png';
 		document.getElementById('area' + centrale + 'Content').style.display = 'block';
 	}
+	salvaMappa();
 }
 
 export function changePlayerSelected(player) {
 	playerSelected = playerSelected == player ? undefined : player;
 	mostraPlayerSelected();
+}
+
+
+
+export function salvaMappa() {
+	const actualMappa = {
+		sorgentiGocce: sorgentiGocce,
+		digheGocce: digheGocce,
+		dighePresenti: dighePresenti,
+		condotteCostruite: condotteCostruite,
+		centraliCostruite: centraliCostruite
+	};
+	const mappaSaved = localStorage.getItem('automaiuto.mappa');
+	if (mappaSaved) {
+		localStorage.removeItem('automaiuto.mappa');
+	}
+	localStorage.setItem('automaiuto.mappa', JSON.stringify(actualMappa));
+}
+
+export function salvaMazzo() {
+	const actualMazzo = {
+		mazzo: mazzo,
+		indice: indice
+	};
+	const mazzoSaved = localStorage.getItem('automaiuto.mazzo');
+	if (mazzoSaved) {
+		localStorage.removeItem('automaiuto.mazzo');
+	}
+	localStorage.setItem('automaiuto.mazzo', JSON.stringify(actualMazzo));
+}
+
+export function salvaParametri(parametri) {
+	const parametriSaved = localStorage.getItem('automaiuto.parametri');
+	if (parametriSaved) {
+		localStorage.removeItem('automaiuto.parametri');
+	}
+	localStorage.setItem('automaiuto.parametri', parametri);
 }

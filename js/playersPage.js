@@ -1,4 +1,5 @@
 // @ts-check
+import { salvaParametri } from './barrage.js';
 import { initDiminesions } from './view.js';
 
 
@@ -140,11 +141,13 @@ export function changePlayer(num) {
 
 export function aggiornaParametri() {
     let href = 'main.html?';
+    let parametri = '';
     for (let i = 0; i < playersChosen.length; i++) {
         if (i != 0) {
-            href += '&';
+            parametri += '&';
         }
-        href += playersChosen[i] + '=' + colorChosen[i];
+        parametri += playersChosen[i] + '=' + colorChosen[i];
     }
-    document.getElementById('aMain').href = href;
+    document.getElementById('aMain').href = href + parametri;
+    salvaParametri(parametri);
 }

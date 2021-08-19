@@ -1,4 +1,5 @@
 // @ts-check
+import { salvaMazzo } from './barrage.js';
 import { mostraAzioni, mostraCarte } from './view.js';
 
 /**
@@ -77,6 +78,7 @@ export function initMazzo() {
     curCartaAzioni = mazzo[indice];
     curCartaCriteri = indice > 0 ? mazzo[indice - 1] : undefined;
     mostraCarte();
+    salvaMazzo();
 }
 
 export function mescola() {
@@ -104,4 +106,5 @@ export function pesca() {
     curCartaCriteri = indice > 0 ? mazzo[indice - 1] : undefined;
     mostraCarte(oldCartaAzioni);
     mostraAzioni();
+    salvaMazzo();
 }
