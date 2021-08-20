@@ -1,8 +1,13 @@
-# Automa per Barrage
+# AutomAiuto for Barrage
 Automa helper for barrage
 
-Feature:
-- Simulazione mazzo automa
-- Risoluzione costruzione in base allo stato sulla mappa
-- (Indicazione dove produrre?)
-- (Gestione più mazzi?)
+Features:
+- Simulation automa deck
+- Multiple automas
+- Automa's building placement according to map status and criteria card
+- Indentification of the most efficient product system of the automa
+- Saving of the current status in case of session closing of the browser
+
+TODO:
+- localizzazione inglese
+- aggiunta espansione
