@@ -1,6 +1,8 @@
 // @ts-check
 /////////////// BL UTILS
 import { centraliCostruite, condotteCostruite, digheGocce, dighePresenti, sorgentiGocce } from './barrage.js';
+import { i18n } from './i18n.js';
+import { locale } from './init.js';
 import { centraliCondotte, condotteCentrali, condotteDighe, condotteVal, digheFree, dighePay } from './mappa.js';
 
 /**
@@ -375,4 +377,26 @@ export function printArray(array) {
 
 export function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function localize(key) {
+    return i18n[locale + "_" + key];
+}
+
+export function localizeParam(key, params) {
+    var parameters = [].concat(params);
+    var flat = localize(key);
+    for (let p = 0; p < parameters.length; p++) {
+        flat = flat.replace("{" + p + "}", parameters[p]);
+    }
+    return flat;
+}
+
+export function localizeHTML() {
+    const elements = document.getElementsByClassName("i18n");
+    for (const element of elements) {
+        const key = element.getAttribute("i18nKey");
+        const text = localize(key);
+        element.innerHTML = text;
+    }
 }

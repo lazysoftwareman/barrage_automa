@@ -1,6 +1,7 @@
 // @ts-check
 import { salvaParametri } from './barrage.js';
 import { checkVecchiaPartita } from './init.js';
+import { localize } from './provider.js';
 import { initDiminesions } from './view.js';
 
 
@@ -116,7 +117,7 @@ export function changePlayer(num) {
         }
         const letter = actualPlayer.substr(0, 1);
         const number = actualPlayer.substr(1, 1);
-        const text = letter == 'A' ? 'AUTOMA ' + number : 'UMANO ' + number;
+        const text = letter == 'A' ? 'AUTOMA ' + number : localize('HUMAN') + ' ' + number;
         document.getElementById('playerP' + num).innerHTML = text;
     } else {
         if (num == 3) {

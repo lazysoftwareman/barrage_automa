@@ -16,10 +16,10 @@ import { centraliFree, centraliPay, condotte, digheFree, dighePay } from './mapp
 import { sleep } from './provider.js';
 
 const coloriText = [];
-coloriText['R'] = ' rosso';
-coloriText['W'] = ' bianco';
-coloriText['B'] = ' nero';
-coloriText['G'] = ' verde';
+coloriText['R'] = ' rosso';// TODO Localize
+coloriText['W'] = ' bianco';// TODO Localize
+coloriText['B'] = ' nero';// TODO Localize
+coloriText['G'] = ' verde';// TODO Localize
 
 export function initDiminesions() {
     let vh = window.innerHeight * 0.01;
@@ -265,10 +265,10 @@ function mostraColoreEValoreContratti() {
         return;
     }
     const span = document.getElementById('coloreContratti');
-    const colorText = actualColoreContratti == 'R' ? ' rossi' : actualColoreContratti == 'G' ? ' gialli' : ' verdi';
+    const colorText = actualColoreContratti == 'R' ? ' rossi' : actualColoreContratti == 'G' ? ' gialli' : ' verdi';// TODO Localize
     span.innerHTML = colorText;
     const select = document.getElementById('valContratti');
-    select.innerHtml = '';
+    select.innerHTML = '';
     const numDaAggiungere = actualColoreContratti == 'R' ? 6 : actualColoreContratti == 'G' ? 3 : 0;
     for (let i = -1; i < 5; i++) {
         const option = document.createElement('option');

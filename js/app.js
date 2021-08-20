@@ -7,3 +7,4 @@ import * as provider from './provider.js';
 import * as deck from './deck.js';
 import * as view from './view.js';
 import * as playersPage from './playersPage.js';
+import * as i18n from './i18n.js';

@@ -21,11 +21,12 @@
 				<img id="cartaB" class="cartaImg" />
 			</div>
 			<div id="footerCarte">
-				Carte pescate: <span id="cartePescate"></span>
+				<span class='i18n' i18nKey='label_cartePescate'>Carte pescate:</span>&nbsp;<span
+					id="cartePescate"></span>
 			</div>
-			<div id="mappaSwitch">Mappa &lAarr;</div>
-			<div id="infoSwitch">Istruzioni</div>
-			<div id="exitSwitch">Esci</div>
+			<div id="mappaSwitch" class='i18n' i18nKey='button_map'>Mappa &lAarr;</div>
+			<div id="infoSwitch" class='i18n' i18nKey='button_info'>Istruzioni</div>
+			<div id="exitSwitch" class='i18n' i18nKey='button_exit'>Esci</div>
 			<div id="flipCard">
 				<div id="flipCardInner" class="flipCardInner">
 					<div id="flipCardFront">
@@ -571,53 +572,57 @@
 			<div id="P3_Selector" class="selector">U1</div>
 			<div id="P4_Selector" class="selector">U2</div>
 			<div id="P0_Selector" class="selector">N</div>
-			<div id="footer">Giocatore selezionato: <span id="giocatoreText"></span></div>
-			<div id="deckSwitch">Mazzo &lAarr;</div>
+			<div id="footer"><span class='i18n' i18nKey='label_giocatoreSelezionato'>Giocatore
+					selezionato:</span>&nbsp;<span id="giocatoreText"></span></div>
+			<div id="deckSwitch" class='i18n' i18nKey='button_deck'>Mazzo &lAarr;</div>
 		</div>
 		<div id="quantiEscavatori" class="richiesta">
 			<p>
-				Quanti escavatori possiede l'automa<span class="coloreAutoma"></span>?
+				<span class='i18n' i18nKey='richiesta_escavatori'>Quanti escavatori possiede l'automa</span><span
+					class="coloreAutoma"></span>?
 			</p>
 			<select id="numEscavatori">
-				<option value="1">Meno di 2</option>
+				<option value="1" class='i18n' i18nKey='option_menoDi2'>Meno di 2</option>
 				<option value="2">2</option>
 				<option value="3">3</option>
 				<option value="4">4</option>
 				<option value="5">5</option>
-				<option value="6">6 o 7</option>
-				<option value="8">8 o 9</option>
-				<option value="10">10 o più</option>
-				<option value="100">Costruzione gratis</option>
+				<option value="6" class='i18n' i18nKey='option_6o7'>6 o 7</option>
+				<option value="8" class='i18n' i18nKey='option_8o9'>8 o 9</option>
+				<option value="10" class='i18n' i18nKey='option_10piu'>10 o più</option>
+				<option value="100" class='i18n' i18nKey='option_costruzioneGratis'>Costruzione gratis</option>
 			</select>
 			<div id="confermaEscavatori" class="confermaRichiesta">OK</div>
 		</div>
 		<div id="quanteBetoniere" class="richiesta">
 			<p>
-				Quante betoniere possiede l'automa<span class="coloreAutoma"></span>?
+				<span class='i18n' i18nKey='richiesta_betoriere'>Quante betoniere possiede l'automa</span><span
+					class="coloreAutoma"></span>?
 			</p>
 			<select id="numBetoniere">
-				<option value="1">Meno di 2</option>
+				<option value="1" class='i18n' i18nKey='option_menoDi2'>Meno di 2</option>
 				<option value="2">2</option>
 				<option value="3">3</option>
-				<option value="4">4 o più</option>
-				<option value="100">Costruzione gratis</option>
+				<option value="4" class='i18n' i18nKey='option_4piu'>4 o più</option>
+				<option value="100" class='i18n' i18nKey='option_costruzioneGratis'>Costruzione gratis</option>
 			</select>
 			<div id="confermaBetoniere" class="confermaRichiesta">OK</div>
 		</div>
 		<div id="valoreContratti" class="richiesta">
-			<p>
+			<p class='i18n' i18nKey='richiesta_modificatori_prod'>
 				Ci sono modificatori da applicare all'azione di produzione?
 			</p>
 			<select id="modificatoreProduzione">
-				<option value="0">No, solo tessera azione</option>
-				<option value="1">+1 per la seconda centrale</option>
-				<option value="3">+3 per la quarta centrale</option>
-				<option value="2abs">+2 per tessera tecnologia</option>
-				<option value="oberst">seconda produzione di Oberst</option>
+				<option value="0" class='i18n' i18nKey='option_mod0'>No, solo tessera azione</option>
+				<option value="1" class='i18n' i18nKey='option_mod1'>+1 per la seconda centrale</option>
+				<option value="3" class='i18n' i18nKey='option_mod3'>+3 per la quarta centrale</option>
+				<option value="2abs" class='i18n' i18nKey='option_mod2abs'>+2 per tessera tecnologia</option>
+				<option value="oberst" class='i18n' i18nKey='option_modOberst'>seconda produzione di Oberst</option>
 			</select>
 			<p>
-				Qual è il valore minimo dei contratti <span id="coloreContratti"></span> (applicando l'eventuale -3 di
-				Joseph)?
+				<span class='i18n' i18nKey='richiesta_contratti'>Qual è il valore minimo dei contratti</span>&nbsp;<span
+					id="coloreContratti"></span>&nbsp;<span class='i18n'
+					i18nKey='richiesta_contrattiParentesi'>(applicando l'eventuale -3 di Joseph)?</span>
 			</p>
 			<select id="valContratti">
 			</select>
@@ -625,19 +630,19 @@
 		</div>
 	</div>
 	<div id="info" class="info">
-		<span id="infoTitolo">Come utilizzare l'automaiuto</span>
-		<p>
+		<span id="infoTitolo" class='i18n' i18nKey='info_titolo'>Come utilizzare l'automaiuto</span>
+		<p class='i18n' i18nKey='info_p1'>
 			Tocca la tessera azioni (la prima in alto) per pescare e visualizzare anche
 			la tessera criteri.<br>
 			Toccando il pulsante &quot;Mappa &lt;-&quot; si accede alla mappa </p>
-		<span id="infoSottotitolo">La mappa</span>
-		<p>
+		<span id="infoSottotitolo" class='i18n' i18nKey='info_sottotitolo'>La mappa</span>
+		<p class='i18n' i18nKey='info_p2'>
 			La mappa presenta 3 sezioni principali:<br>
 			- La mappa stessa da mantenere aggiornata con la vera mappa di gioco<br>
 			- La toolbar in alto con i pulsanti per costruire le strutture<br>
 			- I selettori del giocatore in basso a sinistra<br>
 		</p>
-		<p>
+		<p class='i18n' i18nKey='info_p3'>
 			Toccando i vari elementi della mappa (bacini, dighe, condotte, centrali) viene costruita la struttura
 			relativa del giocatore selezionato (infatti bisogna prima selezionare un giocatore, o N per costruire una
 			diga naturale).
@@ -659,13 +664,13 @@
 			risorse che possiede l'automa, e in base alla risposta, alla carta criteri e allo stato della mappa,
 			Automaiuto evidenzia dove l'automa deve costruire la struttura.
 		</p>
-		<p>
+		<p class='i18n' i18nKey='info_p4'>
 			Toccando il pulsante &quot;Mazzo &lt;-&quot; si accede al mazzo per pescare la prossima tessera
 			automa
 		</p>
 		<hr>
 		<p>
-			Versione 1.7
+			Version 1.8
 		</p>
 	</div>
 	</div>

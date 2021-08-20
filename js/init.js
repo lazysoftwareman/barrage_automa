@@ -64,6 +64,7 @@ import {
 window.initPage = initPage;
 
 export const azioniPrincipali = [];
+export let locale = 'it';
 let parametriPrecedenti = undefined;
 
 export function initPage() {
@@ -326,7 +327,7 @@ export function checkVecchiaPartita() {
 		const mazzoSaved = localStorage.getItem('automaiuto.mazzo');
 		let vuoleRestorare = false;
 		if (mappaSaved || mazzoSaved) {
-			vuoleRestorare = confirm('Ho rilevato una partita ancora in corso. Vuoi ripristinare la partita?');
+			vuoleRestorare = confirm('Ho rilevato una partita ancora in corso. Vuoi ripristinare la partita?');// TODO Localize
 		}
 		if (vuoleRestorare) {
 			let subpath = '';
