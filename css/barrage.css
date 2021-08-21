@@ -12,6 +12,7 @@
 	--whitePlayer: #e6e7e8;
 	--nullPlayer: #9d734a;
 	--sfondoColor: #e8dcc8;
+	--importantColor: #af2a4b;
 	/* Dimensions */
 	--vh: 1vh;
 	--mh: 1vh;
@@ -830,7 +831,7 @@ body {
 	position: absolute;
 	top: -3.75vh;	
 	left: calc(56.7vh - 10vh);
-	background-color: #af2a4b;
+	background-color: var(--importantColor);
 	cursor: pointer;
 }
 #info {	
@@ -975,13 +976,13 @@ body {
     text-align: center;
 	line-height: 2.5vh;
 	font-weight: bold;
-	color: var(--blackColor);
+	color: var(--whiteBorder);
 	border: solid 1px var(--blackColor);
 	border-radius: 5px;
 	position: absolute;
 	top: 50vh;
 	left: calc(50vw - 5vh);
-	background-color: var(--selectionColor);
+	background-color: var(--importantColor);
 	cursor: pointer;
 }
 .titolo {
@@ -995,6 +996,28 @@ body {
 	color: darkred;
 	text-align: center;
 	visibility: hidden;
+}
+.bmc-button {
+    line-height: 2.5vh;
+    height: 5vh;
+    width: 20vh;
+    color: #FFFFFF;
+    background-color: transparent;
+    border-radius: 5px;
+    border: 1px solid var(--blackColor);
+    padding: 1vh 0 1vh 0;
+    font-family: 'Cookie', cursive;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 10vh;
+	left: calc(50vw - 10vh);
+}
+.bmc-button img{
+	height: 100%;
+}
+.bmc-button img{
+	line-height: 5vh;
 }
 
 
@@ -1074,7 +1097,7 @@ body {
 		left: 0;
 	}
 	#exitSwitch {	
-		left: 0;
+		left: calc(99% - 10vh); 
 	}
 	#info {	
 		top: 5vh;

@@ -164,6 +164,10 @@ export function changePlayer(num) {
 }
 
 export function aggiornaParametri() {
+    if (new Set(colorChosen).size != colorChosen.length) {
+        document.getElementById('aMain').href = 'javascript: void(0)';
+        return;
+    }
     let href = 'main.html?';
     let parametri = '';
     for (let i = 0; i < playersChosen.length; i++) {
