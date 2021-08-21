@@ -893,6 +893,26 @@ body {
 	cursor: pointer;
 }
 
+.langButton {		
+	width: 4vh;
+	height: 2.5vh;
+	border: solid 1px var(--blackColor);
+	border-radius: 5px;
+	position: absolute;
+	top: 1.25vh;	
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	cursor: pointer;
+}
+#langIT {
+	background-image: url('../img/it.png');
+	left: calc(66% - 10vh);	
+}
+#langEN {
+	background-image: url('../img/uk.png');
+	left: calc(66% - 5vh);	
+}
 #playersPageContainer {
 	margin-left: auto;
     margin-right: auto;
@@ -981,6 +1001,12 @@ body {
 
 
 @media only screen and (orientation: portrait) {
+	#langIT {
+		left: calc(98% - 10vh);	
+	}
+	#langEN {
+		left: calc(98% - 5vh);	
+	}
 	#playersContainer {
 		margin-top: 9vh;
 	}

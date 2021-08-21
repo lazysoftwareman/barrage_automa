@@ -572,8 +572,8 @@
 			<div id="P3_Selector" class="selector">U1</div>
 			<div id="P4_Selector" class="selector">U2</div>
 			<div id="P0_Selector" class="selector">N</div>
-			<div id="footer"><span class='i18n' i18nKey='label_giocatoreSelezionato'>Giocatore
-					selezionato:</span>&nbsp;<span id="giocatoreText"></span></div>
+			<div id="footer"><span class='i18n' i18nKey='label_giocatoreSelezionato'>Giocatore selezionato:
+				</span>&nbsp;<span id="giocatoreText"></span></div>
 			<div id="deckSwitch" class='i18n' i18nKey='button_deck'>Mazzo &lAarr;</div>
 		</div>
 		<div id="quantiEscavatori" class="richiesta">
@@ -596,7 +596,7 @@
 		</div>
 		<div id="quanteBetoniere" class="richiesta">
 			<p>
-				<span class='i18n' i18nKey='richiesta_betoriere'>Quante betoniere possiede l'automa</span><span
+				<span class='i18n' i18nKey='richiesta_betoniere'>Quante betoniere possiede l'automa</span><span
 					class="coloreAutoma"></span>?
 			</p>
 			<select id="numBetoniere">
@@ -634,27 +634,29 @@
 		<p class='i18n' i18nKey='info_p1'>
 			Tocca la tessera azioni (la prima in alto) per pescare e visualizzare anche
 			la tessera criteri.<br>
-			Toccando il pulsante &quot;Mappa &lt;-&quot; si accede alla mappa </p>
+			Toccando il pulsante &quot;Mappa &lt;-&quot; si accede alla mappa
+		</p>
 		<span id="infoSottotitolo" class='i18n' i18nKey='info_sottotitolo'>La mappa</span>
 		<p class='i18n' i18nKey='info_p2'>
 			La mappa presenta 3 sezioni principali:<br>
 			- La mappa stessa da mantenere aggiornata con la vera mappa di gioco<br>
-			- La toolbar in alto con i pulsanti per costruire le strutture<br>
+			- La toolbar in alto con i pulsanti per produrre e costruire le strutture<br>
 			- I selettori del giocatore in basso a sinistra<br>
 		</p>
 		<p class='i18n' i18nKey='info_p3'>
-			Toccando i vari elementi della mappa (bacini, dighe, condotte, centrali) viene costruita la struttura
-			relativa del giocatore selezionato (infatti bisogna prima selezionare un giocatore, o N per costruire una
-			diga naturale).
+			Toccando i vari elementi della mappa (sorgenti, bacini, dighe, condotte, centrali) viene costruita la
+			struttura relativa del giocatore selezionato (infatti bisogna prima selezionare un giocatore, o N per
+			costruire una diga naturale).
 			Toccando ancora lo stesso elemento, la struttura si elimina.
-			Toccando i bacini si aumentano le gocce presenti (per le sorgenti, si arriva a un massimo di 10).
+			Toccando i bacini si aumentano le gocce presenti fino al numero massimo (per le sorgenti, si arriva a un
+			massimo di 10), poi si rimuovono.
 			Le dighe invece di mostrare anche le elevazioni, mostrano un numero a fianco per indicare quante
 			elevazioni ci sono (1 = nessuna elevazione, 3 = 2 elevazioni).<br>
 			Per selezionare un giocatore, toccare il relativo pulsante. Questo verrà evidenziato con un
 			bordo giallo.<br>
 			La toolbar in alto mostra l'icona di produzione e tutte le possibili costruzioni che può effettuare
 			l'automa.
-			Le icone permettono di individuare sulla mappa dove produrre, o dove costruire. Per prime vengono
+			I pulsanti ti mostreranno sulla mappa dove l\'automa produrrà, o dove costruirà. Per prime vengono
 			mostrate (evidenziate anche con un bordo giallo) la produzione e le costruzioni presenti sull'attuale carta
 			azioni.<br>
 			Toccando l'icona di produzione (e avendo selezionato l'automa, se ce ne sono più di uno), vengono chiesti

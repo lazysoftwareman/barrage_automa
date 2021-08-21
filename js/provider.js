@@ -380,23 +380,28 @@ export function sleep(ms) {
 }
 
 export function localize(key) {
-    return i18n[locale + "_" + key];
+
+    return i18n[locale + "_" + key] ? i18n[locale + "_" + key] : key;
 }
 
 export function localizeParam(key, params) {
     var parameters = [].concat(params);
     var flat = localize(key);
-    for (let p = 0; p < parameters.length; p++) {
-        flat = flat.replace("{" + p + "}", parameters[p]);
+    if (flat != key) {
+        for (let p = 0; p < parameters.length; p++) {
+            flat = flat.replace("{" + p + "}", parameters[p]);
+        }
     }
     return flat;
 }
 
 export function localizeHTML() {
-    const elements = document.getElementsByClassName("i18n");
+    const elements = document.getElementsByClassName('i18n');
     for (const element of elements) {
-        const key = element.getAttribute("i18nKey");
+        const key = element.getAttribute('i18nKey');
         const text = localize(key);
         element.innerHTML = text;
+        element.innerHTML = element.innerHTML.replace(/&nbsp;/g, ' ');
+        console.log(element.innerHTML);
     }
 }

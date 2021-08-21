@@ -47,6 +47,7 @@ import {
 import { azioni, initMazzo, pesca, restoreMazzo } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay, sorgenti } from './mappa.js';
 import { colors } from './playersPage.js';
+import { localize, localizeHTML } from './provider.js';
 import {
     chiudiBetoniere,
     chiudiContratti,
@@ -72,6 +73,7 @@ export function initPage() {
 	if (!restored) {
 		resetInputs();
 		initMazzo();
+		initLocale();
 		initPlayers();
 	}
 	addHandlers();
@@ -195,23 +197,47 @@ export function addHandlers() {
 
 	document.getElementById('P1_Selector').addEventListener('click', function () {
 		let player = document.getElementById('P1_Selector').innerHTML;
+		const lettera = player.substr(0, 1);
+		let numero = '';
+		if (player.length == 2) {
+			numero = player.substr(1, 1);
+		}
+		player = lettera == 'H' ? 'U' + numero : player;
 		changePlayerSelected(player);
 	}, false);
 	document.getElementById('P2_Selector').addEventListener('click', function () {
 		let player = document.getElementById('P2_Selector').innerHTML;
+		const lettera = player.substr(0, 1);
+		let numero = '';
+		if (player.length == 2) {
+			numero = player.substr(1, 1);
+		}
+		player = lettera == 'H' ? 'U' + numero : player;
 		changePlayerSelected(player);
 	}, false);
 	document.getElementById('P3_Selector').addEventListener('click', function () {
 		const selector = document.getElementById('P3_Selector');
 		if (selector && selector.style.display != 'none') {
-			const player = selector.innerHTML;
+			let player = selector.innerHTML;
+			const lettera = player.substr(0, 1);
+			let numero = '';
+			if (player.length == 2) {
+				numero = player.substr(1, 1);
+			}
+			player = lettera == 'H' ? 'U' + numero : player;
 			changePlayerSelected(player);
 		}
 	}, false);
 	document.getElementById('P4_Selector').addEventListener('click', function () {
 		const selector = document.getElementById('P4_Selector');
 		if (selector && selector.style.display != 'none') {
-			const player = selector.innerHTML;
+			let player = selector.innerHTML;
+			const lettera = player.substr(0, 1);
+			let numero = '';
+			if (player.length == 2) {
+				numero = player.substr(1, 1);
+			}
+			player = lettera == 'H' ? 'U' + numero : player;
 			changePlayerSelected(player);
 		}
 	}, false);
@@ -248,6 +274,27 @@ export function addHandlers() {
 	// document.getElementById('testCostruisciInizio').addEventListener('click', testCostruisciInizio);
 }
 
+export function setLocale(loc) {
+	if (loc != locale) {
+		locale = loc;
+		localizeHTML();
+	}
+}
+
+export function initLocale() {
+	const params = parametriPrecedenti ? parametriPrecedenti : window.location.search.substring(1);
+	if (params) {
+		const entries = params.split('&');
+		for (const entry of entries) {
+			if (entry.includes('locale')) {
+				locale = entry.split('=')[1];
+				break;
+			}
+		}
+	}
+	localizeHTML();
+}
+
 export function initPlayers() {
 	const params = parametriPrecedenti ? parametriPrecedenti : window.location.search.substring(1);
 	if (params) {
@@ -255,9 +302,11 @@ export function initPlayers() {
 		const players = [];
 		const colors = [];
 		for (const entry of entries) {
-			const playerColor = entry.split('=');
-			players.push(playerColor[0]);
-			colors.push(playerColor[1]);
+			if (!entry.includes('locale')) {
+				const playerColor = entry.split('=');
+				players.push(playerColor[0]);
+				colors.push(playerColor[1]);
+			}
 		}
 		let userCount = 0;
 		let automaCount = 0;
@@ -327,7 +376,7 @@ export function checkVecchiaPartita() {
 		const mazzoSaved = localStorage.getItem('automaiuto.mazzo');
 		let vuoleRestorare = false;
 		if (mappaSaved || mazzoSaved) {
-			vuoleRestorare = confirm('Ho rilevato una partita ancora in corso. Vuoi ripristinare la partita?');// TODO Localize
+			vuoleRestorare = confirm(localize('confirm_ripristinarePartita'));
 		}
 		if (vuoleRestorare) {
 			let subpath = '';
@@ -352,6 +401,7 @@ export function restoreVecchiaPartita() {
 	const parametriSaved = localStorage.getItem('automaiuto.parametri');
 	if (parametriSaved) {
 		parametriPrecedenti = parametriSaved;
+		initLocale();
 		initPlayers();
 	}
 	if (mappaSaved) {

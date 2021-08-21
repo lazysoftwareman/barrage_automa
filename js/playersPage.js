@@ -1,6 +1,6 @@
 // @ts-check
 import { salvaParametri } from './barrage.js';
-import { checkVecchiaPartita } from './init.js';
+import { checkVecchiaPartita, locale, setLocale } from './init.js';
 import { localize } from './provider.js';
 import { initDiminesions } from './view.js';
 
@@ -19,6 +19,11 @@ colorsCss['B'] = 'var(--blackPlayer)';
 colorsCss['W'] = 'var(--whitePlayer)';
 
 export function initPlayersPage() {
+    if (!navigator.language.toLowerCase().includes('it')) {
+        setLocale('en');
+    } else {
+        setLocale('it');
+    }
     checkVecchiaPartita();
     initDiminesions();
     for (let i = 0; i < 4; i++) {
@@ -29,6 +34,15 @@ export function initPlayersPage() {
             document.getElementById('colorP' + (i + 1)).style.backgroundColor = colorsCss[colorChosen[i]];
         }
         document.getElementById('colorP' + (i + 1)).addEventListener('click', function () { changeColor((i + 1)); }, false);
+    }
+    document.getElementById('langIT').addEventListener('click', function () { changeLocale('it'); }, false);
+    document.getElementById('langEN').addEventListener('click', function () { changeLocale('en'); }, false);
+}
+
+export function changeLocale(loc) {
+    if (loc != locale) {
+        setLocale(loc);
+        aggiornaParametri();
     }
 }
 
@@ -158,6 +172,7 @@ export function aggiornaParametri() {
         }
         parametri += playersChosen[i] + '=' + colorChosen[i];
     }
+    parametri += '&locale=' + locale;
     document.getElementById('aMain').href = href + parametri;
     salvaParametri(parametri);
 }

@@ -13,13 +13,9 @@ import {
 } from './barrage.js';
 import { azioni, carteAzioni, curCartaAzioni, curCartaCriteri, deckSize, indice } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay } from './mappa.js';
-import { sleep } from './provider.js';
+import { localize, sleep } from './provider.js';
 
 const coloriText = [];
-coloriText['R'] = ' rosso';// TODO Localize
-coloriText['W'] = ' bianco';// TODO Localize
-coloriText['B'] = ' nero';// TODO Localize
-coloriText['G'] = ' verde';// TODO Localize
 
 export function initDiminesions() {
     let vh = window.innerHeight * 0.01;
@@ -52,6 +48,7 @@ export function hideMappa() {
         element.className = element.className.replace(' animated slideInLeft', '');
     }
     element.className = element.className + ' animated slideInLeft';
+    chiudiRichieste();
 }
 
 export async function mostraCarte(oldCartaAzioni) {
@@ -110,7 +107,13 @@ export function mostraPlayers() {
             } else {
                 colorCss = 'var(--blackPlayer)';
             }
-            document.getElementById(pNum + '_Selector').innerHTML = player;
+            const lettera = player.substr(0, 1);
+            const numero = player.length == 2 ? player.substr(1, 1) : '';
+            let letteraLoc = lettera;
+            if (lettera == 'U') {
+                letteraLoc = localize('U');
+            }
+            document.getElementById(pNum + '_Selector').innerHTML = letteraLoc + numero;
             document.getElementById(pNum + '_Selector').style.backgroundColor = colorCss;
             if (color == 'W') {
                 document.getElementById(pNum + '_Selector').style.color = 'var(--blackPlayer)';
@@ -241,6 +244,12 @@ export async function mostraTutto() {
 }
 
 function mostraColoreAutoma() {
+    if (!coloriText[0]) {
+        coloriText['R'] = localize('label_rosso');
+        coloriText['W'] = localize('label_bianco');
+        coloriText['B'] = localize('label_nero');
+        coloriText['G'] = localize('label_verde');
+    }
     let automa;
     if (!playerSelected || !playerSelected.startsWith('A')) {
         return;
@@ -265,7 +274,7 @@ function mostraColoreEValoreContratti() {
         return;
     }
     const span = document.getElementById('coloreContratti');
-    const colorText = actualColoreContratti == 'R' ? ' rossi' : actualColoreContratti == 'G' ? ' gialli' : ' verdi';// TODO Localize
+    const colorText = actualColoreContratti == 'R' ? localize('label_rossi') : actualColoreContratti == 'G' ? localize('label_gialli') : localize('label_verdi');
     span.innerHTML = colorText;
     const select = document.getElementById('valContratti');
     select.innerHTML = '';
@@ -341,4 +350,16 @@ export function chiudiBetoniere() {
 
 export function chiudiContratti() {
     document.getElementById('valoreContratti').className = ('richiesta animated slideOutUp');
+}
+
+export function chiudiRichieste() {
+    if (document.getElementById('quantiEscavatori').className.includes('slideInDown')) {
+        chiudiEscavatori();
+    }
+    if (document.getElementById('quanteBetoniere').className.includes('slideInDown')) {
+        chiudiBetoniere();
+    }
+    if (document.getElementById('valoreContratti').className.includes('slideInDown')) {
+        chiudiContratti();
+    }
 }

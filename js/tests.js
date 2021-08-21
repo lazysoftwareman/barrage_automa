@@ -122,5 +122,5 @@ export function testCostruisciInizio() {
     dighePresenti.push({ diga: 'DF_8', chi: 'N', livello: 3 });
     initMazzo();
     pesca();
-    let output = eseguiCriteri('B', undefined, 'A');
+    let output = eseguiCriteri('B', 'A');
 }

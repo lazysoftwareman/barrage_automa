@@ -35,11 +35,13 @@ import {
     getZoneElevazioniPerBetoniere,
     intersecArray,
     localize,
+    localizeParam,
 } from './provider.js';
 import {
     chiediBetoniere,
     chiediContratti,
     chiediEscavatori,
+    chiudiRichieste,
     mostraPlayerSelected,
     mostraRisultati,
     mostraSistema,
@@ -126,7 +128,7 @@ export function azioneProduci() {
 	}
 	if (automaCount > 1) {
 		if (!playerSelected || !playerSelected.startsWith('A')) {
-			alert(localize('alert_selAutoma'));
+			alert(localize('alert_selAutomaProd'));
 			return;
 		} else {
 			automa = playerSelected;
@@ -165,7 +167,7 @@ export function piazzamentoProduzione() {
 	if (altriModificatori == 'oberst') {
 		// seconda produzione, nessun modificatore, nessun check di contratti. Solo se produzione disponibile
 		if (!secondo) {
-			alert('Non c\'è un secondo sistema completo di produzione'); // TODO Localize
+			alert(localize('alert_noSecondoSistema'));
 			return;
 		} else {
 			mostraSistema(secondo.strutture);
@@ -176,7 +178,7 @@ export function piazzamentoProduzione() {
 	} else {
 		const totValore = valore + modificatoreCarta + (+altriModificatori);
 		if (totValore < actualValoreContratti) {
-			alert('Il valore di energia prodotto non è sufficiente a soddisfare i contratti');// TODO Localize
+			alert(localize('alert_energiaNonSufficiente'));
 			return;
 		} else {
 			mostraSistema(primo.strutture);
@@ -203,7 +205,7 @@ export function azioneCostruisci(azione) {
 	}
 	if (automaCount > 1) {
 		if (!playerSelected || !playerSelected.startsWith('A')) {
-			alert('Bisogna selezionare l\'automa che vuole costruire');// TODO Localize
+			alert(localize('alert_selAutomaCostruire'));
 			return;
 		} else {
 			automa = playerSelected;
@@ -212,7 +214,7 @@ export function azioneCostruisci(azione) {
 		automa = 'A';
 	}
 	if (!curCartaCriteri) {
-		alert('Bisogna pescare una carta criteri affinché l\'automa possa costruire')// TODO Localize
+		alert(localize('alert_noCartaPerCostruire'));
 		return;
 	}
 	resetRisultati();
@@ -241,11 +243,11 @@ export function azioneCostruisci(azione) {
 				digheValide = digheValide.concat(getB_Zona(zone[1]));
 			}
 			if (digheValide.length == 0) {
-				let zonaTesto = zone[0] == 'M' ? 'montagna' : zone[0] == 'C' ? 'collina' : 'pianura';// TODO Localize
+				let zonaTesto = zone[0] == 'M' ? localize('montagna') : zone[0] == 'C' ? localize('collina') : localize('pianura');
 				if (zone[1]) {
-					zonaTesto = zonaTesto + 'e ' + zone[1] == 'M' ? 'montagna' : zone[1] == 'C' ? 'collina' : 'pianura';// TODO Localize
+					zonaTesto = zonaTesto + localize('and') + ' ' + zone[1] == 'M' ? localize('montagna') : zone[1] == 'C' ? localize('collina') : localize('pianura');
 				}
-				alert('Non è possibile costruire una diga in ' + zonaTesto);// TODO Localize
+				alert(localize('alert_noCostruzioneDigaIn') + zonaTesto);
 				return;
 			} else {
 				actualResult = intersecArray(actualResult, digheValide);
@@ -258,7 +260,7 @@ export function azioneCostruisci(azione) {
 		// Controllo che ci siano dighe proprietarie. Se non ci sono alert, altrimenti chiedo betoniere
 		const digheValide = getDigheElevabili(automa);
 		if (digheValide.length == 0) {
-			alert('Non ci sono dighe su cui costruire un\'elevazione');// TODO Localize
+			alert(localize('alert_noDighePerElevazione'));
 			return;
 		} else {
 			actualResult = digheValide;
@@ -279,13 +281,13 @@ export function azioneCostruisci(azione) {
 		let testoDaAggiungere = '';
 		if (minCondotta) {
 			condotteValide = condotteValide.filter(c => condotteVal[c] >= +minCondotta);
-			testoDaAggiungere = 'di questo tipo ';// TODO Localize
+			testoDaAggiungere = localize('alertPart_diQuestoTipo');
 		} else if (maxCondotta) {
 			condotteValide = condotteValide.filter(c => condotteVal[c] <= +maxCondotta);
-			testoDaAggiungere = 'di questo tipo ';// TODO Localize
+			testoDaAggiungere = localize('alertPart_diQuestoTipo');
 		}
 		if (condotteValide.length == 0) {
-			alert('Non ci sono condotte ' + testoDaAggiungere + 'costruibili');// TODO Localize
+			alert(localizeParam('alert_noCondotteCostruibili', [testoDaAggiungere]));
 			return;
 		} else {
 			actualResult = condotteValide;
@@ -296,10 +298,10 @@ export function azioneCostruisci(azione) {
 		actualResult = centraliFree.concat(centraliPay).filter(c => !getProprietarioCentrale(c));
 		piazzamentoStruttura();
 	} else if (cosa.startsWith('A')) {
-		alert('Non ancora implementata la gestione delle abitazioni');// TODO Localize
+		alert(localize('alert_noImpleAbitazioni'));
 		return;
 	} else {
-		alert('Azione non valida: ' + azione);// TODO Localize
+		alert(localize('alert_azioneNonValida') + azione);
 		return;
 	}
 }
@@ -336,7 +338,7 @@ function estraiParametriCostruisci() {
 	} else if (cosa.startsWith('A')) {
 		tipo = 'A';
 	} else {
-		alert('Azione non valida: ' + azione);// TODO Localize
+		alert(localize('alert_azioneNonValida' + azione));
 		return undefined;
 	}
 	return { tipo: tipo, zona: zona, automa: automa };
@@ -355,18 +357,18 @@ export function piazzamentoStruttura() {
 	const zona = parametri.zona;
 	const automa = parametri.automa;
 	if (tipo == 'A') {
-		alert('Non ancora implementata la gestione delle abitazioni');// TODO Localize
+		alert(localize('alert_noImpleAbitazioni'));
 		return;
 	}
 	if (tipo == 'B') {
 		const zoneDisponibili = getZoneBasePerEscavatori(actualNumEscavatori);
 		if (zoneDisponibili.length == 0) {
-			alert('Non è possibile costruire una base con quei pochi escavatori');// TODO Localize
+			alert(localize('alert_pochiEscavatoriPerBase'));
 			return;
 		}
 		if (zona) {
 			if (!zoneDisponibili.includes(zona)) {
-				alert('Non è possibile costruire una base in quella zona con quei pochi escavatori');// TODO Localize
+				alert(localize('alert_pochiEscavatoriPerBaseZona'));
 				return;
 			}
 		}
@@ -388,7 +390,7 @@ export function piazzamentoStruttura() {
 	}
 	if (actualResult.length == 0) {
 		// Nessun risultato. Poco probabile, ma possibile. Mostro l'alert e mi fermo
-		alert('Non è possibile costruire questa struttura');// TODO Localize
+		alert(localize('alert_noCostruzioneStruttura'));
 		return;
 	} else if (actualResult.length > 0) {
 		// Ci sono dei risultati, se 1, lo mostro e mi fermo qua
@@ -439,7 +441,7 @@ export function eseguiCriteri(tipo, automa) {
 		}
 		if (!actualResult || actualResult.length == 0) {
 			// Nessun risultato. Poco probabile, ma possibile. Mostro l'alert e mi fermo
-			alert('Non è possibile costruire questa struttura');// TODO Localize
+			alert(localize('alert_noCostruzioneStruttura'));
 			return;
 		} else if (actualResult.length > 0) {
 			if (actualResult.length == 1) {
@@ -453,7 +455,7 @@ export function eseguiCriteri(tipo, automa) {
 	}
 	// Se finiti i criteri non ho risultati (poco probabile), mostro alert
 	if (!actualResult || actualResult.length == 0) {
-		alert('Non è possibile costruire la struttura selezionata')// TODO Localize
+		alert(localize('alert_noCostruzioneStruttura'));
 	}
 	// Finiti i criteri, resetto
 	actualResult = [];
@@ -1803,6 +1805,7 @@ export function addGocciaSorgente(sorgente) {
 	} else {
 		document.getElementById('areaS' + sorgente + 'Content').style.display = 'block';
 	}
+	chiudiRichieste();
 	salvaMappa();
 }
 
@@ -1837,6 +1840,7 @@ export function addGocciaDiga(diga) {
 	} else {
 		document.getElementById('area' + diga + 'GContent').style.display = 'block';
 	}
+	chiudiRichieste();
 	salvaMappa();
 }
 
@@ -1883,6 +1887,7 @@ export function addDiga(diga) {
 		document.getElementById('area' + diga + 'Img').src = 'img/B_' + playerColor[chi] + '.png';
 		document.getElementById('area' + diga + 'Content').style.display = 'block';
 	}
+	chiudiRichieste();
 	salvaMappa();
 }
 
@@ -1919,6 +1924,7 @@ export function addCondotta(condotta) {
 		document.getElementById('area' + condotta + 'Img').src = 'img/CO_' + playerColor[chi] + '.png';
 		document.getElementById('area' + condotta + 'Content').style.display = 'block';
 	}
+	chiudiRichieste();
 	salvaMappa();
 }
 
@@ -1955,12 +1961,14 @@ export function addCentrale(centrale) {
 		document.getElementById('area' + centrale + 'Img').src = 'img/CE_' + playerColor[chi] + '.png';
 		document.getElementById('area' + centrale + 'Content').style.display = 'block';
 	}
+	chiudiRichieste();
 	salvaMappa();
 }
 
 export function changePlayerSelected(player) {
 	playerSelected = playerSelected == player ? undefined : player;
 	mostraPlayerSelected();
+	chiudiRichieste();
 }
 
 
@@ -2001,7 +2009,7 @@ export function salvaParametri(parametri) {
 }
 
 export function esci() {
-	if (confirm('Sei sicuro di abbandonare la partita? Perderai lo stato della mappa del mazzo')) {// TODO Localize
+	if (confirm(localize('confirm_esci'))) {
 		resetLocalStorage();
 		let subpath = '';
 		if (window.location.pathname.includes('barrage')) {
