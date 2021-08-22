@@ -325,11 +325,11 @@ export function getZoneElevazioniPerBetoniere(numBetoniere) {
     return zoneDisponibili;
 }
 
-export function getValoreCondottePerEscavatori(numBetoniere) {
-    if (numBetoniere < 2) {
+export function getValoreCondottePerEscavatori(numEscavatori) {
+    if (numEscavatori < 2) {
         return 0;
     }
-    let result = Math.floor(numBetoniere / 2);
+    let result = Math.floor(numEscavatori / 2);
     return result > 10 ? 10 : result;
 }
 

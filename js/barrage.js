@@ -374,7 +374,9 @@ export function piazzamentoStruttura() {
 		}
 		//Prima di chiamare getB_0_SistemaCompleto devo filtrare actualResult in base alle zoneDisponibili
 		actualResult = actualResult.filter(diga => zoneDisponibili.includes(getZonaDiga(diga)));
-		actualResult = getB_0_SistemaCompleto(automa);
+		if (actualResult.length > 0) {
+			actualResult = getB_0_SistemaCompleto(automa);
+		}
 	} else if (tipo == 'E') {
 		const zoneDisponibili = getZoneElevazioniPerBetoniere(actualNumBetoniere);
 		// devo filtrare actualResult in base alle zoneDisponibili
@@ -383,13 +385,15 @@ export function piazzamentoStruttura() {
 		// devo filtrare actualResult in base ai valori disponibili
 		const valoreDisponibile = getValoreCondottePerEscavatori(actualNumEscavatori);
 		actualResult = actualResult.filter(condotta => condotteVal[condotta] <= valoreDisponibile);
-		actualResult = getCO_0_SistemaCompleto(automa);
+		if (actualResult.length > 0) {
+			actualResult = getCO_0_SistemaCompleto(automa);
+		}
 	} else if (tipo == 'CE') {
 		// ho già filtrato in base alle disponibili
 		actualResult = getCE_0_SistemaCompleto(automa);
 	}
 	if (actualResult.length == 0) {
-		// Nessun risultato. Poco probabile, ma possibile. Mostro l'alert e mi fermo
+		// Nessun risultato. Succede quando non ho abbastanza escavatori per la condotta o non posso costruire una diga in una specifica zona
 		alert(localize('alert_noCostruzioneStruttura'));
 		return;
 	} else if (actualResult.length > 0) {

@@ -44,9 +44,9 @@ carteAzioni['8'] = 'P+0G_X_CE_CCE_X_X_X_X';
 carteAzioni['9'] = 'P+2G_X_CD_CAM_X_X_X_X';
 carteAzioni['10'] = 'P+0V_X_CE_CD_X_X_X_X';
 carteAzioni['11'] = 'P+0G_X_CE_CCE_X_X_X_X';
-carteAzioni['12'] = 'P+1G_X_CD_CCO_X_X_X_X';
+carteAzioni['12'] = 'P+1G_X_CCE_CCO_X_X_X_X';
 carteAzioni['13'] = 'P+1G_X_CCE_CD_X_X_X_X';
-carteAzioni['14'] = 'P+1V_CD_X_X_X_X';
+carteAzioni['14'] = 'P+1V_CCE_X_X_X_X';
 carteAzioni['15'] = 'P-2V_X_CDC_CCE_X_X_X_X';
 carteAzioni['16'] = 'P+1V_X_CCO_X_X_X_X';
 carteAzioni['17'] = 'P-1V_X_CD_X_X_X_X';
@@ -102,11 +102,15 @@ export function pesca() {
     }
     let oldCartaAzioni = mazzo[indice];
     indice++;
-    curCartaAzioni = mazzo[indice];
-    curCartaCriteri = indice > 0 ? mazzo[indice - 1] : undefined;
-    mostraCarte(oldCartaAzioni);
-    mostraAzioni();
-    salvaMazzo();
+    if (indice == deckSize) {
+        pesca();
+    } else {
+        curCartaAzioni = mazzo[indice];
+        curCartaCriteri = indice > 0 ? mazzo[indice - 1] : undefined;
+        mostraCarte(oldCartaAzioni);
+        mostraAzioni();
+        salvaMazzo();
+    }
 }
 
 export function restoreMazzo(mazzoSaved) {
