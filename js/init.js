@@ -86,6 +86,8 @@ export function initPage() {
 	hideMappa();
 	preloadImages();
 	mostraTutto();
+	// TESTS:
+	// testCO_Numero();
 }
 
 function addGlobalVariables() {

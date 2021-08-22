@@ -1,5 +1,17 @@
 // @ts-check
-import { centraliCostruite, condotteCostruite, dighePresenti, eseguiCriteri, getBE_A, getBE_B, getBE_E } from './barrage.js';
+import {
+    actualResult,
+    centraliCostruite,
+    condotteCostruite,
+    dighePresenti,
+    eseguiCriteri,
+    getBE_A,
+    getBE_B,
+    getBE_E,
+    getBE_Numero,
+    getCE_Numero,
+    getCO_Numero,
+} from './barrage.js';
 import { initMazzo, pesca } from './deck.js';
 import { initPage } from './init.js';
 import { printArray } from './provider.js';
@@ -123,4 +135,34 @@ export function testCostruisciInizio() {
     initMazzo();
     pesca();
     let output = eseguiCriteri('B', 'A');
+}
+
+export function testBE_Numero() {
+    actualResult.push('DF_4');
+    actualResult.push('DP_4');
+    let valid = getBE_Numero('B', '6', 'A');
+    let passed = valid.length == 1;
+    passed = passed && valid[0] == 'DF_4';
+    let esito = passed ? 'PASSATO' : 'FALLITO';
+    alert('Dighe basi valide: \n' + printArray(valid) + '\n' + esito);
+}
+
+export function testCE_Numero() {
+    actualResult.push('CP_11A');
+    actualResult.push('CF_11A');
+    let valid = getCE_Numero('C', '12', 'A');
+    let passed = valid.length == 1;
+    passed = passed && valid[0] == 'CF_11A';
+    let esito = passed ? 'PASSATO' : 'FALLITO';
+    alert('Centrali basi valide: \n' + printArray(valid) + '\n' + esito);
+}
+
+export function testCO_Numero() {
+    actualResult.push('C_4A');
+    actualResult.push('C_4B');
+    let valid = getCO_Numero('C', '6B', 'A');
+    let passed = valid.length == 1;
+    passed = passed && valid[0] == 'C_4A';
+    let esito = passed ? 'PASSATO' : 'FALLITO';
+    alert('Condotte basi valide: \n' + printArray(valid) + '\n' + esito);
 }

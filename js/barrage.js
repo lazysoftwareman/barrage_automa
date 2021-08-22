@@ -944,13 +944,16 @@ export function getBE_C(tipo, automa, ordine) {
  * @param {string} numero primo numero da cui partire
  */
 export function getBE_Numero(_tipo, numero, _automa) {
-	let counter = 0;
+	let loops = 0;
 	let actual = +numero;
 	while (actual <= 11) {
-		actual = +numero + counter;
+		if (loops > 20) {
+			alert('Oops, the Number criteria for the dam constructions has encountered an error. Please draft another card or take another action');
+			return [];
+		}
+		actual++;
 		if (actual > 10) {
 			actual = 1;
-			counter = 0;
 		}
 		let digaF = 'DF_' + actual;
 		if (actualResult.includes(digaF)) {
@@ -960,7 +963,7 @@ export function getBE_Numero(_tipo, numero, _automa) {
 		if (actualResult.includes(digaP)) {
 			return [digaP];
 		}
-		counter++;
+		loops++;
 	}
 	return [];
 }
@@ -1010,15 +1013,18 @@ export function getCO_0_SistemaCompleto(automa) {
  * @param {string} numeroLettera primo numero da cui partire (tipo 7B)
  */
 export function getCO_Numero(_tipo, numeroLettera, _automa) {
-	let counter = 0;
+	let loops = 0;
 	let numero = numeroLettera.substring(0, numeroLettera.length - 1);
 	let lettera = numeroLettera.substr(numeroLettera.length - 1, 1);
 	let actual = +numero;
 	while (actual <= 11) {
-		actual = +numero + counter;
+		if (loops > 20) {
+			alert('Oops, the Number criteria for the conduit constructions has encountered an error. Please draft another card or take another action');
+			return [];
+		}
+		actual++;
 		if (actual > 10) {
 			actual = 1;
-			counter = 0;
 		}
 		if (lettera == 'A') {
 			let condottaA = 'C_' + actual + 'A';
@@ -1037,7 +1043,7 @@ export function getCO_Numero(_tipo, numeroLettera, _automa) {
 			return [condottaB];
 		}
 		lettera = 'A';
-		counter++;
+		loops++;
 	}
 	return [];
 }
@@ -1377,13 +1383,16 @@ export function getCE_0_SistemaCompleto(automa) {
 }
 
 export function getCE_Numero(_tipo, numero, _automa) {
-	let counter = 0;
+	let loops = 0;
 	let actual = +numero;
 	while (actual <= 13) {
-		actual = +numero + counter;
+		if (loops > 20) {
+			alert('Oops, the Number criteria for the powerhouses constructions has encountered an error. Please draft another card or take another action');
+			return [];
+		}
+		actual++;
 		if (actual > 12) {
 			actual = 5;
-			counter = 0;
 		}
 		if (centraliFree.includes('CF_' + actual)) {
 			let centrale = 'CF_' + actual;
@@ -1421,7 +1430,7 @@ export function getCE_Numero(_tipo, numero, _automa) {
 				return [centrale];
 			}
 		}
-		counter++;
+		loops++;
 	}
 	return [];
 }
