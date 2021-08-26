@@ -1,0 +1,15 @@
+{
+    "background_color": "#ccb454",
+    "description": "A helper to manage Barrage Automa",
+    "display": "fullscreen",
+    "icons": [
+        {
+            "src": "img/favicon.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        }
+    ],
+    "name": "Barrage AutomaHelper",
+    "short_name": "Barrage AutomaHelper",
+    "start_url": "index.html"
+}
