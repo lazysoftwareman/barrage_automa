@@ -1403,32 +1403,38 @@ export function getCE_Numero(_tipo, numero, _automa) {
 			if (actualResult.includes(centrale)) {
 				return [centrale];
 			}
-		} else if (centraliFree.includes('CF_' + actual + 'A')) {
+		}
+		if (centraliFree.includes('CF_' + actual + 'A')) {
 			let centrale = 'CF_' + actual + 'A';
 			if (actualResult.includes(centrale)) {
 				return [centrale];
 			}
-		} else if (centraliFree.includes('CF_' + actual + 'B')) {
+		}
+		if (centraliFree.includes('CF_' + actual + 'B')) {
 			let centrale = 'CF_' + actual + 'B';
 			if (actualResult.includes(centrale)) {
 				return [centrale];
 			}
-		} else if (centraliPay.includes('CP_' + actual)) {
+		}
+		if (centraliPay.includes('CP_' + actual)) {
 			let centrale = 'CP_' + actual;
 			if (actualResult.includes(centrale)) {
 				return [centrale];
 			}
-		} else if (centraliPay.includes('CP_' + actual + 'A')) {
+		}
+		if (centraliPay.includes('CP_' + actual + 'A')) {
 			let centrale = 'CP_' + actual + 'A';
 			if (actualResult.includes(centrale)) {
 				return [centrale];
 			}
-		} else if (centraliPay.includes('CP_' + actual + 'B')) {
+		}
+		if (centraliPay.includes('CP_' + actual + 'B')) {
 			let centrale = 'CP_' + actual + 'B';
 			if (actualResult.includes(centrale)) {
 				return [centrale];
 			}
-		} else if (centraliPay.includes('CP_' + actual + 'C')) {
+		}
+		if (centraliPay.includes('CP_' + actual + 'C')) {
 			let centrale = 'CP_' + actual + 'C';
 			if (actualResult.includes(centrale)) {
 				return [centrale];
