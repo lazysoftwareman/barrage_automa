@@ -9,5 +9,4 @@ Features:
 - Saving of the current status in case of session closing of the browser
 
 TODO:
-- localizzazione inglese
 - aggiunta espansione
