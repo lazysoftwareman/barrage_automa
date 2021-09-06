@@ -7,6 +7,7 @@ Features:
 - Automa's building placement according to map status and criteria card
 - Indentification of the most efficient product system of the automa
 - Saving of the current status in case of session closing of the browser
+- English and Italian localization
 
 TODO:
 - aggiunta espansione
