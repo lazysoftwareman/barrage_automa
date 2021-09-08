@@ -8,7 +8,7 @@ import { initDiminesions } from './view.js';
 // @ts-ignore
 window.initPlayersPage = initPlayersPage;
 
-export const colors = ['G', 'R', 'B', 'W'];
+export const colors = ['G', 'R', 'B', 'W', 'O'];
 export const playersChosen = ['U1', 'A1'];
 export const colorChosen = ['G', 'R'];
 
@@ -17,6 +17,7 @@ colorsCss['G'] = 'var(--greenPlayer)';
 colorsCss['R'] = 'var(--redPlayer)';
 colorsCss['B'] = 'var(--blackPlayer)';
 colorsCss['W'] = 'var(--whitePlayer)';
+colorsCss['O'] = 'var(--orangePlayer)';
 
 export function initPlayersPage() {
     if (!navigator.language.toLowerCase().includes('it')) {
@@ -53,7 +54,7 @@ export function changeColor(num) {
     }
     let idx = colors.indexOf(actualColor);
     idx++;
-    if (idx > 3) {
+    if (idx > 4) {
         idx = 0;
     }
     const newColor = colors[idx];
@@ -67,6 +68,7 @@ export function changeColor(num) {
     // Controllo duplicati
     if (new Set(colorChosen).size != colorChosen.length) {
         document.getElementById('errColore').style.visibility = 'visible';
+        // @ts-ignore
         document.getElementById('aMain').href = 'javascript: void(0)';
     } else {
         document.getElementById('errColore').style.visibility = 'hidden';
@@ -156,6 +158,7 @@ export function changePlayer(num) {
     // Controllo duplicati
     if (new Set(colorChosen).size != colorChosen.length) {
         document.getElementById('errColore').style.visibility = 'visible';
+        // @ts-ignore
         document.getElementById('aMain').href = 'javascript: void(0)';
     } else {
         document.getElementById('errColore').style.visibility = 'hidden';
@@ -165,6 +168,7 @@ export function changePlayer(num) {
 
 export function aggiornaParametri() {
     if (new Set(colorChosen).size != colorChosen.length) {
+        // @ts-ignore
         document.getElementById('aMain').href = 'javascript: void(0)';
         return;
     }
@@ -177,6 +181,7 @@ export function aggiornaParametri() {
         parametri += playersChosen[i] + '=' + colorChosen[i];
     }
     parametri += '&locale=' + locale;
+    // @ts-ignore
     document.getElementById('aMain').href = href + parametri;
     salvaParametri(parametri);
 }

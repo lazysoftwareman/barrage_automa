@@ -13,6 +13,7 @@ import {
 } from './barrage.js';
 import { azioni, carteAzioni, curCartaAzioni, curCartaCriteri, deckSize, indice } from './deck.js';
 import { centraliFree, centraliPay, condotte, digheFree, dighePay } from './mappa.js';
+import { colorsCss } from './playersPage.js';
 import { localize, sleep } from './provider.js';
 
 const coloriText = [];
@@ -54,28 +55,36 @@ export function hideMappa() {
 export async function mostraCarte(oldCartaAzioni) {
     let CartaDaFlippare = oldCartaAzioni ? oldCartaAzioni : curCartaAzioni;
     if (curCartaAzioni) {
+        // @ts-ignore
         document.getElementById('cartaF').src = 'img/deck/f_' + curCartaAzioni + '.jpg';
     } else {
+        // @ts-ignore
         document.getElementById('cartaF').src = '';
     }
     if (curCartaCriteri) {
         const flipCard = document.getElementById('flipCardInner');
         flipCard.className = flipCard.className + ' flip';
+        // @ts-ignore
         document.getElementById('flipCardFrontImg').src = 'img/deck/f_' + CartaDaFlippare + '.jpg';
+        // @ts-ignore
         document.getElementById('flipCardBackImg').src = 'img/deck/b_' + CartaDaFlippare + '.jpg';
         flipCard.style.visibility = 'visible';
         await sleep(1000);
         if (flipCard.className.includes(' flip')) {
             flipCard.className = flipCard.className.replace(' flip', '');
         }
+        // @ts-ignore
         document.getElementById('cartaB').src = 'img/deck/b_' + curCartaCriteri + '.jpg';
         flipCard.style.visibility = 'hidden';
     } else {
         if (curCartaAzioni) {
+            // @ts-ignore
             document.getElementById('cartaF').src = 'img/deck/f_' + curCartaAzioni + '.jpg';
         } else {
+            // @ts-ignore
             document.getElementById('cartaF').src = '';
         }
+        // @ts-ignore
         document.getElementById('cartaB').src = '';
     }
     document.getElementById('cartePescate').innerHTML = '' + indice + ' / ' + deckSize;
@@ -83,6 +92,7 @@ export async function mostraCarte(oldCartaAzioni) {
 
 export function mostraPlayers() {
     let playersCount = 0;
+    // @ts-ignore
     for (const player in playerMap) {
         playersCount++;
     }
@@ -97,16 +107,7 @@ export function mostraPlayers() {
         const pNum = playerMap[player];
         if (pNum != 'P0') {
             const color = playerColor[player];
-            let colorCss;
-            if (color == 'G') {
-                colorCss = 'var(--greenPlayer)';
-            } else if (color == 'R') {
-                colorCss = 'var(--redPlayer)';
-            } else if (color == 'W') {
-                colorCss = 'var(--whitePlayer)';
-            } else {
-                colorCss = 'var(--blackPlayer)';
-            }
+            const colorCss = colorsCss[color];
             const lettera = player.substr(0, 1);
             const numero = player.length == 2 ? player.substr(1, 1) : '';
             let letteraLoc = lettera;
@@ -125,6 +126,7 @@ export function mostraPlayers() {
     }
 }
 
+// @ts-ignore
 export function mostraPlayerSelected(player) {
     for (let player in playerMap) {
         let p = playerMap[player];
@@ -315,11 +317,13 @@ export function mostraTuttaMappa() {
     }
     // Condotte:
     for (const condottaCostruita of condotteCostruite) {
+        // @ts-ignore
         document.getElementById('area' + condottaCostruita.condotta + 'Img').src = 'img/CO_' + playerColor[condottaCostruita.chi] + '.png';
         document.getElementById('area' + condottaCostruita.condotta + 'Content').style.display = 'block';
     }
     // Centrali:
     for (const centraleCostruita of centraliCostruite) {
+        // @ts-ignore
         document.getElementById('area' + centraleCostruita.centrale + 'Img').src = 'img/CE_' + playerColor[centraleCostruita.chi] + '.png';
         document.getElementById('area' + centraleCostruita.centrale + 'Content').style.display = 'block';
     }

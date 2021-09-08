@@ -402,6 +402,6 @@ export function localizeHTML() {
         const text = localize(key);
         element.innerHTML = text;
         element.innerHTML = element.innerHTML.replace(/&nbsp;/g, ' ');
-        console.log(element.innerHTML);
+        // console.log(element.innerHTML);
     }
 }

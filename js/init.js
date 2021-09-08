@@ -246,19 +246,23 @@ export function addHandlers() {
 	document.getElementById('P0_Selector').addEventListener('click', function () { changePlayerSelected('N'); }, false);
 	// Richieste
 	document.getElementById('confermaEscavatori').addEventListener('click', function () {
+		// @ts-ignore
 		const numEscavatori = +(document.getElementById('numEscavatori').value);
 		setNumEscavatori(numEscavatori);
 		chiudiEscavatori();
 		piazzamentoStruttura();
 	}, false);
 	document.getElementById('confermaBetoniere').addEventListener('click', function () {
+		// @ts-ignore
 		const numBetoniere = +(document.getElementById('numBetoniere').value);
 		setNumBetoniere(numBetoniere);
 		chiudiBetoniere();
 		piazzamentoStruttura();
 	}, false);
 	document.getElementById('confermaProduzione').addEventListener('click', function () {
+		// @ts-ignore
 		const modificatore = document.getElementById('modificatoreProduzione').value;
+		// @ts-ignore
 		const contratti = +(document.getElementById('valContratti').value);
 		setValoriProduzione(modificatore, contratti);
 		chiudiContratti();
