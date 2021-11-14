@@ -955,7 +955,6 @@ export function getBE_Numero(_tipo, numero, _automa) {
 			alert('Oops, the Number criteria for the dam constructions has encountered an error. Please draft another card or take another action');
 			return [];
 		}
-		actual++;
 		if (actual > 10) {
 			actual = 1;
 		}
@@ -967,6 +966,7 @@ export function getBE_Numero(_tipo, numero, _automa) {
 		if (actualResult.includes(digaP)) {
 			return [digaP];
 		}
+		actual++;
 		loops++;
 	}
 	return [];
@@ -1026,7 +1026,6 @@ export function getCO_Numero(_tipo, numeroLettera, _automa) {
 			alert('Oops, the Number criteria for the conduit constructions has encountered an error. Please draft another card or take another action');
 			return [];
 		}
-		actual++;
 		if (actual > 10) {
 			actual = 1;
 		}
@@ -1047,6 +1046,7 @@ export function getCO_Numero(_tipo, numeroLettera, _automa) {
 			return [condottaB];
 		}
 		lettera = 'A';
+		actual++;
 		loops++;
 	}
 	return [];
@@ -1394,7 +1394,6 @@ export function getCE_Numero(_tipo, numero, _automa) {
 			alert('Oops, the Number criteria for the powerhouses constructions has encountered an error. Please draft another card or take another action');
 			return [];
 		}
-		actual++;
 		if (actual > 12) {
 			actual = 5;
 		}
@@ -1440,6 +1439,7 @@ export function getCE_Numero(_tipo, numero, _automa) {
 				return [centrale];
 			}
 		}
+		actual++;
 		loops++;
 	}
 	return [];
