@@ -1495,7 +1495,7 @@ export function getCE_M(automa) {
 		const centrs = condotteCentrali[condotta];
 		for (const centrale of centrs) {
 			if (actualResult.includes(centrale)) {
-				centraliValide.push(condotta);
+				centraliValide.push(centrale);
 			}
 		}
 	}
